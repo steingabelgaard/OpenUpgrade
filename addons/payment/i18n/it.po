@@ -18,6 +18,7 @@
 # Giacomo Grasso <giacomo.grasso.82@gmail.com>, 2018
 # Léonie Bouchat <lbo@odoo.com>, 2019
 # Paolo Valier, 2019
+# Luigia Cimmino Caserta <lcc@odoo.com>, 2019
 # Sergio Zanchetta <primes2h@gmail.com>, 2019
 # 
 msgid ""
@@ -52,7 +53,7 @@ msgstr "<b>Importo:</b>"
 #. module: payment
 #: model:ir.ui.view,arch_db:payment.pay
 msgid "<b>Reference:</b>"
-msgstr ""
+msgstr "<b>Riferimento:</b>"
 
 #. module: payment
 #: model:ir.ui.view,arch_db:payment.confirm
@@ -235,7 +236,7 @@ msgstr "Sistema"
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_token_acquirer_id
 msgid "Acquirer Account"
-msgstr ""
+msgstr "Account del sistema"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_token_acquirer_ref
@@ -614,7 +615,7 @@ msgstr "Modulo"
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer_view_template_id
 msgid "Form Button Template"
-msgstr ""
+msgstr "Modello pulsante del modulo"
 
 #. module: payment
 #: selection:payment.transaction,type:0
@@ -660,7 +661,7 @@ msgstr "Immagine"
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_icon_image_payment_form
 msgid "Image displayed on the payment form"
-msgstr ""
+msgstr "Immagine visualizzata nel modulo di pagamento"
 
 #. module: payment
 #: model:payment.acquirer,name:payment.payment_acquirer_ogone
@@ -676,7 +677,7 @@ msgstr "Installa"
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer_module_state
 msgid "Installation State"
-msgstr ""
+msgstr "Stato installazione"
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_transaction_reference
@@ -926,7 +927,7 @@ msgstr "Sistemi di pagamento"
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer_payment_flow
 msgid "Payment Flow"
-msgstr ""
+msgstr "Flusso del pagamento"
 
 #. module: payment
 #: model:ir.model,name:payment.model_payment_icon
@@ -983,7 +984,7 @@ msgstr "Transazioni di Pagamento"
 #. module: payment
 #: selection:payment.acquirer,payment_flow:0
 msgid "Payment from Odoo"
-msgstr ""
+msgstr "Pagamento da Odoo"
 
 #. module: payment
 #: code:addons/payment/models/account_payment.py:59
@@ -996,7 +997,7 @@ msgstr ""
 #: code:addons/payment/controllers/portal.py:135
 #, python-format
 msgid "Payment transaction failed."
-msgstr ""
+msgstr "Transazione di pagamento non riuscita."
 
 #. module: payment
 #: model:ir.model,name:payment.model_account_payment
@@ -1072,7 +1073,7 @@ msgstr "Usa il nome dell'ordine come riferimento di comunicazione. "
 #. module: payment
 #: model:ir.ui.view,arch_db:payment.confirm
 msgid "Processed by"
-msgstr ""
+msgstr "Elaborato da"
 
 #. module: payment
 #: selection:payment.acquirer,environment:0
@@ -1195,7 +1196,7 @@ msgstr "Errore Server"
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_token_short_name
 msgid "Short name"
-msgstr "Nome corto"
+msgstr "Nome breve"
 
 #. module: payment
 #: model:payment.acquirer,name:payment.payment_acquirer_sips
@@ -1372,7 +1373,7 @@ msgstr "Attenzione!"
 #: code:addons/payment/static/src/js/payment_form.js:135
 #, python-format
 msgid "We are not able to add your payment method at the moment."
-msgstr ""
+msgstr "Non ci è possibile aggiungere il tuo metodo di pagamento al momento."
 
 #. module: payment
 #. openerp-web

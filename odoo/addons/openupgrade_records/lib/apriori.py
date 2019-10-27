@@ -15,6 +15,7 @@ renamed_modules = {
     'partner_financial_risk': 'account_financial_risk',
     'partner_payment_return_risk': 'account_payment_return_financial_risk',
     'partner_sale_risk': 'sale_financial_risk',
+    'partner_stock_risk': 'stock_financial_risk',
     # OCA/crm
     'crm_sector': 'crm_industry',
     # OCA/account-payment
@@ -81,6 +82,8 @@ merged_modules = {
     'crm_lead_website': 'crm',
     # OCA/hr-timesheet
     'hr_timesheet_sheet_week_start_day': 'hr_timesheet_sheet',
+    # OCA/l10n-italy:
+    'l10n_it_fiscalcode_invoice': 'l10n_it_fiscalcode',
     # OCA/product-variant
     'product_variant_supplierinfo': 'product',
     'sale_stock_variant_configurator': 'sale_variant_configurator',

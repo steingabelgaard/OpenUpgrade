@@ -1274,7 +1274,7 @@ class IrModelAccess(models.Model):
             else:
                 msg_tail = _("Please contact your system administrator if you think this is an error.") + "\n\n(" + _("Document model") + ": %s)"
                 msg_params = (model,)
-            msg_tail += ' - ({} {}, {} {})'.format(_('Operation:'), mode, _('User:'), self._uid)
+            msg_tail += u' - ({} {}, {} {})'.format(_('Operation:'), mode, _('User:'), self._uid)
             _logger.info('Access Denied by ACLs for operation: %s, uid: %s, model: %s', mode, self._uid, model)
             msg = '%s %s' % (msg_heads[mode], msg_tail)
             raise AccessError(msg % msg_params)
@@ -1708,20 +1708,26 @@ class IrModelData(models.Model):
         for (id, name, model, res_id, module) in self._cr.fetchall():
             if (module, name) not in self.loads:
                 if model in self.env:
-                    # OpenUpgrade: never break on unlink of obsolete records
                     _logger.info('Deleting %s@%s (%s.%s)', res_id, model, module, name)
-                    try:
-                        self.env.cr.execute('SAVEPOINT ir_model_data_delete');
-                        self.env[model].browse(res_id).unlink()
-                        self.env.cr.execute('RELEASE SAVEPOINT ir_model_data_delete')
-                    except Exception:
-                        self.env.cr.execute('ROLLBACK TO SAVEPOINT ir_model_data_delete');
-                        _logger.warning(
-                            'Could not delete obsolete record with id: %d of model %s\n'
-                            'Please refer to the log message right above',
-                            res_id, model)
+                    record = self.env[model].browse(res_id)
+                    if record.exists():
+                        # OpenUpgrade: never break on unlink of obsolete records
+                        try:
+                            self.env.cr.execute('SAVEPOINT ir_model_data_delete');
+                            record.unlink()
+                            self.env.cr.execute('RELEASE SAVEPOINT ir_model_data_delete')
+                        except Exception:
+                            self.env.cr.execute('ROLLBACK TO SAVEPOINT ir_model_data_delete');
+                            _logger.warning(
+                                'Could not delete obsolete record with id: %d of model %s\n'
+                                'Please refer to the log message right above',
+                                res_id, model)
+                        # /OpenUpgrade
+                    else:
+                        # OpenUpgrade: don't delete xmlids. Use database_cleanup instead
+                        continue
+                        # /OpenUpgrade
                         bad_imd_ids.append(id)
-                    # /OpenUpgrade
         if bad_imd_ids:
             self.browse(bad_imd_ids).unlink()
         self.loads.clear()

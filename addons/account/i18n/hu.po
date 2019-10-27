@@ -9,6 +9,7 @@
 # Martin Trigaux, 2018
 # Ákos Nagy <akos.nagy@oregional.hu>, 2019
 # Tamás Dombos, 2019
+# Daniel Gerstenbrand <daniel.gerstenbrand@gmail.com>, 2019
 # gezza <geza.nagy@oregional.hu>, 2019
 # 
 msgid ""
@@ -309,6 +310,8 @@ msgid ""
 "<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
 "specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" groups=\"base.group_multi_company\"/>"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.account_planner
@@ -3827,7 +3830,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:account.action_invoice_out_refund
 #: model:ir.ui.menu,name:account.menu_action_invoice_out_refund
 msgid "Customer Credit Notes"
-msgstr ""
+msgstr "Vásárlói jóváírás"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.account_planner
@@ -8129,7 +8132,7 @@ msgstr "Termékkategória"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_line_product_image
 msgid "Product Image"
-msgstr ""
+msgstr "Termék kép"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_report_product_qty

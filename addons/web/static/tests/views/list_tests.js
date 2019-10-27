@@ -2617,6 +2617,87 @@ QUnit.module('Views', {
         list.destroy();
     });
 
+    QUnit.test('pressing SHIFT-TAB in editable list with a readonly field [REQUIRE FOCUS]', function (assert) {
+        assert.expect(4);
+
+        var list = createView({
+            View: ListView,
+            model: 'foo',
+            data: this.data,
+            arch: '<tree editable="bottom">' +
+                    '<field name="foo"/>' +
+                    '<field name="int_field" readonly="1"/>' +
+                    '<field name="qux"/>' +
+                '</tree>',
+        });
+
+        // start on 'qux', line 3
+        list.$('.o_data_row:nth(2) .o_data_cell:nth(2)').click();
+        assert.ok(list.$('.o_data_row:nth(2)').hasClass('o_selected_row'));
+        assert.strictEqual(document.activeElement, list.$('.o_data_row:nth(2) .o_data_cell input[name=qux]')[0]);
+
+        // Press 'shift-Tab' -> should go to first cell (same line)
+        $(document.activeElement).trigger({type: 'keydown', which: $.ui.keyCode.TAB, shiftKey: true});
+        assert.ok(list.$('.o_data_row:nth(2)').hasClass('o_selected_row'));
+        assert.strictEqual(document.activeElement, list.$('.o_data_row:nth(2) .o_data_cell input[name=foo]')[0]);
+
+        list.destroy();
+    });
+
+    QUnit.test('pressing SHIFT-TAB in editable list with a readonly field in first column [REQUIRE FOCUS]', function (assert) {
+        assert.expect(4);
+
+        var list = createView({
+            View: ListView,
+            model: 'foo',
+            data: this.data,
+            arch: '<tree editable="bottom">' +
+                    '<field name="int_field" readonly="1"/>' +
+                    '<field name="foo"/>' +
+                    '<field name="qux"/>' +
+                '</tree>',
+        });
+
+        // start on 'foo', line 3
+        list.$('.o_data_row:nth(2) .o_data_cell:nth(1)').click();
+        assert.ok(list.$('.o_data_row:nth(2)').hasClass('o_selected_row'));
+        assert.strictEqual(document.activeElement, list.$('.o_data_row:nth(2) .o_data_cell input[name=foo]')[0]);
+
+        // Press 'shift-Tab' -> should go to previous line (last cell)
+        $(document.activeElement).trigger({type: 'keydown', which: $.ui.keyCode.TAB, shiftKey: true});
+        assert.ok(list.$('.o_data_row:nth(1)').hasClass('o_selected_row'));
+        assert.strictEqual(document.activeElement, list.$('.o_data_row:nth(1) .o_data_cell input[name=qux]')[0]);
+
+        list.destroy();
+    });
+
+    QUnit.test('pressing SHIFT-TAB in editable list with a readonly field in last column [REQUIRE FOCUS]', function (assert) {
+        assert.expect(4);
+
+        var list = createView({
+            View: ListView,
+            model: 'foo',
+            data: this.data,
+            arch: '<tree editable="bottom">' +
+                    '<field name="int_field"/>' +
+                    '<field name="foo"/>' +
+                    '<field name="qux" readonly="1"/>' +
+                '</tree>',
+        });
+
+        // start on 'int_field', line 3
+        list.$('.o_data_row:nth(2) .o_data_cell:first').click();
+        assert.ok(list.$('.o_data_row:nth(2)').hasClass('o_selected_row'));
+        assert.strictEqual(document.activeElement, list.$('.o_data_row:nth(2) .o_data_cell input[name=int_field]')[0]);
+
+        // Press 'shift-Tab' -> should go to previous line ('foo' field)
+        $(document.activeElement).trigger({type: 'keydown', which: $.ui.keyCode.TAB, shiftKey: true});
+        assert.ok(list.$('.o_data_row:nth(1)').hasClass('o_selected_row'));
+        assert.strictEqual(document.activeElement, list.$('.o_data_row:nth(1) .o_data_cell input[name=foo]')[0]);
+
+        list.destroy();
+    });
+
     QUnit.test('skip invisible fields when navigating list view with TAB', function (assert) {
         assert.expect(2);
 
@@ -3762,6 +3843,35 @@ QUnit.module('Views', {
         def.resolve();
         assert.strictEqual(list.$('.o_list_view .o_data_row').length, 4,
             "list view should still contain 4 records");
+
+        list.destroy();
+    });
+
+    QUnit.test("quickcreate in a many2one in a list", function (assert) {
+        assert.expect(2);
+
+        var list = createView({
+            arch: '<tree editable="top"><field name="m2o"/></tree>',
+            data: this.data,
+            model: 'foo',
+            View: ListView,
+        });
+
+        list.$('.o_data_row:first .o_data_cell:first').click();
+
+        var $input = list.$('.o_data_row:first .o_data_cell:first input');
+        $input.val("aaa");
+        $input.trigger('keyup');
+        $input.trigger('blur');
+        list.el.click();
+
+        assert.strictEqual(document.body.getElementsByClassName('modal').length, 1,
+            "the quick_create modal should appear");
+
+        $('.modal .btn-primary:first').click();
+        list.el.click();
+
+        assert.strictEqual(list.$('.o_data_row:first').text(), "aaa", "value should have been updated");
 
         list.destroy();
     });
