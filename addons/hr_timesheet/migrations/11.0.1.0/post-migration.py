@@ -25,7 +25,7 @@ def migrate_project_issue_sheet(env):
     """
     origin_issue_column = openupgrade.get_legacy_name('origin_issue_id')
     if not openupgrade.column_exists(env.cr, 'account_analytic_line',
-                                     origin_issue_column):
+                                     'issue_id'):
         return
     openupgrade.logged_query(
         env.cr, """
