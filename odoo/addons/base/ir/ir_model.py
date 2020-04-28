@@ -549,12 +549,16 @@ class IrModelFields(models.Model):
             )
             continue
             model = self.env[field.model]
-            if tools.column_exists(self._cr, model._table, field.name) and \
-                    tools.table_kind(self._cr, model._table) == 'r':
-                self._cr.execute('ALTER TABLE "%s" DROP COLUMN "%s" CASCADE' % (model._table, field.name))
-            if field.state == 'manual' and field.ttype == 'many2many':
-                rel_name = field.relation_table or model._fields[field.name].relation
-                tables_to_drop.add(rel_name)
+            if field.store:
+                # TODO: Refactor this brol in master
+                if tools.column_exists(self._cr, model._table, field.name) and \
+                        tools.table_kind(self._cr, model._table) == 'r':
+                    self._cr.execute('ALTER TABLE "%s" DROP COLUMN "%s" CASCADE' % (
+                        model._table, field.name,
+                    ))
+                if field.state == 'manual' and field.ttype == 'many2many':
+                    rel_name = field.relation_table or model._fields[field.name].relation
+                    tables_to_drop.add(rel_name)
             if field.state == 'manual':
                 model._pop_field(field.name)
 
@@ -969,9 +973,12 @@ class IrModelFields(models.Model):
         fields_data = self._get_manual_field_data(model._name)
         for name, field_data in fields_data.items():
             if name not in model._fields and field_data['state'] == 'manual':
-                field = self._instanciate(field_data)
-                if field:
-                    model._add_field(name, field)
+                try:
+                    field = self._instanciate(field_data)
+                    if field:
+                        model._add_field(name, field)
+                except Exception:
+                    _logger.exception("Failed to load field %s.%s: skipped", model._name, field_data['name'])
 
 
 class IrModelConstraint(models.Model):
@@ -1730,9 +1737,6 @@ class IrModelData(models.Model):
                                 res_id, model)
                         # /OpenUpgrade
                     else:
-                        # OpenUpgrade: don't delete xmlids. Use database_cleanup instead
-                        continue
-                        # /OpenUpgrade
                         bad_imd_ids.append(id)
         if bad_imd_ids:
             self.browse(bad_imd_ids).unlink()
