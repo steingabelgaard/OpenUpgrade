@@ -124,10 +124,7 @@ def convert_issues(env):
             pi.date_deadline, pi.description, pi.kanban_state, pi.name,
             pi.partner_id, pi.stage_id, pi.user_id, pi.email_from, pi.email_cc,
             pi.date_last_stage_update,
-            CASE
-                WHEN pi.priority='2' THEN '1'
-                ELSE pi.priority
-            END,
+            pi.priority,
             pi.id::text
         FROM project_issue pi
             LEFT JOIN project_project pp ON pp.id = pi.project_id
