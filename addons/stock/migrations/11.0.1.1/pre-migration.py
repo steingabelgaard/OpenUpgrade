@@ -57,6 +57,8 @@ def fix_act_window(env):
 
 @openupgrade.migrate(use_env=True)
 def migrate(env, version):
+    if not openupgrade.table_exists(env.cr, 'stock_move'):
+        return
     copy_global_rules(env)
     delete_quants_for_consumable(env)
     fix_act_window(env)
