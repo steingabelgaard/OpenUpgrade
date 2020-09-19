@@ -472,6 +472,8 @@ def recompute_stock_move_line_qty_different_uom(env):
 
 @openupgrade.migrate(use_env=True)
 def migrate(env, version):
+    if not openupgrade.table_exists(env.cr, 'openupgrade_legacy_11_0_procurement_rule'):
+        return
     compute_stock_move_reference(env)
     compute_picking_scheduled_date(env)
     product_assign_responsible(env)
