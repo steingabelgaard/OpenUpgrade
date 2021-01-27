@@ -31,6 +31,9 @@ renamed_modules = {
     'stock_pack_operation_auto_fill': 'stock_move_line_auto_fill',
     # OCA/web
     'web_advanced_filters': 'web_advanced_filter',
+    
+    # S&G
+    'sg_member_subscription': 'sg_member_contract',
 }
 
 merged_modules = {
@@ -85,6 +88,11 @@ merged_modules = {
     'web_sheet_full_width': 'web_responsive',
     # OCA/website
     'website_form_metadata': 'website_form',
+    
+    # S&G
+    'sg_member_subscription_multi': 'sg_member_contract',
+    'sg_std_setup': 'sg_member_organization',
+    'web_pdf_widget': 'web_responsive',
 }
 
 # only used here for openupgrade_records analysis:
