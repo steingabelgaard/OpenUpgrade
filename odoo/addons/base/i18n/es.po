@@ -45,7 +45,7 @@
 # Raquel Iciarte <ric@odoo.com>, 2017
 # Ana Juaristi <ajuaristio@gmail.com>, 2017
 # Gustavo Valverde, 2018
-# JOSE ALEJANDRO ECHEVERRI VALENCIA <josealejandroeche@gmail.com>, 2018
+# Jose Alejandro Echeverri Valencia <josealejandroeche@gmail.com>, 2018
 # e2f <projects@e2f.com>, 2018
 # ced903afe967c2a46d1036224972db9d, 2018
 # Luis M. Ontalba <luis.martinez@tecnativa.com>, 2018

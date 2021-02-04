@@ -16,9 +16,7 @@ stock        / procurement.rule         / sequence (integer)            : previo
 
 stock        / procurement.rule         / route_id (many2one)           : now required
 stock        / stock.location.path      / route_id (many2one)           : now required
-# Done:
-#   pre-migration: Copy records with this field empty to another table
-#   post-migration: Create a record of these global rules for each existing route
+# Done: post-migration: Create a global route and link the global rules to that route
 
 stock        / product.putaway          / method (selection)            : DEL required: required, selection_keys: function, req_default: function
 # Nothing to do: Only one value used in core. If any community module extends it, an adaptation will be required on that module
@@ -250,11 +248,15 @@ DEL ir.ui.view: stock.view_stock_quant_graph_value
 DEL mail.message: stock.module_install_notification (noupdate)
 # Nothing to do: Fake message
 
-NEW ir.cron: stock.ir_cron_scheduler_action (noupdate)
 NEW ir.rule: stock.stock_move_line_rule_portal (noupdate)
 NEW ir.rule: stock.stock_picking_rule_portal (noupdate)
 NEW ir.sequence: stock.sequence_proc_group (noupdate)
 # Nothing to do: New noupdate records
+
+DEL ir.cron: procurement.ir_cron_scheduler_action (noupdate)
+NEW ir.cron: stock.ir_cron_scheduler_action (noupdate)
+# No need to rename, as `procurement` is merged on `stock`
+# DONE: post-migration: update definition through noupdate changes
 
 DEL ir.property: stock.property_stock_procurement (noupdate)
 # Nothing to do: Dangled value that can remain undeleted

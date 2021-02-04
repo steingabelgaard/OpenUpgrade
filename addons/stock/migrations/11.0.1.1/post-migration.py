@@ -59,34 +59,21 @@ def product_assign_responsible(env):
 
 @openupgrade.logging()
 def create_specific_procurement_rules_from_globals(env):
-    """Create one record per route for the global rules found in previous
-    version.
-    """
-    for table in ['procurement_rule', 'stock_location_path']:
-        env.cr.execute(
-            """SELECT column_name
-            FROM information_schema.columns
-            WHERE table_name = %s
-                AND column_name != 'id'
-            ORDER BY ordinal_position""",
-            (table, ),
-        )
-        dest_columns = [x[0] for x in env.cr.fetchall()]
-        src_columns = [
-            ('t.' + x) if x != 'route_id' else 'slr.id' for x in dest_columns
-        ]
-        openupgrade.logged_query(
-            env.cr, """
-            INSERT INTO %s
-            (%s)
-            SELECT %s
-            FROM %s t, stock_location_route slr""", (
-                AsIs(table),
-                AsIs(", ".join(dest_columns)),
-                AsIs(", ".join(src_columns)),
-                AsIs(openupgrade.get_legacy_name(table)),
-            ),
-        )
+    """Update global rules by linking them to a global route."""
+    warehouses = env["stock.warehouse"].with_context(
+        active_test=False).search([])
+    rules = env["procurement.rule"].with_context(
+        active_test=False).search([('route_id', '=', False)])
+    paths = env["stock.location.path"].with_context(
+        active_test=False).search([('route_id', '=', False)])
+    if rules or paths:
+        env["stock.location.route"].create({
+            "name": "GLOBAL",
+            "company_id": False,
+            "warehouse_ids": [(6, 0, warehouses.ids)],
+            "pull_ids": [(6, 0, rules.ids)],
+            "push_ids": [(6, 0, paths.ids)],
+        })
 
 
 @openupgrade.logging()
@@ -142,6 +129,11 @@ def create_stock_move_line(env):
         lot_expr = 'sq.lot_id'
     openupgrade.logged_query(
         env.cr, """
+        ALTER TABLE stock_move_line
+        ADD COLUMN old_pack_id integer""",
+    )
+    openupgrade.logged_query(
+        env.cr, """
         INSERT INTO stock_move_line (
             create_date,
             create_uid,
@@ -164,7 +156,8 @@ def create_stock_move_line(env):
             state,
             result_package_id,
             write_date,
-            write_uid
+            write_uid,
+            old_pack_id
         )
         SELECT
             spo.create_date,
@@ -188,7 +181,8 @@ def create_stock_move_line(env):
             'done',
             spo.result_package_id,
             spo.write_date,
-            spo.write_uid
+            spo.write_uid,
+            spo.id
         FROM stock_pack_operation spo
             INNER JOIN stock_move_operation_link smol
                 ON smol.operation_id = spo.id
