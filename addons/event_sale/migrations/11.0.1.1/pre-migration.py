@@ -6,8 +6,9 @@ from openupgradelib import openupgrade
 
 @openupgrade.migrate()
 def migrate(env, version):
-    try:
-        with env.cr.savepoint():
-            env.ref('event_sale.event_type').unlink()
-    except Exception:
-        pass
+    pass
+#     try:
+#         with env.cr.savepoint():
+#             env.ref('event_sale.event_type').unlink()
+#     except Exception:
+#         pass
