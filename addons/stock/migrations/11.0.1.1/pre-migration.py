@@ -43,6 +43,8 @@ def fix_act_window(env):
 
 @openupgrade.migrate(use_env=True)
 def migrate(env, version):
+    if not openupgrade.table_exists(env.cr, 'stock_quant'):
+        return  # stock is not initialized
     delete_quants_for_consumable(env)
     fix_act_window(env)
     openupgrade.update_module_moved_fields(
