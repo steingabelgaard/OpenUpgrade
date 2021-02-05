@@ -6,7 +6,7 @@ from openupgradelib import openupgrade
 
 @openupgrade.migrate()
 def migrate(env, version):
-    pass
+    openupgrade.rename_xmlids(env.cr, [('event_sale.event_type', 'event_sale.event_type_data_sale')])
 #     try:
 #         with env.cr.savepoint():
 #             env.ref('event_sale.event_type').unlink()
