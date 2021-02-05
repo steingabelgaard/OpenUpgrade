@@ -33,8 +33,7 @@ renamed_modules = {
     'web_advanced_filters': 'web_advanced_filter',
     
     # S&G
-    'sg_member_subscription': 'sg_member_accounting',
-    'sg_member_subscription_multi': 'sg_member_contract',
+    'sg_member_subscription': 'sg_member_contract',
     'mail_template_html_edit': 'mail_template_raw_edit',
 }
 
@@ -94,6 +93,7 @@ merged_modules = {
     # S&G
     'sg_std_setup': 'sg_member_organization',
     'web_pdf_widget': 'web_responsive',
+    'sg_member_subscription_multi': 'sg_member_contract',
 }
 
 # only used here for openupgrade_records analysis:
