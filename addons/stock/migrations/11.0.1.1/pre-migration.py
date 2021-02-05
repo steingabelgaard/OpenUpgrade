@@ -10,7 +10,7 @@ def delete_quants_for_consumable(env):
     as soon as possible for cleaning the DB and avoid other computations (like
     the merge records operation).
     """
-    if openupgrade.table_exists(cr, 'stock_quant'):
+    if openupgrade.table_exists(env.cr, 'stock_quant'):
         openupgrade.logged_query(
             env.cr, """
             DELETE FROM stock_quant sq
