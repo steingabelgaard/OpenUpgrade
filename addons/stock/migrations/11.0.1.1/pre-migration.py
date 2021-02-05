@@ -10,16 +10,17 @@ def delete_quants_for_consumable(env):
     as soon as possible for cleaning the DB and avoid other computations (like
     the merge records operation).
     """
-    openupgrade.logged_query(
-        env.cr, """
-        DELETE FROM stock_quant sq
-        USING product_product pp,
-            product_template pt
-        WHERE sq.product_id = pp.id
-            AND pt.id = pp.product_tmpl_id
-            AND pt.type = 'consu'
-        """
-    )
+    if openupgrade.table_exists(cr, 'stock_quant'):
+        openupgrade.logged_query(
+            env.cr, """
+            DELETE FROM stock_quant sq
+            USING product_product pp,
+                product_template pt
+            WHERE sq.product_id = pp.id
+                AND pt.id = pp.product_tmpl_id
+                AND pt.type = 'consu'
+            """
+        )
 
 
 def fix_act_window(env):
