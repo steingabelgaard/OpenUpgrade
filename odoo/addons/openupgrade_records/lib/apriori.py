@@ -120,6 +120,9 @@ merged_modules = {
     # OCA/bank-statement-import
     'account_bank_statement_import_camt':
     'account_bank_statement_import_camt_oca',
+
+    # S&G
+    'web_pdf_widget': 'web_responsive',
 }
 
 renamed_models = {
