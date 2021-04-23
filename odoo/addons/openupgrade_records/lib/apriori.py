@@ -102,7 +102,7 @@ merged_modules = {
     'web_listview': 'web_responsive',
     'web_listview_footer': 'web_responsive',
     'web_one2many_kanban': 'web_responsive',
-    'web_printscreen_zb', 'web_responsive',
+    'web_printscreen_zb': 'web_responsive',
     'sg_member_subscription_multi': 'sg_member_contract',
     'bus_enhanced': 'web_notify',
 }
