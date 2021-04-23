@@ -39,7 +39,6 @@ renamed_modules = {
     'account_budget': 'mis_builder_budget',
     'admin_technical_features': 'base_technical_features',
     'auth_password_settings': 'password_security',
-    'web_form_edit_button_check_record_rule': 'web_access_rule_buttons',
     'web_notification': 'web_notify',
 }
 
@@ -103,6 +102,7 @@ merged_modules = {
     'web_listview_footer': 'web_responsive',
     'web_one2many_kanban': 'web_responsive',
     'web_printscreen_zb': 'web_responsive',
+    'web_form_edit_button_check_record_rule': 'web_access_rule_buttons',
     'sg_member_subscription_multi': 'sg_member_contract',
     'bus_enhanced': 'web_notify',
 }
