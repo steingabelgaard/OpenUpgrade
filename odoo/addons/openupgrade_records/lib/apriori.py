@@ -38,8 +38,7 @@ renamed_modules = {
     'account_accountant': 'account_menu',
     'account_budget': 'mis_builder_budget',
     'admin_technical_features': 'base_technical_features',
-    'auth_password_settings': 'password_security',
-    'web_notification': 'web_notify',
+
 }
 
 merged_modules = {
@@ -105,6 +104,8 @@ merged_modules = {
     'web_form_edit_button_check_record_rule': 'web_access_rule_buttons',
     'sg_member_subscription_multi': 'sg_member_contract',
     'bus_enhanced': 'web_notify',
+    'auth_password_settings': 'password_security',
+    'web_notification': 'web_notify',
 }
 
 # only used here for openupgrade_records analysis:
