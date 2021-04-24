@@ -106,6 +106,7 @@ merged_modules = {
     'auth_password_settings': 'password_security',
     'web_notification': 'web_notify',
     'admin_technical_features': 'base_technical_features',
+    'smsclient': 'sms_advanced',
 }
 
 # only used here for openupgrade_records analysis:
