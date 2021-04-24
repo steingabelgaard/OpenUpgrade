@@ -37,7 +37,6 @@ renamed_modules = {
     'mail_template_html_edit': 'mail_template_raw_edit',
     'account_accountant': 'account_menu',
     'account_budget': 'mis_builder_budget',
-    'admin_technical_features': 'base_technical_features',
 
 }
 
@@ -106,6 +105,7 @@ merged_modules = {
     'bus_enhanced': 'web_notify',
     'auth_password_settings': 'password_security',
     'web_notification': 'web_notify',
+    'admin_technical_features': 'base_technical_features',
 }
 
 # only used here for openupgrade_records analysis:
@@ -131,7 +131,7 @@ renamed_models = {
     'account.asset.asset': 'account.asset',
     'account.asset.depreciation.line': 'account.asset.line',
     'account.asset.category': 'account.asset.profile',
-    'admin_technical_features': 'base_technical_features',
+
 }
 
 # only used here for openupgrade_records analysis:
