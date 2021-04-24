@@ -131,6 +131,7 @@ renamed_models = {
     'account.asset.asset': 'account.asset',
     'account.asset.depreciation.line': 'account.asset.line',
     'account.asset.category': 'account.asset.profile',
+    'admin_technical_features': 'base_technical_features',
 }
 
 # only used here for openupgrade_records analysis:
