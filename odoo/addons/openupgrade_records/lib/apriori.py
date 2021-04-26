@@ -37,6 +37,7 @@ renamed_modules = {
     'mail_template_html_edit': 'mail_template_raw_edit',
     'account_accountant': 'account_menu',
     'account_budget': 'mis_builder_budget',
+    'base_ir_filters_company': 'ir_filters_multi_company',
 
 }
 
