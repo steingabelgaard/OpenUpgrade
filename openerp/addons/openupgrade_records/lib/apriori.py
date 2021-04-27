@@ -136,6 +136,8 @@ merged_modules = [
     ('l10n_es_account_financial_report', 'account_journal_report'),
     # OCA/stock-logistics-workflow
     ('stock_dropshipping_dual_invoice', 'stock_dropshipping'),
+    # S&G
+    ('member_relations', 'partner_multi_relation'),
 ]
 
 renamed_models = {
