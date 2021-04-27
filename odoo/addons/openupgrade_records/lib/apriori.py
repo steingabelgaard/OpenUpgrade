@@ -38,6 +38,7 @@ renamed_modules = {
     'account_accountant': 'account_menu',
     'account_budget': 'mis_builder_budget',
     'base_ir_filters_company': 'ir_filters_multi_company',
+    'member_relations': 'sg_member_relation',
 
 }
 
