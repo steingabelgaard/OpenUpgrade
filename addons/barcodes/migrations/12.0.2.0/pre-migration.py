@@ -15,7 +15,7 @@ def migrate(env, version):
         )
 
         # done here instead of post-migration to avoid the post-init-hook
-        if openupgrade.table_exists(cr, 'stock_picking_type'):
+        if openupgrade.table_exists(cr, 'stock_picking_type') and openupgrade.column_exists(cr, 'stock_picking_type', 'barcode_nomenclature_id'):
             cr.execute(
                 """
                 UPDATE res_company rc
