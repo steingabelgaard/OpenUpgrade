@@ -38,6 +38,8 @@ renamed_modules = {
     'account_accountant': 'account_menu',
     'account_budget': 'mis_builder_budget',
     'base_ir_filters_company': 'ir_filters_multi_company',
+    # use dBoks to trig "upgerade" of sg_member_contract - TODO: KFUM/K
+    'sg_member_dboks': 'sg_member_contract'
 
 }
 
@@ -108,6 +110,7 @@ merged_modules = {
     'web_notification': 'web_notify',
     'admin_technical_features': 'base_technical_features',
     'smsclient': 'sms_advanced',
+
 }
 
 # only used here for openupgrade_records analysis:
