@@ -39,7 +39,8 @@ renamed_modules = {
     'account_budget': 'mis_builder_budget',
     'base_ir_filters_company': 'ir_filters_multi_company',
     # use dBoks to trig "upgerade" of sg_member_contract - TODO: KFUM/K
-    'sg_member_dboks': 'sg_member_contract'
+    # Not working
+    # 'sg_member_dboks': 'sg_member_contract'
 
 }
 
