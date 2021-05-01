@@ -42,6 +42,8 @@ renamed_modules = {
     # Not working
     # 'sg_member_dboks': 'sg_member_contract'
 
+    # Medlemsservice import and custom modules
+    'sg_member_import_dgp': 'sg_member_dgp',
 }
 
 merged_modules = {
