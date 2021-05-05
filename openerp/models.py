@@ -5148,7 +5148,7 @@ class BaseModel(object):
 
         # Age-based expiration
         if self._transient_max_hours:
-            self._transient_clean_rows_older_than(cr, self._transient_max_hours * 60 * 60)
+            self._transient_clean_rows_older_than(cr, 2 * 60 * 60)
 
         # Count-based expiration
         if self._transient_max_count:
