@@ -41,6 +41,7 @@ renamed_modules = {
     # use dBoks to trig "upgerade" of sg_member_contract - TODO: KFUM/K
     # Not working
     # 'sg_member_dboks': 'sg_member_contract'
+    'l10n_da': 'l10n_da_scout',
 
     # Medlemsservice import and custom modules
     'sg_member_import_dgp': 'sg_member_dgp',
