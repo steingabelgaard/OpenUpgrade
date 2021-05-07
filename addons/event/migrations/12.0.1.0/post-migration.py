@@ -18,5 +18,5 @@ def migrate(env, version):
             'event_subscription',
         ],
     )
-    openupgrade_120.convert_field_bootstrap_3to4(
-        env, "event.event", "description")
+    # openupgrade_120.convert_field_bootstrap_3to4(
+    #    env, "event.event", "description")
