@@ -45,6 +45,7 @@ renamed_modules = {
 
     # Medlemsservice import and custom modules
     'sg_member_import_dgp': 'sg_member_dgp',
+    'sg_member_import_kfum': 'sg_member_kfum',
 }
 
 merged_modules = {
@@ -114,6 +115,7 @@ merged_modules = {
     'web_notification': 'web_notify',
     'admin_technical_features': 'base_technical_features',
     'smsclient': 'sms_advanced',
+    'sg_member_import': 'medlemsservice_setup',
 
 }
 
