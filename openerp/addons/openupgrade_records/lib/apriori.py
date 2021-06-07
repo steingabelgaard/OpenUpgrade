@@ -137,7 +137,7 @@ merged_modules = [
     # OCA/stock-logistics-workflow
     ('stock_dropshipping_dual_invoice', 'stock_dropshipping'),
     # S&G
-    ('member_relations', 'partner_multi_relation'),
+    # ('member_relations', 'partner_multi_relation'),
 ]
 
 renamed_models = {
