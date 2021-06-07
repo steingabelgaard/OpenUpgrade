@@ -34,6 +34,7 @@ renamed_modules = {
     
     # S&G
     'sg_member_subscription': 'sg_member_contract',
+    'member_relations': 'sg_member_relation',
     'mail_template_html_edit': 'mail_template_raw_edit',
     'account_accountant': 'account_menu',
     'account_budget': 'mis_builder_budget',
