@@ -43,7 +43,7 @@ renamed_modules = {
     # Not working
     # 'sg_member_dboks': 'sg_member_contract'
     'l10n_da': 'l10n_da_scout',
-    'sg_member_magazine': 'sg_member_postdkmagazine'
+    'sg_member_magazine': 'sg_member_postdkmagazine',
 
     # Medlemsservice import and custom modules
     'sg_member_import_dgp': 'sg_member_dgp',
