@@ -45,6 +45,7 @@ renamed_modules = {
     'l10n_da': 'l10n_da_scout',
     'sg_member_magazine': 'sg_member_postdkmagazine',
     'ir_export_extended_ept': 'sg_export',
+    'old_oauth_provider': 'oauth_provider',
 
     # Medlemsservice import and custom modules
     'sg_member_import_dgp': 'sg_member_dgp',
