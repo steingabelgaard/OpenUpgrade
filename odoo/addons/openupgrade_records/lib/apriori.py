@@ -45,10 +45,11 @@ renamed_modules = {
     'l10n_da': 'l10n_da_scout',
     'sg_member_magazine': 'sg_member_postdkmagazine',
     'ir_export_extended_ept': 'sg_export',
-
+    'mis_builder_add_kpi_wizard': 'mis_builder_wizards',
     # Medlemsservice import and custom modules
     'sg_member_import_dgp': 'sg_member_dgp',
     'sg_member_import_kfum': 'sg_member_kfum',
+    
 }
 
 merged_modules = {
