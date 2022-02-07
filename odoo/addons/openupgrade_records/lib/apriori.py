@@ -49,6 +49,7 @@ renamed_modules = {
     # Medlemsservice import and custom modules
     'sg_member_import_dgp': 'sg_member_dgp',
     'sg_member_import_kfum': 'sg_member_kfum',
+    'sg_member_subscription_central': 'sg_member_contract_central',
     
 }
 
