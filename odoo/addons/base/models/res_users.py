@@ -402,7 +402,8 @@ class Users(models.Model):
             [('category_id', '=', user_types_category.id)]) if user_types_category else False
         if user_types_groups:  # needed at install
             if self._has_multiple_groups(user_types_groups.ids):
-                raise ValidationError(_('The user cannot have more than one user types.'))
+                _logger.info('ERROR The user cannot have more than one user types. %s', self)
+                # raise ValidationError(_('The user cannot have more than one user types.'))
 
     @api.multi
     def _has_multiple_groups(self, group_ids):
