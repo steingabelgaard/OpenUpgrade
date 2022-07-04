@@ -52,7 +52,7 @@ renamed_modules = {
     'sg_member_subscription_central': 'sg_member_contract_central',
     # LFL Custom modules to SG Member
     # 'partner_member_number': 'sg_member_organization',
-    # 'partner_ckr': 'sg_member_ckr',
+    'partner_ckr': 'sg_member_ckr',
     # 'partner_school': 'sg_member_school',
     # 'sg_event': 'sg_member_event',
     
