@@ -609,6 +609,7 @@ class Users(models.Model):
                     user._check_credentials(password)
                     user._update_last_login()
         except AccessDenied:
+            _logger.exception('Login failed')
             _logger.info("Login failed for db:%s login:%s from %s", db, login, ip)
             raise
 
