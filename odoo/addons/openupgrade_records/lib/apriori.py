@@ -28,6 +28,9 @@ renamed_modules = {
     'sale_product_classification': 'product_abc_classification_sale',
     # OCA/stock-logistics-warehouse
     'stock_putaway_product_form': 'stock_putaway_product_template',
+
+    # S&G
+    'backend_theme_v12': 'backend_theme_v13',
 }
 
 merged_modules = {
