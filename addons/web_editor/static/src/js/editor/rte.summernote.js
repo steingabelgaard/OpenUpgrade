@@ -287,6 +287,7 @@ eventHandler.modules.popover.button.update = function ($container, oStyle) {
             $container.find('button[data-event="resizefa"][data-value="4"]').toggleClass("active", $(oStyle.image).hasClass("fa-4x"));
             $container.find('button[data-event="resizefa"][data-value="5"]').toggleClass("active", $(oStyle.image).hasClass("fa-5x"));
             $container.find('button[data-event="resizefa"][data-value="1"]').toggleClass("active", !$container.find('.active[data-event="resizefa"]').length);
+            $container.find('button[data-event="cropImage"]').addClass('d-none');
 
             $container.find('button[data-event="imageShape"][data-value="fa-spin"]').toggleClass("active", $(oStyle.image).hasClass("fa-spin"));
             $container.find('button[data-event="imageShape"][data-value="shadow"]').toggleClass("active", $(oStyle.image).hasClass("shadow"));
@@ -294,6 +295,7 @@ eventHandler.modules.popover.button.update = function ($container, oStyle) {
 
         } else {
             $container.find('.d-none:not(.only_fa, .note-recent-color)').removeClass('d-none');
+            $container.find('button[data-event="cropImage"]').removeClass('d-none');
             $container.find('.only_fa').addClass('d-none');
             var width = ($(oStyle.image).attr('style') || '').match(/(^|;|\s)width:\s*([0-9]+%)/);
             if (width) {
@@ -1148,10 +1150,10 @@ var SummernoteManager = Class.extend(mixins.EventDispatcherMixin, ServicesMixin,
             var originalSrc = $croppedImg.data('crop:originalSrc');
 
             var datas = $croppedImg.attr('src').split(',')[1];
-
+            var def;
             if (!cropID) {
                 var name = originalSrc + '.crop';
-                return self._rpc({
+                def = self._rpc({
                     model: 'ir.attachment',
                     method: 'create',
                     args: [{
@@ -1163,22 +1165,25 @@ var SummernoteManager = Class.extend(mixins.EventDispatcherMixin, ServicesMixin,
                         mimetype: mimetype,
                         url: originalSrc, // To save the original image that was cropped
                     }],
-                }).then(function (attachmentID) {
-                    return self._rpc({
-                        model: 'ir.attachment',
-                        method: 'generate_access_token',
-                        args: [[attachmentID]],
-                    }).then(function (access_token) {
-                        $croppedImg.attr('src', '/web/image/' + attachmentID + '?access_token=' + access_token[0]);
-                    });
                 });
             } else {
-                return this._rpc({
+                def = self._rpc({
                     model: 'ir.attachment',
                     method: 'write',
                     args: [[cropID], {datas: datas}],
+                }).then(function () {
+                    return cropID;
                 });
             }
+            return def.then(function (attachmentID) {
+                return self._rpc({
+                    model: 'ir.attachment',
+                    method: 'generate_access_token',
+                    args: [[attachmentID]],
+                }).then(function (access_token) {
+                    $croppedImg.attr('src', '/web/image/' + attachmentID + '?access_token=' + access_token[0]);
+                });
+            });
         });
         return $.when.apply($, defs);
     },

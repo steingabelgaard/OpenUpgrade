@@ -9,14 +9,13 @@
 # Abd El-Rahman Ali <abdelrahman.ali.242@gmail.com>, 2018
 # Abdulaziz Ayed <aalayed@kacst.edu.sa>, 2018
 # ThaniAldawood <taldawood@hotmail.com>, 2018
-# Mustafa J. Kadhem <safi2266@gmail.com>, 2018
 # fares alokeeli <okffok@gmail.com>, 2018
 # amal ahmed <amalalhashemy88@hotmail.com>, 2018
 # Zuhair Hammadi <zuhair12@gmail.com>, 2018
 # Abdulaziz Alkahlani <abdulaziz.alkahlani@gmail.com>, 2018
 # Waleed Mohsen <mohsen.waleed@gmail.com>, 2018
 # jahzar <jahzar@gmail.com>, 2018
-# abdullah alsabi <alsabi.abdullah@gmail.com>, 2018
+# Abdullah Alsabi <alsabi.abdullah@gmail.com>, 2018
 # Akram Alfusayal <akram_ma@hotmail.com>, 2018
 # Mohammed Albasha <m.albasha.ma@gmail.com>, 2018
 # amrnegm <amrnegm.01@gmail.com>, 2018
@@ -36,6 +35,9 @@
 # Firas Fraxnet <firas@fraxnet.com>, 2019
 # Mustafa Rawi <mustafa@cubexco.com>, 2019
 # Yazeed Dandashi <lay@odoo.com>, 2019
+# MOHAMMAD IBRAHIM <m.moamir@outlook.com>, 2020
+# Mustafa J. Kadhem <safi2266@gmail.com>, 2021
+# Samir Sellami <samorcool@gmail.com>, 2021
 # 
 msgid ""
 msgstr ""
@@ -43,7 +45,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-14 07:33+0000\n"
 "PO-Revision-Date: 2018-08-24 09:14+0000\n"
-"Last-Translator: Yazeed Dandashi <lay@odoo.com>, 2019\n"
+"Last-Translator: Samir Sellami <samorcool@gmail.com>, 2021\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -334,12 +336,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.portal_my_invoices
 msgid ""
 "<span class=\"badge badge-pill badge-info\"><i class=\"fa fa-fw fa-clock-o\""
-" aria-label=\"Opened\" title=\"Opened\" role=\"img\"/><span class=\"d-none d"
-"-md-inline\"> Waiting for Payment</span></span>"
+" aria-label=\"Opened\" title=\"Opened\" role=\"img\"/><span class=\"d-none "
+"d-md-inline\"> Waiting for Payment</span></span>"
 msgstr ""
 "<span class=\"badge badge-pill badge-info\"><i class=\"fa fa-fw fa-clock-o\""
-" aria-label=\"مقروءة\" title=\"مقروءة\" role=\"img\"/><span class=\"d-none d"
-"-md-inline\"> في انتظار السداد</span></span>"
+" aria-label=\"مقروءة\" title=\"مقروءة\" role=\"img\"/><span class=\"d-none "
+"d-md-inline\"> في انتظار السداد</span></span>"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.portal_my_invoices
@@ -618,7 +620,7 @@ msgstr "<span>الكمية</span>"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_payment_receipt_document
 msgid "<span>Reference</span>"
-msgstr ""
+msgstr "<span>مرجع</span>"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
@@ -894,6 +896,11 @@ msgid ""
 "either in 'Tax-Included' or in 'Tax-Excluded' mode\n"
 "(or switch twice the mode if you are already in the desired one)."
 msgstr ""
+"لا يمكن للمستخدم أن يستخدم ضرائب الشركات B2B وضرائب الأفراد B2C في نفس الوقت.\n"
+"المستخدمـ(ين) بهذه المشكلة: \n"
+"يتوجب عليك أن تذهب إلى الإعدادات العامة، وأن تختار عرض أسعار المنتجات\n"
+"إما 'شاملة الضرائب' أو 'غير شاملة الضرائب'\n"
+"(أو التبديل بين الاختيارين مرتين إذا كان الاختيار المطلوب محدد مسبقاً)."
 
 #. module: account
 #: model:res.groups,name:account.group_warning_account
@@ -4212,7 +4219,7 @@ msgstr "الفرق بين الرصيد الختامي المحسوب والرص�
 #: code:addons/account/models/account_move.py:408
 #, python-format
 msgid "Difference debit - credit: "
-msgstr ""
+msgstr "الفرق الخصم - الائتمان:"
 
 #. module: account
 #: model:ir.model,name:account.model_digest_digest
@@ -5587,7 +5594,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,help:account.field_account_move_line__tax_line_id
 msgid "Indicates that this journal item is a tax line"
-msgstr ""
+msgstr "Indicates that this journal item is a tax line"
 
 #. module: account
 #. openerp-web
@@ -8100,6 +8107,12 @@ msgid ""
 msgstr "برجاء تثبيت دليل محاسبي أو إنشاء دفتر يومية عام قبل المتابعة."
 
 #. module: account
+#: code:addons/account/models/account_cash_rounding.py:33
+#, python-format
+msgid "Please set a strictly positive rounding value."
+msgstr "Please set a strictly positive rounding value."
+
+#. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_invoice_document
 msgid "Please use the following communication for your payment :"
 msgstr "برجاء استخدام هذا المرجع عند السداد:"
@@ -9840,7 +9853,7 @@ msgstr "عرض إجمالي بند السعر شامل الضريبة"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice__amount_tax_signed
 msgid "Tax in Invoice Currency"
-msgstr ""
+msgstr "الضريبة بعملة الفاتورة"
 
 #. module: account
 #: sql_constraint:account.tax:0 sql_constraint:account.tax.template:0
@@ -9900,7 +9913,7 @@ msgstr "تفاصيل الضرائب"
 #. module: account
 #: model:ir.model.fields,help:account.field_account_move_line__tax_ids
 msgid "Taxes that apply on the base amount"
-msgstr ""
+msgstr "Taxes that apply on the base amount"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_tax_template_search
@@ -9982,11 +9995,10 @@ msgstr ""
 #: model:ir.model.fields,help:account.field_account_payment__multi
 #: model:ir.model.fields,help:account.field_account_register_payments__multi
 msgid ""
-"Technical field indicating if the user selected invoices from multiple "
-"partners or from different types."
+"Technical field indicating if the registering payment will generate multiple"
+" payments or not."
 msgstr ""
-"حقل تقني يوضح ما إن كان المستخدم قام باختيار فواتير من شركاء متعددين أم من "
-"أنواع مختلفة."
+"الحقل الفني يشير إلى ما إذا كان تسجيل الدفع سينتج عنه دفعات متعددة أم لا."
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_refund__refund_only
@@ -10423,8 +10435,11 @@ msgstr ""
 #. module: account
 #: code:addons/account/models/account.py:564
 #, python-format
-msgid "The holder of a journal's bank account must be the company (%s)."
-msgstr "مالك يوميات الحساب البنكي يجب أن يكون المؤسسة (%s)."
+msgid ""
+"The holder of the bank account of a \"Bank\" type journal must be the company (%s).\n"
+"However, the holder of \"%s\" is \"%s\".\n"
+"Please select another bank account or change the holder of \"%s\"."
+msgstr ""
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_invoice_line__account_id
@@ -11378,7 +11393,7 @@ msgstr "المبلغ بدون ضرائب بعملة المؤسسة"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice__amount_untaxed_invoice_signed
 msgid "Untaxed Amount in Invoice Currency"
-msgstr ""
+msgstr "المبلغ غير الخاضع للضريبة بعملة الفاتورة"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_report__price_total
@@ -11837,6 +11852,8 @@ msgid ""
 "Wrong credit or debit value in accounting entry! Credit and debit should be "
 "positive."
 msgstr ""
+"قيمة الائتمان أو الخصم خاطئة في القيد المحاسبي! يجب أن يكون الائتمان والخصم "
+"موجبين."
 
 #. module: account
 #: sql_constraint:account.move.line:0
@@ -11844,6 +11861,8 @@ msgid ""
 "Wrong credit or debit value in accounting entry! Credit or debit should be "
 "zero."
 msgstr ""
+"قيمة الائتمان أو الخصم خاطئة في القيد المحاسبي! يجب أن يكون الائتمان أو "
+"الخصم صفرًا."
 
 #. module: account
 #: code:addons/account/models/account_move.py:944
@@ -11950,6 +11969,8 @@ msgid ""
 "You cannot change the type of an invoice line. Instead you should delete the"
 " current line and create a new line of the proper type."
 msgstr ""
+"لا يمكنك تغيير نوع بند الفاتورة. بدلاً من ذلك ، يجب حذف السطر الحالي وإنشاء "
+"سطر جديد من النوع المناسب."
 
 #. module: account
 #: code:addons/account/models/account_move.py:703

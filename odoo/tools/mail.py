@@ -30,12 +30,28 @@ tags_to_kill = ["script", "head", "meta", "title", "link", "style", "frame", "if
 tags_to_remove = ['html', 'body']
 
 # allow new semantic HTML5 tags
-allowed_tags = clean.defs.tags | frozenset('article section header footer hgroup nav aside figure main'.split() + [etree.Comment])
+allowed_tags = frozenset({
+    'a', 'abbr', 'acronym', 'address', 'applet', 'area', 'article', 'aside',
+    'audio', 'b', 'basefont', 'bdi', 'bdo', 'big', 'blink', 'blockquote', 'body', 'br',
+    'button', 'canvas', 'caption', 'center', 'cite', 'code', 'col', 'colgroup',
+    'command', 'datalist', 'dd', 'del', 'details', 'dfn', 'dir', 'div', 'dl',
+    'dt', 'em', 'fieldset', 'figcaption', 'figure', 'font', 'footer', 'form',
+    'frameset', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'header', 'hgroup', 'hr', 'html',
+    'i', 'img', 'input', 'ins', 'isindex', 'kbd', 'keygen', 'label', 'legend',
+    'li', 'main', 'map', 'mark', 'marquee', 'math', 'menu', 'meter', 'nav',
+    'ol', 'optgroup', 'option', 'output', 'p', 'param', 'pre', 'progress', 'q',
+    'rp', 'rt', 'ruby', 's', 'samp', 'section', 'select', 'small', 'source',
+    'span', 'strike', 'strong', 'sub', 'summary', 'sup', 'svg', 'table', 'tbody',
+    'td', 'textarea', 'tfoot', 'th', 'thead', 'time', 'tr', 'track', 'tt', 'u',
+    'ul', 'var', 'video', 'wbr'
+}) | frozenset([etree.Comment])
+
 safe_attrs = clean.defs.safe_attrs | frozenset(
     ['style',
      'data-o-mail-quote',  # quote detection
      'data-oe-model', 'data-oe-id', 'data-oe-field', 'data-oe-type', 'data-oe-expression', 'data-oe-translation-id', 'data-oe-nodeid',
      'data-publish', 'data-id', 'data-res_id', 'data-interval', 'data-member_id', 'data-scroll-background-ratio', 'data-view-id',
+     'data-class',
      ])
 
 
@@ -161,11 +177,6 @@ class _Cleaner(clean.Cleaner):
             else:
                 del el.attrib['style']
 
-    def allow_element(self, el):
-        if el.tag == 'object' and el.get('type') == "image/svg+xml":
-            return True
-        return super(_Cleaner, self).allow_element(el)
-
 
 def html_sanitize(src, silent=True, sanitize_tags=True, sanitize_attributes=False, sanitize_style=False, strip_style=False, strip_classes=False):
     if not src:
@@ -284,7 +295,7 @@ def html2plaintext(html, body_id=None, encoding='utf-8'):
 
     html = ustr(html)
 
-    if not html:
+    if not html.strip():
         return ''
 
     tree = etree.fromstring(html, parser=etree.HTMLParser())
@@ -392,7 +403,7 @@ def append_content_to_html(html, content, plaintext=True, preserve=False, contai
     """
     html = ustr(html)
     if plaintext and preserve:
-        content = u'\n<pre>%s</pre>\n' % ustr(content)
+        content = u'\n<pre>%s</pre>\n' % misc.html_escape(ustr(content))
     elif plaintext:
         content = '\n%s\n' % plaintext2html(content, container_tag)
     else:
@@ -522,21 +533,46 @@ def email_references(references):
             is_private = True
     return (ref_match, model, thread_id, hostname, is_private)
 
+
+def email_domain_extract(email):
+    """Return the domain of the given email."""
+    if not email:
+        return
+
+    email_split = getaddresses([email])
+    if not email_split or not email_split[0]:
+        return
+
+    _, _, domain = email_split[0][1].rpartition('@')
+    return domain
+
 # was mail_message.decode()
-def decode_smtp_header(smtp_header):
+def decode_smtp_header(smtp_header, quoted=False):
     """Returns unicode() string conversion of the given encoded smtp header
     text. email.header decode_header method return a decoded string and its
-    charset for each decoded par of the header. This method unicodes the
-    decoded header and join them in a complete string. """
+    charset for each decoded part of the header. This method unicodes the
+    decoded header and join them in a complete string.
+
+    :param bool quoted: when True, encoded words in the header will be turned into RFC822
+        quoted-strings after decoding, which is appropriate for address headers
+    """
     if isinstance(smtp_header, Header):
         smtp_header = ustr(smtp_header)
     if smtp_header:
-        text = decode_header(smtp_header.replace('\r', ''))
-        # The joining space will not be needed as of Python 3.3
-        # See https://github.com/python/cpython/commit/07ea53cb218812404cdbde820647ce6e4b2d0f8e
-        sep = ' ' if pycompat.PY2 else ''
-        return sep.join([ustr(x[0], x[1]) for x in text])
-    return u''
+        pairs = decode_header(smtp_header.replace('\r', ''))
+        tokens = []
+        for token, enc in pairs:
+            token = ustr(token, enc)
+            if enc and quoted:
+                # re-quote the encoded word to form an RFC822 quoted-string
+                token = email_addr_escapes_re.sub(r'\\\g<0>', token)
+                tokens.append('"%s"' % token)
+            else:
+                # plain word
+                tokens.append(token)
+        return ''.join(tokens)
+    return ''
+
 
 # was mail_thread.decode_header()
 def decode_message_header(message, header, separator=' '):
@@ -572,3 +608,31 @@ def formataddr(pair, charset='utf-8'):
                 name=email_addr_escapes_re.sub(r'\\\g<0>', name),
                 addr=address)
     return address
+
+
+def encapsulate_email(old_email, new_email):
+    """Change the FROM of the message and use the old one as name.
+
+    e.g.
+    * Old From: "Admin" <admin@gmail.com>
+    * New From: notifications@odoo.com
+    * Output: "Admin" <notifications@odoo.com>
+    """
+    old_email_split = getaddresses([old_email])
+    if not old_email_split or not old_email_split[0]:
+        return old_email
+
+    new_email_split = getaddresses([new_email])
+    if not new_email_split or not new_email_split[0]:
+        return
+
+    old_name, old_email = old_email_split[0]
+    if old_name:
+        name_part = old_name
+    else:
+        name_part = old_email.split("@")[0]
+
+    return formataddr((
+        name_part,
+        new_email_split[0][1],
+    ))

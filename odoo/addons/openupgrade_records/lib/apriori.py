@@ -7,6 +7,8 @@ renamed_modules = {
     'base_vat_autocomplete': 'partner_autocomplete',
     'mrp_repair': 'repair',
     'product_extended': 'mrp_bom_cost',
+    # OCA/account-budgeting
+    'account_budget': 'account_budget_oca',
     # OCA/account-payment
     'account_payment_return_import_sepa_pain': (
         'account_payment_return_import_iso20022'
@@ -26,12 +28,19 @@ renamed_modules = {
         'sale_procurement_group_by_commitment_date',
     # OCA/server-brand
     'res_config_settings_enterprise_remove': 'remove_odoo_enterprise',
+    # OCA/server-tools
+    'attachment_base_synchronize': 'attachment_queue',
     # OCA/stock-logistics-workflow
     'stock_batch_picking': 'stock_picking_batch_extended',
     'stock_pack_operation_auto_fill': 'stock_move_line_auto_fill',
     # OCA/web
     'web_advanced_filters': 'web_advanced_filter',
-    
+    'web_tree_image': 'web_tree_image_tooltip',
+    # OCA/l10n-brazil
+    'l10n_br_account_payment': 'l10n_br_account_payment_order',
+    'l10n_br_account_product': 'l10n_br_fiscal',
+    'l10n_br_data_account_product': 'l10n_br_nfe_account'
+
     # S&G
     'sg_member_subscription': 'sg_member_contract',
     'member_relations': 'sg_member_relation',
@@ -77,7 +86,8 @@ merged_modules = {
     # OCA/account-analytic
     # although model is defined in "analytic", logic is in "account"
     'account_analytic_distribution': 'account',
-    'account_asset_analytic': 'account_asset_management',
+    'account_analytic_asset': 'account_asset_management',
+    'account_asset_analytic': 'account_asset_management',  # (from <= v10)
     # OCA/account-financial-reporting
     'customer_activity_statement': 'partner_statement',
     'customer_outstanding_statement': 'partner_statement',
@@ -85,9 +95,12 @@ merged_modules = {
     'account_asset': 'account_asset_management',
     'account_asset_depr_line_cancel': 'account_asset_management',
     'account_asset_disposal': 'account_asset_management',
+    'account_asset_management_xls': 'account_asset_management',
     'account_reversal': 'account',
     # OCA/e-commerce
     'website_sale_default_country': 'website_sale',
+    # OCA/edi
+    'base_business_document_import_stock': 'base_business_document_import',
     # OCA/event
     'event_registration_mass_mailing': 'mass_mailing_event',
     # OCA/hr

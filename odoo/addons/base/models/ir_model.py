@@ -215,6 +215,10 @@ class IrModel(models.Model):
         # delete fields whose comodel is being removed
         self.env['ir.model.fields'].search([('relation', 'in', self.mapped('model'))]).unlink()
 
+        # OpenUpgrade: also prevent other IntegrityErrors when deleting models
+        self.env['ir.model.relation'].search([('model', 'in', self.ids)]).unlink()
+        # /OpenUpgrade
+
         self._drop_table()
         res = super(IrModel, self).unlink()
 
@@ -295,6 +299,8 @@ class IrModel(models.Model):
                 cr.execute(""" INSERT INTO ir_model_data (module, name, model, res_id, date_init, date_update)
                                VALUES (%s, %s, %s, %s, (now() at time zone 'UTC'), (now() at time zone 'UTC')) """,
                            (self._context['module'], xmlid, record._name, record.id))
+            # OpenUpgrade: register the xmlid of the model as loaded
+            self.pool.loaded_xmlids.add("%s.%s" % (model._module, xmlid))
 
         return record
 
@@ -326,8 +332,18 @@ class IrModel(models.Model):
             if tools.table_kind(cr, Model._table) not in ('r', None):
                 # not a regular table, so disable schema upgrades
                 Model._auto = False
-                cr.execute('SELECT * FROM %s LIMIT 0' % Model._table)
-                columns = {desc[0] for desc in cr.description}
+                cr.execute(
+                    '''
+                    SELECT a.attname
+                      FROM pg_attribute a
+                      JOIN pg_class t
+                        ON a.attrelid = t.oid
+                       AND t.relname = %s
+                     WHERE a.attnum > 0 -- skip system columns
+                    ''',
+                    [Model._table]
+                )
+                columns = {colinfo[0] for colinfo in cr.fetchall()}
                 Model._log_access = set(models.LOG_ACCESS_COLUMNS) <= columns
 
 
@@ -561,6 +577,16 @@ class IrModelFields(models.Model):
                     'title': _("Warning"),
                     'message': _("The table %r if used for other, possibly incompatible fields.") % self.relation_table,
                 }}
+
+    @api.onchange('required', 'ttype', 'on_delete')
+    def _onchange_required(self):
+        for rec in self:
+            if rec.ttype == 'many2one' and rec.required and rec.on_delete == 'set null':
+                return {'warning': {'title': _("Warning"), 'message': _(
+                    "The m2o field %s is required but declares its ondelete policy "
+                    "as being 'set null'. Only 'restrict' and 'cascade' make sense."
+                    % (rec.name)
+                )}}
 
     def _get(self, model_name, name):
         """ Return the (sudoed) `ir.model.fields` record with the given model and name.
@@ -870,7 +896,6 @@ class IrModelFields(models.Model):
         to_insert = []
         to_xmlids = []
         for name, field in model._fields.items():
-            openupgrade_loading.update_field_xmlid(self, field)
             old_vals = fields_data.get(name)
             new_vals = self._reflect_field_params(field)
             if old_vals is None:
@@ -1541,8 +1566,6 @@ class IrModelData(models.Model):
         if not data_list:
             return
 
-        # rows to insert
-        rowf = "(%s, %s, %s, %s, %s, now() at time zone 'UTC', now() at time zone 'UTC')"
         rows = tools.OrderedSet()
         for data in data_list:
             prefix, suffix = data['xml_id'].split('.', 1)
@@ -1560,15 +1583,7 @@ class IrModelData(models.Model):
 
         for sub_rows in self.env.cr.split_for_in_conditions(rows):
             # insert rows or update them
-            query = """
-                INSERT INTO ir_model_data (module, name, model, res_id, noupdate, date_init, date_update)
-                VALUES {rows}
-                ON CONFLICT (module, name)
-                DO UPDATE SET date_update=(now() at time zone 'UTC') {where}
-            """.format(
-                rows=", ".join([rowf] * len(sub_rows)),
-                where="WHERE NOT ir_model_data.noupdate" if update else "",
-            )
+            query = self._build_update_xmlids_query(sub_rows, update)
             try:
                 self.env.cr.execute(query, [arg for row in sub_rows for arg in row])
             except Exception:
@@ -1577,6 +1592,20 @@ class IrModelData(models.Model):
 
         # update loaded_xmlids
         self.pool.loaded_xmlids.update("%s.%s" % row[:2] for row in rows)
+
+    # NOTE: this method is overriden in web_studio; if you need to make another
+    #  override, make sure it is compatible with the one that is there.
+    def _build_update_xmlids_query(self, sub_rows, update):
+        rowf = "(%s, %s, %s, %s, %s, now() at time zone 'UTC', now() at time zone 'UTC')"
+        return """
+            INSERT INTO ir_model_data (module, name, model, res_id, noupdate, date_init, date_update)
+            VALUES {rows}
+            ON CONFLICT (module, name)
+            DO UPDATE SET date_update=(now() at time zone 'UTC') {where}
+        """.format(
+            rows=", ".join([rowf] * len(sub_rows)),
+            where="WHERE NOT ir_model_data.noupdate" if update else "",
+        )
 
     @api.model
     def _load_xmlid(self, xml_id):
@@ -1696,8 +1725,12 @@ class IrModelData(models.Model):
         self = self.with_context({MODULE_UNINSTALL_FLAG: True})
         loaded_xmlids = self.pool.loaded_xmlids
 
+        # OpenUpgrade: also purge ir.model entries which are still recorded
+        # with noupdate IS NULL
         query = """ SELECT id, module || '.' || name, model, res_id FROM ir_model_data
-                    WHERE module IN %s AND res_id IS NOT NULL AND noupdate=%s ORDER BY id DESC
+                    WHERE module IN %s AND res_id IS NOT NULL AND
+                    (noupdate=%s OR (noupdate IS NULL AND model='ir.model'))
+                    ORDER BY id DESC
                 """
         self._cr.execute(query, (tuple(modules), False))
         for (id, xmlid, model, res_id) in self._cr.fetchall():
@@ -1718,19 +1751,22 @@ class IrModelData(models.Model):
                     if record.exists():
                         # OpenUpgrade: never break on unlink of obsolete records
                         try:
-                            self.env.cr.execute('SAVEPOINT ir_model_data_delete');
-                            record.unlink()
+                            with self.env.cr.savepoint():
+                                record.unlink()
                         except Exception:
-                            self.env.cr.execute('ROLLBACK TO SAVEPOINT ir_model_data_delete');
                             _logger.warning(
                                 'Could not delete obsolete record with id: %d of model %s\n'
                                 'Please refer to the log message right above',
-                                res_id, model)
+                                res_id, model, exc_info=True)
                         # /OpenUpgrade
                     else:
                         bad_imd_ids.append(id)
         if bad_imd_ids:
             self.browse(bad_imd_ids).unlink()
+
+        # Once all views are created create specific ones
+        self.env['ir.ui.view']._create_all_specific_views(modules)
+
         loaded_xmlids.clear()
 
     @api.model

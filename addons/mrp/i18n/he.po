@@ -327,6 +327,13 @@ msgid "A Manufacturing Order is already done or cancelled."
 msgstr "הוראת ייצור כבר בוצעה או בוטלה."
 
 #. module: mrp
+#: code:addons/mrp/models/stock_warehouse.py:288
+#, python-format
+msgid ""
+"A product with a kit-type bill of materials can not have a reordering rule."
+msgstr ""
+
+#. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_document__access_token
 msgid "Access Token"
 msgstr "אסימון גישה"
@@ -2596,7 +2603,7 @@ msgstr ""
 #. module: mrp
 #: model_terms:ir.ui.view,arch_db:mrp.res_config_settings_view_form
 msgid "Produce residual products (A + B -&gt; C + D)"
-msgstr ""
+msgstr "ייצר מוצרי לוואי (א + ב -&gt; ג + ד)"
 
 #. module: mrp
 #: model_terms:ir.ui.view,arch_db:mrp.production_message
@@ -2969,7 +2976,7 @@ msgstr "נדרש מספר סידורי"
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_document__res_model_name
 msgid "Res Model Name"
-msgstr ""
+msgstr "שם מודל Res"
 
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_product_produce_line__qty_reserved
@@ -4367,6 +4374,14 @@ msgstr "לא ניתן לשנות את סדר העבודה המוגמר."
 #, python-format
 msgid "You can not consume without telling for which lot you consumed it"
 msgstr "אתה לא יכול לצרוך בלי לספח לאצווה ממנה אתה משתמש "
+
+#. module: mrp
+#: code:addons/mrp/models/mrp_bom.py:122
+#, python-format
+msgid ""
+"You can not create a kit-type bill of materials for products that have at "
+"least one reordering rule."
+msgstr ""
 
 #. module: mrp
 #: code:addons/mrp/models/mrp_bom.py:117

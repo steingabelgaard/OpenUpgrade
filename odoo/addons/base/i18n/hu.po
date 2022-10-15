@@ -4,7 +4,6 @@
 # 
 # Translators:
 # picibucor <picibucor@gmail.com>, 2018
-# Tamás Dombos, 2018
 # Kovács Tibor <kovika@gmail.com>, 2018
 # Tibor Kőnig <konig.tibor@evitalit.hu>, 2018
 # Gergő Kertész <gergo.kertesz@maxflow.hu>, 2019
@@ -12,9 +11,10 @@
 # gezza <geza.nagy@oregional.hu>, 2019
 # Istvan <leki69@gmail.com>, 2019
 # krnkris, 2019
-# Ákos Nagy <akos.nagy@oregional.hu>, 2019
 # Martin Trigaux, 2019
-# Tamás Németh <ntomasz81@gmail.com>, 2019
+# Ákos Nagy <akos.nagy@oregional.hu>, 2020
+# Tamás Németh <ntomasz81@gmail.com>, 2021
+# Tamás Dombos, 2021
 # 
 msgid ""
 msgstr ""
@@ -22,7 +22,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-10 14:44+0000\n"
 "PO-Revision-Date: 2018-08-24 09:14+0000\n"
-"Last-Translator: Tamás Németh <ntomasz81@gmail.com>, 2019\n"
+"Last-Translator: Tamás Dombos, 2021\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -613,6 +613,8 @@ msgid ""
 "        App to upload and manage your documents.\n"
 "    "
 msgstr ""
+"\n"
+"Dokumentumok feltöltése és kezelése."
 
 #. module: base
 #: model:ir.module.module,summary:base.module_partner_autocomplete
@@ -918,6 +920,8 @@ msgid ""
 "\n"
 "        Track equipments and maintenance requests"
 msgstr ""
+"\n"
+"    Berendezések és a karbantartási kérelmek követése"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_account_plaid
@@ -959,6 +963,8 @@ msgid ""
 "\n"
 "        Use myponto.com to retrieve bank statements"
 msgstr ""
+"\n"
+"    Használja a myponto.com-ot a bankszámlakivonatok lekéréséhez"
 
 #. module: base
 #: model:ir.module.module,description:base.module_timesheet_grid_sale
@@ -2569,6 +2575,8 @@ msgid ""
 "Design gorgeous mails\n"
 "    "
 msgstr ""
+"\n"
+"Szebbnél-szebb e-mailek tervezése"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_de
@@ -6441,6 +6449,8 @@ msgid ""
 " another model requires the record being deleted. If possible, archive it "
 "instead."
 msgstr ""
+"egy másik model hivatkozik a törlendő rekordra, inkább archiválja, ne "
+"törölje"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.res_lang_form
@@ -6845,6 +6855,8 @@ msgid ""
 "<span class=\"o_form_label\">The selected modules have been updated / "
 "installed !</span>"
 msgstr ""
+"<span class=\"o_form_label\">A kiválasztott modulok frissítése / telepítése "
+"sikerült!</span>"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_base_module_upgrade_install
@@ -6875,6 +6887,10 @@ msgid ""
 "                                <span colspan=\"2\">Month: %(month)s</span>\n"
 "                                <span colspan=\"2\">Day: %(day)s</span>"
 msgstr ""
+"<span colspan=\"2\">Aktuális év évszázaddal: %(year)s</span>\n"
+"                                <span colspan=\"2\">Aktuális év évszázad nélkül: %(y)s</span>\n"
+"                                <span colspan=\"2\">Hónap: %(month)s</span>\n"
+"                                <span colspan=\"2\">Nap: %(day)s</span>"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.sequence_view
@@ -6883,6 +6899,9 @@ msgid ""
 "                                <span colspan=\"2\">Week of the Year: %(woy)s</span>\n"
 "                                <span colspan=\"2\">Day of the Week (0:Monday): %(weekday)s</span>"
 msgstr ""
+"<span colspan=\"2\">Az év napja: %(doy)s</span>\n"
+"                                <span colspan=\"2\">A év hete: %(woy)s</span>\n"
+"                                <span colspan=\"2\">A hét napja (0:hétfő): %(weekday)s</span>"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.sequence_view
@@ -6892,6 +6911,10 @@ msgid ""
 "                                <span colspan=\"2\">Minute: %(min)s</span>\n"
 "                                <span colspan=\"2\">Second: %(sec)s</span>"
 msgstr ""
+"<span colspan=\"2\">Óra 00-&gt;24: %(h24)s</span>\n"
+"                                <span colspan=\"2\">Óra 00-&gt;12: %(h12)s</span>\n"
+"                                <span colspan=\"2\">Perc: %(min)s</span>\n"
+"                                <span colspan=\"2\">Másodperc: %(sec)s</span>"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.report_irmodulereference
@@ -6926,7 +6949,7 @@ msgstr "<span>Web</span>"
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_currency_kanban
 msgid "<strong><span>Current Rate: </span></strong>"
-msgstr ""
+msgstr "<strong><span>Árfolyam: </span></strong>"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.report_irmodeloverview
@@ -8032,7 +8055,7 @@ msgstr "Adminisztráció"
 #. module: base
 #: model:res.partner.industry,name:base.res_partner_industry_N
 msgid "Administrative"
-msgstr ""
+msgstr "Közigazgatási"
 
 #. module: base
 #: model:ir.model.fields,help:base.field_res_country_state__name
@@ -8052,7 +8075,7 @@ msgstr "Adminisztrátori hozzáférés szükséges a modul törléséhez"
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_country_form
 msgid "Advanced Address Formatting"
-msgstr ""
+msgstr "Haladó címformázás"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_event_track
@@ -8110,7 +8133,7 @@ msgstr "Afganisztán"
 #. module: base
 #: selection:res.country,name_position:0
 msgid "After Address"
-msgstr ""
+msgstr "Cím után"
 
 #. module: base
 #: selection:res.currency,position:0
@@ -8189,6 +8212,8 @@ msgstr ""
 #: model:ir.module.module,summary:base.module_website_sale_comparison
 msgid "Allow shoppers to compare products based on their attributes"
 msgstr ""
+"Engedje, hogy a vásárlók összehasonlítsák a termékeket tulajdonságaik "
+"alapján"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_website_sale_wishlist
@@ -8670,7 +8695,7 @@ msgstr "Automatizálás"
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.ir_filters_view_form
 msgid "Available for User"
-msgstr ""
+msgstr "Elérhető fehasználónak"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.res_partner_kanban_view
@@ -8969,7 +8994,7 @@ msgstr ""
 #. module: base
 #: selection:res.country,name_position:0
 msgid "Before Address"
-msgstr ""
+msgstr "Cím előtt"
 
 #. module: base
 #: selection:res.currency,position:0
@@ -9143,12 +9168,12 @@ msgstr "Bootswatch téma"
 #. module: base
 #: model:ir.module.module,description:base.module_theme_bootswatch
 msgid "Bootswatch themes"
-msgstr ""
+msgstr "Bootswatch témák"
 
 #. module: base
 #: model:res.country,name:base.ba
 msgid "Bosnia and Herzegovina"
-msgstr ""
+msgstr "Bosznia-Hercegovina"
 
 #. module: base
 #: model:res.country,name:base.bw
@@ -10791,22 +10816,22 @@ msgstr "Árfolyamok"
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_currency__currency_subunit_label
 msgid "Currency Subunit"
-msgstr ""
+msgstr "Váltópénz"
 
 #. module: base
 #: model:ir.model.fields,help:base.field_res_currency__currency_subunit_label
 msgid "Currency Subunit Name"
-msgstr ""
+msgstr "Váltópénz neve"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_currency__currency_unit_label
 msgid "Currency Unit"
-msgstr ""
+msgstr "Váltópénz egysége"
 
 #. module: base
 #: model:ir.model.fields,help:base.field_res_currency__currency_unit_label
 msgid "Currency Unit Name"
-msgstr ""
+msgstr "Váltópénz egységneve"
 
 #. module: base
 #: model:ir.model.fields,help:base.field_res_currency__symbol
@@ -10876,7 +10901,7 @@ msgstr ""
 #: model:ir.module.module,shortdesc:base.module_portal
 #: model:ir.module.module,summary:base.module_portal
 msgid "Customer Portal"
-msgstr ""
+msgstr "Ügyfélportál"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_rating
@@ -13353,7 +13378,7 @@ msgstr "Kezdő dátum"
 #. module: base
 #: model:ir.module.module,summary:base.module_sale_management
 msgid "From quotations to invoices"
-msgstr ""
+msgstr "Az ajánlatkérésektől a számlákig"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.ir_access_view_search
@@ -13752,7 +13777,7 @@ msgstr "Tarifatáblázat"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_web_grid
 msgid "Grid View"
-msgstr ""
+msgstr "Rácsnézet"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_model_access__group_id
@@ -13955,7 +13980,7 @@ msgstr "Fejléc elhelyezés"
 #. module: base
 #: model:res.partner.industry,name:base.res_partner_industry_Q
 msgid "Health/Social"
-msgstr ""
+msgstr "Egészség/Szociális"
 
 #. module: base
 #: model:res.country,name:base.hm
@@ -15362,7 +15387,7 @@ msgstr "Just In Time ütemezés"
 #. module: base
 #: selection:res.company,base_onboarding_company_state:0
 msgid "Just done"
-msgstr ""
+msgstr "Éppen elkészült"
 
 #. module: base
 #: model:res.partner.industry,full_name:base.res_partner_industry_K
@@ -19402,7 +19427,7 @@ msgstr "Jelszó"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_auth_password_policy
 msgid "Password Policy"
-msgstr ""
+msgstr "Jelszó szabályok"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_auth_password_policy_signup
@@ -19423,7 +19448,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_account_payment
 msgid "Payment - Account"
-msgstr ""
+msgstr "Fizetés - Számla"
 
 #. module: base
 #: model:ir.module.category,name:base.module_category_payment_acquirer
@@ -20087,7 +20112,7 @@ msgstr "Python kifejezés"
 #. module: base
 #: model:res.partner.industry,full_name:base.res_partner_industry_Q
 msgid "Q HUMAN HEALTH AND SOCIAL WORK ACTIVITIES"
-msgstr ""
+msgstr "Q HUMÁN-EGÉSZSÉGÜGYI, SZOCIÁLIS ELLÁTÁS"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_view_search
@@ -20272,12 +20297,12 @@ msgstr ""
 #. module: base
 #: model:res.partner.industry,full_name:base.res_partner_industry_R
 msgid "R ARTS, ENTERTAINMENT AND RECREATION"
-msgstr ""
+msgstr "R MŰVÉSZET, SZÓRAKOZTATÁS, SZABADIDŐ"
 
 #. module: base
 #: model:res.country,vat_label:base.mx
 msgid "RFC"
-msgstr ""
+msgstr "RFC"
 
 #. module: base
 #: model:res.country,vat_label:base.do
@@ -23140,9 +23165,23 @@ msgid "The internal user in charge of this contact."
 msgstr ""
 
 #. module: base
+#: code:addons/base/models/res_country.py:106
+#, python-format
+msgid "The layout contains an invalid format key"
+msgstr ""
+
+#. module: base
 #: model:ir.model.fields,help:base.field_ir_model__inherited_model_ids
 msgid "The list of models that extends the current model."
 msgstr "A jelenlegi modellt túllépő modellek listái."
+
+#. module: base
+#: code:addons/base/models/ir_model.py:522
+#, python-format
+msgid ""
+"The m2o field %s is required but declares its ondelete policy as being 'set "
+"null'. Only 'restrict' and 'cascade' make sense."
+msgstr ""
 
 #. module: base
 #: model:ir.model.fields,help:base.field_ir_filters__action_id
@@ -25331,7 +25370,7 @@ msgstr ""
 #. module: base
 #: code:addons/base/models/res_partner.py:509
 #, python-format
-msgid "You cannot archive a contact linked to an internal user."
+msgid "You cannot archive a contact linked to a portal or internal user."
 msgstr ""
 
 #. module: base
@@ -25601,7 +25640,7 @@ msgstr "e.g. Úr."
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_company_document_template_form
 msgid "e.g. Opening hours, bank accounts (one per line)"
-msgstr ""
+msgstr "pl.: nyitvatartási idő, bankszámlaszám (soronként egy)"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_partner_form
@@ -25630,7 +25669,7 @@ msgstr "pl. https://www.odoo.com"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_sale_ebay
 msgid "eBay Connector"
-msgstr ""
+msgstr "eBay összekötő"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_sale

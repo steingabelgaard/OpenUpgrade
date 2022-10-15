@@ -247,6 +247,22 @@ class Field(MetaField('DummyField', (object,), {})):
         computation gives the expected value. Note that a computed field without
         an inverse method is readonly by default.
 
+        .. warning::
+
+            While it is possible to use the same compute method for multiple
+            fields, it is not recommended to do the same for the inverse
+            method.
+
+            During the computation of the inverse, **all** fields that use
+            said inverse are protected, meaning that they can't be computed,
+            even if their value is not in the cache.
+
+            If any of those fields is accessed and its value is not in cache,
+            the ORM will simply return a default value of `False` for these fields.
+            This means that the value of the inverse fields (other than the one
+            triggering the inverse method) may not give their correct value and
+            this will probably break the expected behavior of the inverse method.
+
         The search method is invoked when processing domains before doing an
         actual search on the model. It must return a domain equivalent to the
         condition: ``field operator value``.
@@ -739,15 +755,19 @@ class Field(MetaField('DummyField', (object,), {})):
         result = []
 
         # add self's own dependencies
-        for dotnames in self.depends:
-            if dotnames == self.name:
-                _logger.warning("Field %s depends on itself; please fix its decorator @api.depends().", self)
-            model, path = model0, path0
-            for fname in dotnames.split('.'):
-                field = model._fields[fname]
-                result.append((model, field, path))
-                model = model0.env.get(field.comodel_name)
-                path = None if path is None else path + [fname]
+        try:
+            for dotnames in self.depends:
+                if dotnames == self.name:
+                    _logger.warning("Field %s depends on itself; please fix its decorator @api.depends().", self)
+                model, path = model0, path0
+                for fname in dotnames.split('.'):
+                    field = model._fields[fname]
+                    result.append((model, field, path))
+                    model = model0.env.get(field.comodel_name)
+                    path = None if path is None else path + [fname]
+        except KeyError:
+            msg = "Field %s cannot find dependency %r on model %r."
+            raise ValueError(msg % (self, fname, model._name))
 
         # add self's model dependencies
         for mname, fnames in model0._depends.items():
@@ -929,6 +949,23 @@ class Field(MetaField('DummyField', (object,), {})):
         self.update_db_notnull(model, column)
         self.update_db_index(model, column)
 
+        # optimization for computing simple related fields like 'foo_id.bar'
+        if (
+            not column
+            and len(self.related or ()) == 2
+            and self.related_field.store and not self.related_field.compute
+            and not (self.related_field.type == 'binary' and self.related_field.attachment)
+            and self.related_field.type not in ('one2many', 'many2many')
+        ):
+            join_field = model._fields[self.related[0]]
+            if (
+                join_field.type == 'many2one'
+                and join_field.store and not join_field.compute
+            ):
+                model.pool.post_init(self.update_db_related, model)
+                # discard the "classical" computation
+                return False
+
         return not column
 
     def update_db_column(self, model, column):
@@ -968,10 +1005,17 @@ class Field(MetaField('DummyField', (object,), {})):
             if model._table_has_rows():
                 model._init_column(self.name)
 
-        if self.required and not has_notnull:
-            sql.set_not_null(model._cr, model._table, self.name)
-        elif not self.required and has_notnull:
-            sql.drop_not_null(model._cr, model._table, self.name)
+        if self.required:
+            if not has_notnull:
+                err_msg = sql.set_not_null(model._cr, model._table, self.name)
+                if err_msg:
+                    model.pool._notnull_errors.setdefault((model._table, self.name), err_msg)
+        else:
+            if has_notnull:
+                sql.drop_not_null(model._cr, model._table, self.name)
+            # the NOT NULL constraint should not be there, so make sure to not
+            # log an error message about its absence
+            model.pool._notnull_errors.pop((model._table, self.name), None)
 
     def update_db_index(self, model, column):
         """ Add or remove the index corresponding to ``self``.
@@ -982,12 +1026,27 @@ class Field(MetaField('DummyField', (object,), {})):
         indexname = '%s_%s_index' % (model._table, self.name)
         if self.index:
             try:
-                with model._cr.savepoint():
-                    sql.create_index(model._cr, indexname, model._table, ['"%s"' % self.name])
+                sql.create_index(model._cr, indexname, model._table, ['"%s"' % self.name])
             except psycopg2.OperationalError:
                 _schema.error("Unable to add index for %s", self)
-        else:
-            sql.drop_index(model._cr, indexname, model._table)
+        elif sql.index_exists(model._cr, indexname):
+            _schema.info("Keep unexpected index %s on table %s", indexname, model._table)
+
+    def update_db_related(self, model):
+        """ Compute a stored related field directly in SQL. """
+        comodel = model.env[self.related_field.model_name]
+        model.env.cr.execute("""
+            UPDATE "{model_table}" AS x
+            SET "{model_field}" = y."{comodel_field}"
+            FROM "{comodel_table}" AS y
+            WHERE x."{join_field}" = y.id
+        """.format(
+            model_table=model._table,
+            model_field=self.name,
+            comodel_table=comodel._table,
+            comodel_field=self.related[1],
+            join_field=self.related[0],
+        ))
 
     ############################################################################
     #
@@ -1829,6 +1888,12 @@ class Binary(Field):
     @property
     def column_type(self):
         return None if self.attachment else ('bytea', 'bytea')
+
+    def _get_attrs(self, model, name):
+        attrs = super(Binary, self)._get_attrs(model, name)
+        if not attrs.get('store', True):
+            attrs['attachment'] = False
+        return attrs
 
     _description_attachment = property(attrgetter('attachment'))
 

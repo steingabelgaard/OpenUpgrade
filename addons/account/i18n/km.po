@@ -313,12 +313,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.portal_my_invoices
 msgid ""
 "<span class=\"badge badge-pill badge-info\"><i class=\"fa fa-fw fa-clock-o\""
-" aria-label=\"Opened\" title=\"Opened\" role=\"img\"/><span class=\"d-none d"
-"-md-inline\"> Waiting for Payment</span></span>"
+" aria-label=\"Opened\" title=\"Opened\" role=\"img\"/><span class=\"d-none "
+"d-md-inline\"> Waiting for Payment</span></span>"
 msgstr ""
 "<span class=\"badge badge-pill badge-info\"><i class=\"fa fa-fw fa-clock-o\""
-" aria-label=\"Opened\" title=\"Opened\" role=\"img\"/><span class=\"d-none d"
-"-md-inline\"> កំពុងរង់ចាំការបង់ប្រាក់</span></span>"
+" aria-label=\"Opened\" title=\"Opened\" role=\"img\"/><span class=\"d-none "
+"d-md-inline\"> កំពុងរង់ចាំការបង់ប្រាក់</span></span>"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.portal_my_invoices
@@ -5246,12 +5246,10 @@ msgid ""
 "                                                                    type and recipient bank account in the generated payments. If disabled,\n"
 "                                                                    a distinct payment will be generated for each invoice."
 msgstr ""
-"ប្រសិនបើបានបើកវិក័យប័ត្រក្រុមដោយដៃគូពាណិជ្ជកម្មគណនីវិក័យប័ត្រ,"
-"                                                                     "
-"ប្រភេទនិងគណនីធនាគារអ្នកទទួលនៅក្នុងការទូទាត់ដែលបានបង្កើត។ "
-"ប្រសិនបើត្រូវបានបិទ,"
-"                                                                     "
-"ការទូទាត់ខុសគ្នានឹងត្រូវបានបង្កើតសម្រាប់វិក័យប័ត្រនីមួយៗ។"
+"ប្រសិនបើបានបើកវិក័យប័ត្រក្រុមដោយដៃគូពាណិជ្ជកម្មគណនីវិក័យប័ត្រ, "
+"                                                                    ប្រភេទនិងគណនីធនាគារអ្នកទទួលនៅក្នុងការទូទាត់ដែលបានបង្កើត។"
+" ប្រសិនបើត្រូវបានបិទ, "
+"                                                                    ការទូទាត់ខុសគ្នានឹងត្រូវបានបង្កើតសម្រាប់វិក័យប័ត្រនីមួយៗ។"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_tax__include_base_amount
@@ -7219,8 +7217,8 @@ msgid ""
 "Note that the easiest way to create a credit note is to do it directly\n"
 "                from the customer invoice."
 msgstr ""
-"ចំណាំថាមធ្យោបាយងាយស្រួលបំផុតក្នុងការបង្កើតចំណាំឥណទានគឺត្រូវធ្វើវាដោយផ្ទាល់"
-"                 ពីវិក័យប័ត្ររបស់អតិថិជន។"
+"ចំណាំថាមធ្យោបាយងាយស្រួលបំផុតក្នុងការបង្កើតចំណាំឥណទានគឺត្រូវធ្វើវាដោយផ្ទាល់ "
+"                ពីវិក័យប័ត្ររបស់អតិថិជន។"
 
 #. module: account
 #: model_terms:ir.actions.act_window,help:account.action_invoice_in_refund
@@ -7338,8 +7336,8 @@ msgid ""
 "Odoo allows you to reconcile a statement line directly with\n"
 "                the related sale or puchase invoice(s)."
 msgstr ""
-"Odoo អនុញ្ញាតឱ្យអ្នកសម្រុះសម្រួលបន្ទាត់សេចក្តីថ្លែងដោយផ្ទាល់ជាមួយ"
-"                 វិក័យប័ត្រលក់ឬវិក័យប័ត្រ Puchase (s)."
+"Odoo អនុញ្ញាតឱ្យអ្នកសម្រុះសម្រួលបន្ទាត់សេចក្តីថ្លែងដោយផ្ទាល់ជាមួយ "
+"                វិក័យប័ត្រលក់ឬវិក័យប័ត្រ Puchase (s)."
 
 #. module: account
 #: model_terms:ir.actions.act_window,help:account.action_bank_statement_tree
@@ -7347,8 +7345,8 @@ msgid ""
 "Odoo allows you to reconcile a statement line directly with\n"
 "                the related sale or puchase invoices."
 msgstr ""
-"Odoo អនុញ្ញាតឱ្យអ្នកសម្រុះសម្រួលបន្ទាត់សេចក្តីថ្លែងដោយផ្ទាល់ជាមួយ"
-"                 វិក័យប័ត្រលក់ឬប៉ាន់ស្មាន។"
+"Odoo អនុញ្ញាតឱ្យអ្នកសម្រុះសម្រួលបន្ទាត់សេចក្តីថ្លែងដោយផ្ទាល់ជាមួយ "
+"                វិក័យប័ត្រលក់ឬប៉ាន់ស្មាន។"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_line__tax_line_grouping_key
@@ -7368,9 +7366,9 @@ msgid ""
 "                        number and journal items will be created in your chart\n"
 "                        of accounts."
 msgstr ""
-"នៅពេលបានបញ្ជាក់វិក្ក័យវិក័យប័ត្រអ្នកនឹងមិនអាច                         "
-"ដើម្បីកែប្រែពួកវា។ វិក័យប័ត្រនឹងទទួលបានតែមួយគត់                         "
-"លេខនិងធាតុទិនានុប្បវត្តិនឹងត្រូវបានបង្កើតនៅក្នុងគំនូសតាងរបស់អ្នក"
+"នៅពេលបានបញ្ជាក់វិក្ក័យវិក័យប័ត្រអ្នកនឹងមិនអាច "
+"                        ដើម្បីកែប្រែពួកវា។ វិក័យប័ត្រនឹងទទួលបានតែមួយគត់ "
+"                        លេខនិងធាតុទិនានុប្បវត្តិនឹងត្រូវបានបង្កើតនៅក្នុងគំនូសតាងរបស់អ្នក"
 "                         គណនី។"
 
 #. module: account
@@ -8130,6 +8128,12 @@ msgid ""
 "Please install a chart of accounts or create a miscellaneous journal before "
 "proceeding."
 msgstr "សូមដំឡើងតារាងគណនីឬបង្កើតទិនានុប្បវត្តិផ្សេងៗមុនពេលដំណើរការ។"
+
+#. module: account
+#: code:addons/account/models/account_cash_rounding.py:33
+#, python-format
+msgid "Please set a strictly positive rounding value."
+msgstr ""
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_invoice_document
@@ -9998,11 +10002,10 @@ msgid ""
 "                                                                                                                                                                       This does not especially correspond to the invoices reconciled with the payment,\n"
 "                                                                                                                                                                       as it can have been generated first, and reconciled later"
 msgstr ""
-"ផ្នែកបច្ចេកទេសដែលមានវិក័យប័ត្រដែលការទូទាត់ត្រូវបានបង្កើត។"
-"                                                                                                                                                                        "
-"នេះមិនត្រូវគ្នានឹងវិក័យប័ត្រដែលផ្សះផ្សាជាមួយការទូទាត់នោះទេ។"
-"                                                                                                                                                                        "
-"ដូចដែលវាអាចត្រូវបានបង្កើតជាលើកដំបូងនិងផ្សះផ្សានៅពេលក្រោយ"
+"ផ្នែកបច្ចេកទេសដែលមានវិក័យប័ត្រដែលការទូទាត់ត្រូវបានបង្កើត។ "
+"                                                                                                                                                                       នេះមិនត្រូវគ្នានឹងវិក័យប័ត្រដែលផ្សះផ្សាជាមួយការទូទាត់នោះទេ។"
+" "
+"                                                                                                                                                                       ដូចដែលវាអាចត្រូវបានបង្កើតជាលើកដំបូងនិងផ្សះផ្សានៅពេលក្រោយ"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_invoice_line__display_type
@@ -10051,10 +10054,9 @@ msgstr ""
 #: model:ir.model.fields,help:account.field_account_payment__multi
 #: model:ir.model.fields,help:account.field_account_register_payments__multi
 msgid ""
-"Technical field indicating if the user selected invoices from multiple "
-"partners or from different types."
+"Technical field indicating if the registering payment will generate multiple"
+" payments or not."
 msgstr ""
-"បច្ចេកទេសដែលបង្ហាញថាតើអ្នកប្រើជ្រើសវិក័យប័ត្រពីដៃគូច្រើនឬពីប្រភេទផ្សេងគ្នា។"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_refund__refund_only
@@ -10352,10 +10354,10 @@ msgid ""
 "                                                                                                       don't want to reconcile all the past payments with bank statements."
 msgstr ""
 "ធាតុក្រាហ្វិកនៃការផ្សះផ្សារធនាគារនឹងមិនស្នើសុំការទូទាត់ការទូទាត់ដែលចាស់ជាងកាលបរិច្ឆេទនេះទេ។"
-"                                                                                                        "
-"វាមានប្រយោជន៍ប្រសិនបើអ្នកតំឡើងគណនេយ្យបន្ទាប់ពីប្រើវិក្កយប័ត្រពេលខ្លះនិង"
-"                                                                                                        "
-"មិនចង់សម្រុះសម្រួលរាល់ការទូទាត់កន្លងមកជាមួយសេចក្តីថ្លែងរបស់ធនាគារ។"
+" "
+"                                                                                                       វាមានប្រយោជន៍ប្រសិនបើអ្នកតំឡើងគណនេយ្យបន្ទាប់ពីប្រើវិក្កយប័ត្រពេលខ្លះនិង"
+" "
+"                                                                                                       មិនចង់សម្រុះសម្រួលរាល់ការទូទាត់កន្លងមកជាមួយសេចក្តីថ្លែងរបស់ធនាគារ។"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_res_config_settings__account_bank_reconciliation_start
@@ -10365,10 +10367,10 @@ msgid ""
 "               don't want to reconcile all the past payments with bank statements."
 msgstr ""
 "ធាតុក្រាហ្វិកនៃការផ្សះផ្សារធនាគារនឹងមិនស្នើសុំការទូទាត់ការទូទាត់ដែលចាស់ជាងកាលបរិច្ឆេទនេះទេ។"
-"                "
-"វាមានប្រយោជន៍ប្រសិនបើអ្នកតំឡើងគណនេយ្យបន្ទាប់ពីប្រើវិក្កយប័ត្រពេលខ្លះនិង"
-"                "
-"មិនចង់សម្រុះសម្រួលរាល់ការទូទាត់កន្លងមកជាមួយសេចក្តីថ្លែងរបស់ធនាគារ។"
+" "
+"               វាមានប្រយោជន៍ប្រសិនបើអ្នកតំឡើងគណនេយ្យបន្ទាប់ពីប្រើវិក្កយប័ត្រពេលខ្លះនិង"
+" "
+"               មិនចង់សម្រុះសម្រួលរាល់ការទូទាត់កន្លងមកជាមួយសេចក្តីថ្លែងរបស់ធនាគារ។"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_move_line__statement_id
@@ -10504,8 +10506,11 @@ msgstr ""
 #. module: account
 #: code:addons/account/models/account.py:564
 #, python-format
-msgid "The holder of a journal's bank account must be the company (%s)."
-msgstr "អ្នកកាន់គណនីធនាគាររបស់កាសែតត្រូវតែជាក្រុមហ៊ុន (%s) ។"
+msgid ""
+"The holder of the bank account of a \"Bank\" type journal must be the company (%s).\n"
+"However, the holder of \"%s\" is \"%s\".\n"
+"Please select another bank account or change the holder of \"%s\"."
+msgstr ""
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_invoice_line__account_id
@@ -10676,8 +10681,8 @@ msgid ""
 "        * Amount Paid/Received: Applied in both cases."
 msgstr ""
 "ម៉ូដែលផ្សះផ្សានឹងត្រូវបានអនុវត្តទៅប្រភេទប្រតិបត្តិការដែលបានជ្រើសរើសប៉ុណ្ណោះ:"
-"         * ចំនួនទឹកប្រាក់ដែលបានទទួល: អនុវត្តបានតែនៅពេលដែលទទួលបានទឹកប្រាក់។"
-"         * ចំនួនទឹកប្រាក់ដែលបានបង់: "
+"         * ចំនួនទឹកប្រាក់ដែលបានទទួល: អនុវត្តបានតែនៅពេលដែលទទួលបានទឹកប្រាក់។ "
+"        * ចំនួនទឹកប្រាក់ដែលបានបង់: "
 "ត្រូវបានអនុវត្តតែប៉ុណ្ណោះនៅពេលដែលអ្នកចំណាយប្រាក់។         * "
 "ចំនួនទឹកប្រាក់ដែលទទួលបាន / បានទទួល: អនុវត្តក្នុងករណីទាំងពីរ។"
 

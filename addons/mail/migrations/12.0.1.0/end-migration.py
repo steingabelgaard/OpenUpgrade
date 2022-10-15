@@ -47,17 +47,18 @@ def fill_mail_thread_message_main_attachment_id(env):
             UPDATE %s t
             SET message_main_attachment_id = ia.id
             FROM (
-                SELECT id, res_id
+                SELECT (array_agg(id))[1] as id, res_id, (array_agg(mt))[1] as mt
                 FROM (
                     SELECT max(id) as id, res_id, CASE
                         WHEN mimetype LIKE '%%pdf' THEN 1
                         WHEN mimetype LIKE 'image%%' THEN 2
                         ELSE 3
-                    END as mt, row_number() over (partition by res_id) row_num
+                    END as mt
                     FROM ir_attachment
                     WHERE res_model = %s
-                    GROUP BY res_id, mt) pre_ia
-                WHERE row_num = 1) ia
+                    GROUP BY res_id, mt
+                    ORDER BY res_id, mt) pre_ia
+                GROUP BY res_id) ia
             WHERE t.message_main_attachment_id IS NULL
                 AND ia.res_id = t.id""",
             (AsIs(env[model]._table), model),
@@ -74,8 +75,20 @@ def remove_activity_date_deadline_column(env):
     openupgrade.rename_columns(env.cr, _column_renames)
 
 
+def resubscribe_general_channel(env):
+    """After the migration is finished, the general channel is not subscribed
+    to itself, so no messages will be received. We are not sure how this
+    happens, but the best option is to manually re-subscribe it, as it's
+    neutral in case it's already subscribed.
+    """
+    channel = env.ref("mail.channel_all_employees", False)
+    if channel:
+        channel.message_subscribe(channel_ids=channel.ids)
+
+
 @openupgrade.migrate(use_env=True)
 def migrate(env, version):
     fill_mail_tracking_value_track_sequence(env)
     fill_mail_thread_message_main_attachment_id(env)
     remove_activity_date_deadline_column(env)
+    resubscribe_general_channel(env)

@@ -6,6 +6,7 @@ helpers and classes to write tests.
 """
 import base64
 import collections
+import functools
 import importlib
 import inspect
 import itertools
@@ -161,9 +162,128 @@ def new_test_user(env, login='', groups='base.group_user', context=None, **kwarg
 # ------------------------------------------------------------
 # Main classes
 # ------------------------------------------------------------
+class OdooSuite(unittest.suite.TestSuite):
+
+    if sys.version_info < (3, 8):
+        # Partial backport of bpo-24412, merged in CPython 3.8
+
+        def _handleClassSetUp(self, test, result):
+            previousClass = getattr(result, '_previousTestClass', None)
+            currentClass = test.__class__
+            if currentClass == previousClass:
+                return
+            if result._moduleSetUpFailed:
+                return
+            if getattr(currentClass, "__unittest_skip__", False):
+                return
+
+            try:
+                currentClass._classSetupFailed = False
+            except TypeError:
+                # test may actually be a function
+                # so its class will be a builtin-type
+                pass
+
+            setUpClass = getattr(currentClass, 'setUpClass', None)
+            if setUpClass is not None:
+                unittest.suite._call_if_exists(result, '_setupStdout')
+                try:
+                    setUpClass()
+                except Exception as e:
+                    if isinstance(result, unittest.suite._DebugResult):
+                        raise
+                    currentClass._classSetupFailed = True
+                    className = unittest.util.strclass(currentClass)
+                    self._createClassOrModuleLevelException(result, e,
+                                                            'setUpClass',
+                                                            className)
+                finally:
+                    unittest.suite._call_if_exists(result, '_restoreStdout')
+                    if currentClass._classSetupFailed is True:
+                        if hasattr(currentClass, 'doClassCleanups'):
+                            currentClass.doClassCleanups()
+                            if len(currentClass.tearDown_exceptions) > 0:
+                                for exc in currentClass.tearDown_exceptions:
+                                    self._createClassOrModuleLevelException(
+                                            result, exc[1], 'setUpClass', className,
+                                            info=exc)
+
+        def _createClassOrModuleLevelException(self, result, exc, method_name, parent, info=None):
+            errorName = '%s (%s)' % (method_name, parent)
+            self._addClassOrModuleLevelException(result, exc, errorName, info)
+
+        def _addClassOrModuleLevelException(self, result, exception, errorName, info=None):
+            error = unittest.suite._ErrorHolder(errorName)
+            addSkip = getattr(result, 'addSkip', None)
+            if addSkip is not None and isinstance(exception, unittest.case.SkipTest):
+                addSkip(error, str(exception))
+            else:
+                if not info:
+                    result.addError(error, sys.exc_info())
+                else:
+                    result.addError(error, info)
+
+        def _tearDownPreviousClass(self, test, result):
+            previousClass = getattr(result, '_previousTestClass', None)
+            currentClass = test.__class__
+            if currentClass == previousClass:
+                return
+            if getattr(previousClass, '_classSetupFailed', False):
+                return
+            if getattr(result, '_moduleSetUpFailed', False):
+                return
+            if getattr(previousClass, "__unittest_skip__", False):
+                return
+
+            tearDownClass = getattr(previousClass, 'tearDownClass', None)
+            if tearDownClass is not None:
+                unittest.suite._call_if_exists(result, '_setupStdout')
+                try:
+                    tearDownClass()
+                except Exception as e:
+                    if isinstance(result, unittest.suite._DebugResult):
+                        raise
+                    className = unittest.util.strclass(previousClass)
+                    self._createClassOrModuleLevelException(result, e,
+                                                            'tearDownClass',
+                                                            className)
+                finally:
+                    unittest.suite._call_if_exists(result, '_restoreStdout')
+                    if hasattr(previousClass, 'doClassCleanups'):
+                        previousClass.doClassCleanups()
+                        if len(previousClass.tearDown_exceptions) > 0:
+                            for exc in previousClass.tearDown_exceptions:
+                                className = unittest.util.strclass(previousClass)
+                                self._createClassOrModuleLevelException(result, exc[1],
+                                                                        'tearDownClass',
+                                                                        className,
+                                                                        info=exc)
 
 
 class TreeCase(unittest.TestCase):
+
+    if sys.version_info < (3, 8):
+        # Partial backport of bpo-24412, merged in CPython 3.8
+        _class_cleanups = []
+
+        @classmethod
+        def addClassCleanup(cls, function, *args, **kwargs):
+            """Same as addCleanup, except the cleanup items are called even if
+            setUpClass fails (unlike tearDownClass). Backport of bpo-24412."""
+            cls._class_cleanups.append((function, args, kwargs))
+
+        @classmethod
+        def doClassCleanups(cls):
+            """Execute all class cleanup functions. Normally called for you after tearDownClass.
+            Backport of bpo-24412."""
+            cls.tearDown_exceptions = []
+            while cls._class_cleanups:
+                function, args, kwargs = cls._class_cleanups.pop()
+                try:
+                    function(*args, **kwargs)
+                except Exception as exc:
+                    cls.tearDown_exceptions.append(sys.exc_info())
+
     def __init__(self, methodName='runTest'):
         super(TreeCase, self).__init__(methodName)
         self.addTypeEqualityFunc(etree._Element, self.assertTreesEqual)
@@ -390,19 +510,16 @@ class TransactionCase(BaseCase):
     def setUp(self):
         super(TransactionCase, self).setUp()
         self.registry = odoo.registry(get_db_name())
+        self.addCleanup(self.registry.reset_changes)
+        self.addCleanup(self.registry.clear_caches)
+
         #: current transaction's cursor
         self.cr = self.cursor()
+        self.addCleanup(self.cr.close)
+
         #: :class:`~odoo.api.Environment` for the current test case
         self.env = api.Environment(self.cr, odoo.SUPERUSER_ID, {})
-
-        @self.addCleanup
-        def reset():
-            # rollback and close the cursor, and reset the environments
-            self.registry.clear_caches()
-            self.registry.reset_changes()
-            self.env.reset()
-            self.cr.rollback()
-            self.cr.close()
+        self.addCleanup(self.env.reset)
 
         self.patch(type(self.env['res.partner']), '_get_gravatar_image', lambda *a: False)
 
@@ -425,19 +542,15 @@ class SingleTransactionCase(BaseCase):
 
     @classmethod
     def setUpClass(cls):
-        super(SingleTransactionCase, cls).setUpClass()
+        super().setUpClass()
         cls.registry = odoo.registry(get_db_name())
-        cls.cr = cls.registry.cursor()
-        cls.env = api.Environment(cls.cr, odoo.SUPERUSER_ID, {})
+        cls.addClassCleanup(cls.registry.clear_caches)
 
-    @classmethod
-    def tearDownClass(cls):
-        # rollback and close the cursor, and reset the environments
-        cls.registry.clear_caches()
-        cls.env.reset()
-        cls.cr.rollback()
-        cls.cr.close()
-        super(SingleTransactionCase, cls).tearDownClass()
+        cls.cr = cls.registry.cursor()
+        cls.addClassCleanup(cls.cr.close)
+
+        cls.env = api.Environment(cls.cr, odoo.SUPERUSER_ID, {})
+        cls.addClassCleanup(cls.env.reset)
 
 
 savepoint_seq = itertools.count()
@@ -454,14 +567,18 @@ class SavepointCase(SingleTransactionCase):
     """
     def setUp(self):
         super(SavepointCase, self).setUp()
+        # restore environments after the test to avoid invoking flush() with an
+        # invalid environment (inexistent user id) from another test
+        envs = self.env.all.envs
+        self.addCleanup(envs.update, list(envs))
+        self.addCleanup(envs.clear)
+
+        self.addCleanup(self.registry.clear_caches)
+        self.addCleanup(self.env.clear)
+
         self._savepoint_id = next(savepoint_seq)
         self.cr.execute('SAVEPOINT test_%d' % self._savepoint_id)
-
-    def tearDown(self):
-        self.cr.execute('ROLLBACK TO SAVEPOINT test_%d' % self._savepoint_id)
-        self.env.clear()
-        self.registry.clear_caches()
-        super(SavepointCase, self).tearDown()
+        self.addCleanup(self.cr.execute, 'ROLLBACK TO SAVEPOINT test_%d' % self._savepoint_id)
 
 
 class ChromeBrowser():
@@ -591,16 +708,11 @@ class ChromeBrowser():
     def _find_websocket(self):
         version = self._json_command('version')
         self._logger.info('Browser version: %s', version['Browser'])
-        try:
-            infos = self._json_command('')[0]  # Infos about the first tab
-        except IndexError:
-            self._logger.warning('No tab found in Chrome')
-            self.stop()
-            raise unittest.SkipTest('No tab found in Chrome')
+        infos = self._json_command('', get_key=0)  # Infos about the first tab
         self.ws_url = infos['webSocketDebuggerUrl']
         self._logger.info('Chrome headless temporary user profile dir: %s', self.user_data_dir)
 
-    def _json_command(self, command, timeout=3):
+    def _json_command(self, command, timeout=3, get_key=None):
         """
         Inspect dev tools with get
         Available commands:
@@ -614,21 +726,31 @@ class ChromeBrowser():
         """
         self._logger.info("Issuing json command %s", command)
         command = os.path.join('json', command).strip('/')
+        url = werkzeug.urls.url_join('http://%s:%s/' % (HOST, self.devtools_port), command)
+        self._logger.info('Url : %s', url)
+        delay = 0.1
         while timeout > 0:
             try:
-                url = werkzeug.urls.url_join('http://%s:%s/' % (HOST, self.devtools_port), command)
-                self._logger.info('Url : %s', url)
                 r = requests.get(url, timeout=3)
                 if r.ok:
-                    return r.json()
-                return {'status_code': r.status_code}
+                    res = r.json()
+                    if get_key is None:
+                        return res
+                    else:
+                        return res[get_key]
             except requests.ConnectionError:
-                time.sleep(0.1)
-                timeout -= 0.1
+                message = 'Connection Error while trying to connect to Chrome debugger'
             except requests.exceptions.ReadTimeout:
+                message = 'Connection Timeout while trying to connect to Chrome debugger'
                 break
-        self._logger.error('Could not connect to chrome debugger')
-        raise unittest.SkipTest("Cannot connect to chrome headless")
+            except (KeyError, IndexError):
+                message = 'Key "%s" not found in json result "%s" after connecting to Chrome debugger' % (get_key, res)
+            time.sleep(delay)
+            timeout -= delay
+            delay = delay * 1.5
+        self._logger.error(message)
+        self.stop()
+        raise unittest.SkipTest("Error during Chrome headless connection")
 
     def _open_websocket(self):
         self.ws = websocket.create_connection(self.ws_url)
@@ -855,17 +977,17 @@ class HttpCase(TransactionCase):
         self._logger = logging.getLogger('%s.%s' % (cls.__module__, cls.__name__))
 
     @classmethod
+    def terminate_browser(cls):
+        if cls.browser:
+            cls.browser.stop()
+            cls.browser = None
+
+    @classmethod
     def start_browser(cls, logger):
         # start browser on demand
         if cls.browser is None:
             cls.browser = ChromeBrowser(logger)
-
-    @classmethod
-    def tearDownClass(cls):
-        if cls.browser:
-            cls.browser.stop()
-            cls.browser = None
-        super(HttpCase, cls).tearDownClass()
+            cls.addClassCleanup(cls.terminate_browser)
 
     def setUp(self):
         super(HttpCase, self).setUp()
@@ -1229,7 +1351,7 @@ class Form(object):
             order.append(fname)
 
             modifiers[fname] = {
-                modifier: domain if isinstance(domain, bool) else normalize_domain(domain)
+                modifier: bool(domain) if isinstance(domain, int) else normalize_domain(domain)
                 for modifier, domain in json.loads(f.get('modifiers', '{}')).items()
             }
             ctx = f.get('context')
@@ -1365,8 +1487,8 @@ class Form(object):
         '<=': operator.le,
         '>=': operator.ge,
         '>': operator.gt,
-        'in': lambda a, b: a in b,
-        'not in': lambda a, b: a not in b
+        'in': lambda a, b: (a in b) if isinstance(b, (tuple, list)) else (b in a),
+        'not in': lambda a, b: (a not in b) if isinstance(b, (tuple, list)) else (b not in a),
     }
     def _get_context(self, field):
         c = self._view['contexts'].get(field)
@@ -1437,9 +1559,9 @@ class Form(object):
                 r.write(values)
         else:
             r = self._model.create(values)
-            self._values.update(
-                record_to_values(self._view['fields'], r)
-            )
+        self._values.update(
+            record_to_values(self._view['fields'], r)
+        )
         self._changed.clear()
         self._model.invalidate_cache()
         return r
@@ -1452,45 +1574,70 @@ class Form(object):
                                 fields and only save fields which are changed
                                 and not readonly
         """
-        values = {}
+        view = self._view
         fields = self._view['fields']
+        record_values = self._values
+        changed = self._changed
+        return self._values_to_save_(
+            record_values, fields, view,
+            changed, all_fields
+        )
+
+    def _values_to_save_(
+            self, record_values, fields, view,
+            changed, all_fields=False, modifiers_values=None,
+            parent_link=None
+    ):
+        """ Validates & extracts values to save, recursively in order to handle
+         o2ms properly
+
+        :param dict record_values: values of the record to extract
+        :param dict fields: fields_get result
+        :param view: view tree
+        :param set changed: set of fields which have been modified (since last save)
+        :param bool all_fields:
+            whether to ignore normal filtering and just return everything
+        :param dict modifiers_values:
+            defaults to ``record_values``, but o2ms need some additional
+            massaging
+        """
+        values = {}
         for f in fields:
+            get_modifier = functools.partial(
+                self._get_modifier,
+                f, modmap=view['modifiers'],
+                vals=modifiers_values or record_values
+            )
             descr = fields[f]
-            v = self._values[f]
+            v = record_values[f]
             # note: maybe `invisible` should not skip `required` if model attribute
-            if not all_fields and self._get_modifier(f, 'required') and not (descr['type'] == 'boolean' or self._get_modifier(f, 'invisible')):
-                assert v is not False, "{} is a required field".format(f)
+            if v is False and not (all_fields or f == parent_link or descr['type'] == 'boolean' or get_modifier('invisible') or get_modifier('column_invisible')):
+                if get_modifier('required'):
+                    raise AssertionError("{} is a required field ({})".format(f, view['modifiers'][f]))
+
             # skip unmodified fields unless all_fields (also always ignore id)
-            if f == 'id' or not (all_fields or f in self._changed):
+            if f == 'id' or not (all_fields or f in changed):
                 continue
 
-            if self._get_modifier(f, 'readonly'):
-                node = _get_node(self._view, f)
+            if get_modifier('readonly'):
+                node = _get_node(view, f)
                 if not (all_fields or node.get('force_save')):
                     continue
 
             if descr['type'] == 'one2many':
-                view = descr['views']['edition']
-                modifiers = view['modifiers']
+                subview = descr['views']['edition']
+                fields_ = subview['fields']
                 oldvals = v
                 v = []
-
-                nodes = {
-                    n.get('name'): n
-                    for n in view['tree'].iter('field')
-                }
-                nodes['id'] = etree.Element('field', attrib={'name': 'id'})
-
                 for (c, rid, vs) in oldvals:
-                    if c in (0, 1):
+                    if c == 1 and not vs:
+                        c, vs = 4, False
+                    elif c in (0, 1):
                         vs = vs or {}
-                        if all_fields:
-                            items = list(vs.items())
-                        else:
-                            items = list(getattr(vs, 'changed_items', vs.items)())
-                        fields_ = view['fields']
+
                         missing = fields_.keys() - vs.keys()
-                        if missing: # FIXME: maaaybe this should be done at the start?
+                        # FIXME: maybe do this during initial loading instead?
+                        if missing:
                             Model = self._env[descr['relation']]
                             if c == 0:
                                 vs.update(dict.fromkeys(missing, False))
@@ -1503,13 +1650,14 @@ class Form(object):
                                     {k: v for k, v in fields_.items() if k not in vs},
                                     Model.browse(rid)
                                 ))
-                        context = dict(vs)
-                        context.setdefault('id', False)
-                        context['•parent•'] = self._values
-                        vs = {
-                            k: v for k, v in items
-                            if (all_fields and k != 'id') or nodes[k].get('force_save') or not self._get_modifier(k, 'readonly', modmap=modifiers, vals=context)
-                        }
+                        vs = self._values_to_save_(
+                            vs, fields_, subview,
+                            vs._changed if isinstance(vs, UpdateDict) else vs.keys(),
+                            all_fields,
+                            modifiers_values={'id': False, **vs, '•parent•': record_values},
+                            # related o2m don't have a relation_field
+                            parent_link=descr.get('relation_field'),
+                        )
                     v.append((c, rid, vs))
 
             values[f] = v
@@ -1543,17 +1691,33 @@ class Form(object):
         )
 
     def _onchange_values(self):
-        f = self._view['fields']
+        return self._onchange_values_(self._view['fields'], self._values)
+
+    def _onchange_values_(self, fields, record):
+        """ Recursively cleanup o2m values for onchanges:
+
+        * if an o2m command is a 1 (UPDATE) and there is nothing to update, send
+          a 4 instead (LINK_TO) instead as that's what the webclient sends for
+          unmodified rows
+        * if an o2m command is a 1 (UPDATE) and only a subset of its fields have
+          been modified, only send the modified ones
+
+        This needs to be recursive as there are people who put invisible o2ms
+        inside their o2ms.
+        """
         values = {}
-        for k, v in self._values.items():
-            if f[k]['type'] == 'one2many':
+        for k, v in record.items():
+            if fields[k]['type'] == 'one2many':
+                subfields = fields[k]['views']['edition']['fields']
                 it = values[k] = []
                 for (c, rid, vs) in v:
+                    if c == 1 and isinstance(vs, UpdateDict):
+                        vs = dict(vs.changed_items())
+
                     if c == 1 and not vs:
-                        # web client sends a 4 for unmodified o2m rows
                         it.append((4, rid, False))
-                    elif c == 1 and isinstance(vs, UpdateDict):
-                        it.append((1, rid, dict(vs.changed_items())))
+                    elif c in (0, 1):
+                        it.append((c, rid, self._onchange_values_(subfields, vs)))
                     else:
                         it.append((c, rid, vs))
             else:
@@ -1595,7 +1759,7 @@ class Form(object):
                         stored = UpdateDict(record_to_values(subfields, record))
 
                     updates = (
-                        (k, self._cleanup_onchange(subfields[k], v, None))
+                        (k, self._cleanup_onchange(subfields[k], v, stored.get(k)))
                         for k, v in command[2].items()
                         if k in subfields
                     )
@@ -1953,6 +2117,7 @@ def _cleanup_from_default(type_, value):
         return odoo.fields.Datetime.to_string(value)
     elif type_ == 'date' and isinstance(value, date):
         return odoo.fields.Date.to_string(value)
+    return value
 
 def _get_node(view, f, *arg):
     """ Find etree node for the field ``f`` in the view's arch

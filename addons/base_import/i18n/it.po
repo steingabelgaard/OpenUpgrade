@@ -12,6 +12,7 @@
 # Petra <bop@odoo.com>, 2018
 # David Minneci <david@numeko.it>, 2018
 # Léonie Bouchat <lbo@odoo.com>, 2019
+# Iacopo Simonelli <lsi@odoo.com>, 2020
 # Sergio Zanchetta <primes2h@gmail.com>, 2020
 # 
 msgid ""
@@ -33,7 +34,7 @@ msgstr ""
 #: code:addons/base_import/static/src/js/import_action.js:612
 #, python-format
 msgid "%d records were successfully imported"
-msgstr "Sono stati importati con successo %d record"
+msgstr "%d record importati con successo"
 
 #. module: base_import
 #. openerp-web
@@ -463,14 +464,14 @@ msgstr "Importa"
 #: code:addons/base_import/static/src/xml/base_import.xml:91
 #, python-format
 msgid "Import FAQ"
-msgstr "Importare FAQ"
+msgstr "Importa FAQ"
 
 #. module: base_import
 #. openerp-web
 #: code:addons/base_import/static/src/js/import_action.js:140
 #, python-format
 msgid "Import a File"
-msgstr "Importa un File"
+msgstr "Importa un file"
 
 #. module: base_import
 #. openerp-web
@@ -688,7 +689,7 @@ msgstr "Spazio"
 #: code:addons/base_import/static/src/js/import_action.js:213
 #, python-format
 msgid "Tab"
-msgstr "Tab"
+msgstr "Tabulazione"
 
 #. module: base_import
 #. openerp-web
@@ -725,7 +726,7 @@ msgstr "Test : Modello importazione base, carattere obbligatorio"
 #. module: base_import
 #: model:ir.model,name:base_import.model_base_import_tests_models_char_states
 msgid "Tests : Base Import Model, Character states"
-msgstr ""
+msgstr "Test : modello importazione di base, stato carattere"
 
 #. module: base_import
 #: model:ir.model,name:base_import.model_base_import_tests_models_char_stillreadonly
@@ -740,7 +741,7 @@ msgstr "Test: modello importazione di base, molti a uno"
 #. module: base_import
 #: model:ir.model,name:base_import.model_base_import_tests_models_m2o_related
 msgid "Tests : Base Import Model, Many to One related"
-msgstr ""
+msgstr "Test: modello importazione di base, relazione molti a uno"
 
 #. module: base_import
 #: model:ir.model,name:base_import.model_base_import_tests_models_m2o_required
@@ -751,6 +752,7 @@ msgstr "Test: modello importazione base, molti a uno obbligatorio"
 #: model:ir.model,name:base_import.model_base_import_tests_models_m2o_required_related
 msgid "Tests : Base Import Model, Many to One required related"
 msgstr ""
+"Test: modello importazione di base, relazione molti a uno obbligatoria"
 
 #. module: base_import
 #: model:ir.model,name:base_import.model_base_import_tests_models_o2m

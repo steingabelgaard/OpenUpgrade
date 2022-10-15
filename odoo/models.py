@@ -525,7 +525,7 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
         cls._inherits = {}
         cls._depends = {}
         cls._constraints = {}
-        cls._sql_constraints = []
+        cls._sql_constraints = {}
 
         for base in reversed(cls.__bases__):
             if not getattr(base, 'pool', None):
@@ -546,10 +546,12 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                 # cons may override a constraint with the same function name
                 cls._constraints[getattr(cons[0], '__name__', id(cons[0]))] = cons
 
-            cls._sql_constraints += base._sql_constraints
+            for cons in base._sql_constraints:
+                cls._sql_constraints[cons[0]] = cons
 
         cls._sequence = cls._sequence or (cls._table + '_id_seq')
         cls._constraints = list(cls._constraints.values())
+        cls._sql_constraints = list(cls._sql_constraints.values())
 
         # update _inherits_children of parent models
         for parent_name in cls._inherits:
@@ -787,7 +789,7 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                         if lines2:
                             # merge first line with record's main line
                             for j, val in enumerate(lines2[0]):
-                                if val or isinstance(val, bool):
+                                if val or isinstance(val, (int, float)):
                                     current[j] = val
                             # append the other lines at the end
                             lines += lines2[1:]
@@ -903,8 +905,9 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
             except Exception:
                 cr.execute('ROLLBACK TO SAVEPOINT model_load_save')
 
+            errors = 0
             # try again, this time record by record
-            for rec_data in data_list:
+            for i, rec_data in enumerate(data_list, 1):
                 try:
                     cr.execute('SAVEPOINT model_load_save')
                     rec = self._load_records([rec_data], mode == 'update')
@@ -920,6 +923,7 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                     cr.execute('ROLLBACK TO SAVEPOINT model_load_save')
                     info = rec_data['info']
                     messages.append(dict(info, type='error', **PGERROR_TO_OE[e.pgcode](self, fg, info, e)))
+                    errors += 1
                 except Exception as e:
                     _logger.debug("Error while loading record", exc_info=True)
                     # Failed for some reason, perhaps due to invalid data supplied,
@@ -929,6 +933,13 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                     message = (_(u'Unknown error during import:') + u' %s: %s' % (type(e), e))
                     moreinfo = _('Resolve other errors first')
                     messages.append(dict(info, type='error', message=message, moreinfo=moreinfo))
+                    errors += 1
+                if errors >= 10 and (errors >= i / 10):
+                    messages.append({
+                        'type': 'warning',
+                        'message': _(u"Found more than 10 errors and more than one error per 10 records, interrupted to avoid showing too many errors.")
+                    })
+                    break
 
         # make 'flush' available to the methods below, in the case where XMLID
         # resolution fails, for instance
@@ -1058,7 +1069,7 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
             exc_vals = dict(base, record=record, field=field_names[field])
             record = dict(base, type=type, record=record, field=field,
                           message=pycompat.text_type(exception.args[0]) % exc_vals)
-            if len(exception.args) > 1 and exception.args[1]:
+            if len(exception.args) > 1 and isinstance(exception.args[1], dict):
                 record.update(exception.args[1])
             log(record)
 
@@ -1676,11 +1687,26 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
     @api.model
     def _add_missing_default_values(self, values):
         # avoid overriding inherited values when parent is set
-        avoid_models = {
-            parent_model
-            for parent_model, parent_field in self._inherits.items()
-            if parent_field in values
-        }
+        avoid_models = set()
+
+        def collect_models_to_avoid(model):
+            for parent_mname, parent_fname in model._inherits.items():
+                if parent_fname in values:
+                    avoid_models.add(parent_mname)
+                else:
+                    # manage the case where an ancestor parent field is set
+                    collect_models_to_avoid(self.env[parent_mname])
+
+        collect_models_to_avoid(self)
+
+        def avoid(field):
+            # check whether the field is inherited from one of avoid_models
+            if avoid_models:
+                while field.inherited:
+                    field = field.related_field
+                    if field.model_name in avoid_models:
+                        return True
+            return False
 
         # compute missing fields
         missing_defaults = {
@@ -1688,7 +1714,7 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
             for name, field in self._fields.items()
             if name not in values
             if not (self._log_access and name in MAGIC_COLUMNS)
-            if not (field.inherited and field.related_field.model_name in avoid_models)
+            if not avoid(field)
         }
 
         if not missing_defaults:
@@ -2015,6 +2041,8 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                     if gb['tz_convert']:
                         tzinfo = range_start.tzinfo
                         range_start = range_start.astimezone(pytz.utc)
+                        # take into account possible hour change between start and end
+                        range_end = tzinfo.localize(range_end.replace(tzinfo=None))
                         range_end = range_end.astimezone(pytz.utc)
 
                     range_start = range_start.strftime(fmt)
@@ -2118,9 +2146,11 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
 
         self._apply_ir_rules(query, 'read')
         for gb in groupby_fields:
-            assert gb in self._fields, "Unknown field %r in 'groupby'" % gb
+            if gb not in self._fields:
+                raise UserError(_("Unknown field %r in 'groupby'") % gb)
             gb_field = self._fields[gb].base_field
-            assert gb_field.store and gb_field.column_type, "Fields in 'groupby' must be regular database-persisted fields (no function or related fields), or function fields with store=True"
+            if not (gb_field.store and gb_field.column_type):
+                raise UserError(_("Fields in 'groupby' must be database-persisted fields (no computed fields)"))
 
         aggregated_fields = []
         select_terms = []
@@ -2540,6 +2570,7 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                 if field.ondelete.lower() not in ('cascade', 'restrict'):
                     field.ondelete = 'cascade'
                 self._inherits[field.comodel_name] = field.name
+                self.pool[field.comodel_name]._inherits_children.add(self._name)
 
     @api.model
     def _prepare_setup(self):
@@ -2619,7 +2650,7 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                 "Invalid rec_name %s for model %s" % (cls._rec_name, cls._name)
         elif 'name' in cls._fields:
             cls._rec_name = 'name'
-        elif 'x_name' in cls._fields:
+        elif cls._custom and 'x_name' in cls._fields:
             cls._rec_name = 'x_name'
 
     @api.model
@@ -4341,7 +4372,7 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
             # mark missing records in cache with a failed value
             exc = MissingError(
                 _("Record does not exist or has been deleted.")
-                + '\n\n({} {}, {} {})'.format(_('Records:'), (self - existing).ids[:6], _('User:'), self._uid)
+                + '\n\n({} {}, {} {})'.format(_('Records:'), (self - existing)[:6], _('User:'), self._uid)
             )
             self.env.cache.set_failed(self - existing, self._fields.values(), exc)
         return existing
@@ -4624,6 +4655,10 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
     @api.model_cr
     def _register_hook(self):
         """ stuff to do right after the registry is built """
+        pass
+
+    def _unregister_hook(self):
+        """ Clean up what `~._register_hook` has done. """
         pass
 
     @classmethod

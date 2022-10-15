@@ -116,6 +116,7 @@ start the server specifying the ``--unaccent`` flag.
 import collections
 
 import logging
+import reprlib
 import traceback
 from functools import partial
 from zlib import crc32
@@ -308,7 +309,10 @@ def distribute_not(domain):
             if negate:
                 left, operator, right = token
                 if operator in TERM_OPERATORS_NEGATION:
-                    result.append((left, TERM_OPERATORS_NEGATION[operator], right))
+                    if token in (TRUE_LEAF, FALSE_LEAF):
+                        result.append(FALSE_LEAF if token == TRUE_LEAF else TRUE_LEAF)
+                    else:
+                        result.append((left, TERM_OPERATORS_NEGATION[operator], right))
                 else:
                     result.append(NOT_OPERATOR)
                     result.append(token)
@@ -928,12 +932,9 @@ class expression(object):
                         operator = 'in'
                     domain = field.determine_domain(model, operator, right)
 
-                if not domain:
-                    leaf.leaf = TRUE_LEAF
-                    push(leaf)
-                else:
-                    for elem in reversed(domain):
-                        push(create_substitution_leaf(leaf, elem, model, internal=True))
+                # replace current leaf by normalized domain
+                for elem in reversed(normalize_domain(domain)):
+                    push(create_substitution_leaf(leaf, elem, model, internal=True))
 
             # -------------------------------------------------
             # RELATIONAL FIELDS
@@ -1087,7 +1088,7 @@ class expression(object):
                     push(create_substitution_leaf(leaf, ('id', inselect_operator, (subselect, params)), model, internal=True))
                 else:
                     _logger.error("Binary field '%s' stored in attachment: ignore %s %s %s",
-                                  field.string, left, operator, right)
+                                  field.string, left, operator, reprlib.repr(right))
                     leaf.leaf = TRUE_LEAF
                     push(leaf)
 
@@ -1211,8 +1212,12 @@ class expression(object):
                     query = '(%s."%s" IS NULL)' % (table_alias, left)
                 params = []
             elif isinstance(right, (list, tuple)):
-                params = [it for it in right if it != False]
-                check_null = len(params) < len(right)
+                if model._fields[left].type == "boolean":
+                    params = [it for it in (True, False) if it in right]
+                    check_null = False in right
+                else:
+                    params = [it for it in right if it != False]
+                    check_null = len(params) < len(right)
                 if params:
                     if left == 'id':
                         instr = ','.join(['%s'] * len(params))

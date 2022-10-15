@@ -1616,22 +1616,13 @@ var FieldBinaryFile = AbstractFieldBinary.extend({
         this.filename_value = this.recordData[this.attrs.filename];
     },
     _renderReadonly: function () {
-        this.do_toggle(!!this.value);
-        if (this.value) {
-            this.$el.empty().append($("<span/>").addClass('fa fa-download'));
-            if (this.recordData.id) {
-                this.$el.css('cursor', 'pointer');
-            } else {
-                this.$el.css('cursor', 'not-allowed');
-            }
-            if (this.filename_value) {
-                this.$el.append(" " + this.filename_value);
-            }
-        }
-        if (!this.res_id) {
-            this.$el.css('cursor', 'not-allowed');
-        } else {
-            this.$el.css('cursor', 'pointer');
+        var visible = !!(this.value && this.res_id);
+        this.$el.empty().css('cursor', 'not-allowed');
+        this.do_toggle(visible);
+        if (visible) {
+            this.$el.css('cursor', 'pointer')
+                    .text(this.filename_value || '')
+                    .prepend($('<span class="fa fa-download"/>'), ' ');
         }
     },
     _renderEdit: function () {
@@ -1793,10 +1784,14 @@ var PriorityWidget = AbstractField.extend({
     // the current implementation of this widget makes it
     // only usable for fields of type selection
     className: "o_priority",
+    attributes: {
+        'role': 'radiogroup',
+    },
     events: {
         'mouseover > a': '_onMouseOver',
         'mouseout > a': '_onMouseOut',
         'click > a': '_onClick',
+        'keydown > a': '_onKeydown',
     },
     supportedFieldTypes: ['selection'],
 
@@ -1812,6 +1807,17 @@ var PriorityWidget = AbstractField.extend({
      */
     isSet: function () {
         return true;
+    },
+
+    /**
+     * Returns the currently-checked star, or the first one if no star is
+     * checked.
+     *
+     * @override
+     */
+    getFocusableElement: function () {
+        var checked = this.$("[aria-checked='true']");
+        return checked.length ? checked : this.$("[data-index='1']");
     },
 
     //--------------------------------------------------------------------------
@@ -1831,8 +1837,9 @@ var PriorityWidget = AbstractField.extend({
         }) : 0;
         this.$el.empty();
         this.empty_value = this.field.selection[0][0];
+        this.$el.attr('aria-label', this.string);
         _.each(this.field.selection.slice(1), function (choice, index) {
-            self.$el.append(self._renderStar('<a href="#">', index_value >= index+1, index+1, choice[1]));
+            self.$el.append(self._renderStar('<a href="#">', index_value >= index+1, index+1, choice[1], index_value));
         });
     },
 
@@ -1843,12 +1850,18 @@ var PriorityWidget = AbstractField.extend({
      * @param {boolean} isFull whether the star is a full star or not
      * @param {integer} index the index of the star in the series
      * @param {string} tip tooltip for this star's meaning
+     * @param {integer} indexValue the index of the last full star or 0
      * @private
      */
-    _renderStar: function (tag, isFull, index, tip) {
+    _renderStar: function (tag, isFull, index, tip, indexValue) {
+        var isChecked = indexValue === index;
+        var defaultFocus = indexValue === 0 && index === 1;
         return $(tag)
+            .attr('role', 'radio')
+            .attr('aria-checked', isChecked)
             .attr('title', tip)
             .attr('aria-label', tip)
+            .attr('tabindex', isChecked || defaultFocus ? 0 : -1)
             .attr('data-index', index)
             .addClass('o_priority_star fa')
             .toggleClass('fa-star', isFull)
@@ -1900,6 +1913,36 @@ var PriorityWidget = AbstractField.extend({
         this.$('.o_priority_star').removeClass('fa-star-o').addClass('fa-star');
         $(event.currentTarget).nextAll().removeClass('fa-star').addClass('fa-star-o');
     },
+
+    /**
+     * Runs the default behavior when <enter> is pressed over a star
+     * (the same as if it was clicked); otherwise forwards event to the widget.
+     *
+     * @param {KeydownEvent} event
+     * @private
+     */
+    _onKeydown: function (event) {
+        if (event.which === $.ui.keyCode.ENTER) {
+            return;
+        }
+        this._super.apply(this, arguments);
+    },
+
+    _onNavigationMove: function (ev) {
+        var $curControl = this.$('a:focus');
+        var $nextControl;
+        if (ev.data.direction === 'right' || ev.data.direction === 'down') {
+            $nextControl = $curControl.next('a');
+        } else if (ev.data.direction === 'left' || ev.data.direction === 'up') {
+            $nextControl = $curControl.prev('a');
+        }
+        if ($nextControl && $nextControl.length) {
+            ev.stopPropagation();
+            $nextControl.focus();
+            return;
+        }
+        this._super.apply(this, arguments);
+    },
 });
 
 var AttachmentImage = AbstractField.extend({
@@ -1931,6 +1974,19 @@ var StateSelectionWidget = AbstractField.extend({
         'click .dropdown-item': '_setSelection',
     },
     supportedFieldTypes: ['selection'],
+
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+
+    /**
+     * Returns the drop down button.
+     *
+     * @override
+     */
+    getFocusableElement: function () {
+        return this.$("a[data-toggle='dropdown']");
+    },
 
     //--------------------------------------------------------------------------
     // Private
@@ -1987,7 +2043,7 @@ var StateSelectionWidget = AbstractField.extend({
             .addClass(currentState.state_class)
             .prop('special_click', true)
             .parent().attr('title', currentState.state_name)
-            .attr('aria-label', currentState.state_name);
+            .attr('aria-label', self.string + ": " + currentState.state_name);
 
         // Render "FormSelection.Items" and move it into "FormSelection"
         var $items = $(qweb.render('FormSelection.items', {

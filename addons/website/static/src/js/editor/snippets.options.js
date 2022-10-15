@@ -1132,7 +1132,7 @@ options.registry.gallery = options.Class.extend({
      */
     removeAllImages: function (previewMode) {
         var $addImg = $('<div>', {
-            class: 'alert alert-info css_editable_mode_display text-center',
+            class: 'alert alert-info css_non_editable_mode_hidden text-center',
         });
         var $text = $('<span>', {
             class: 'o_add_images',
@@ -1436,6 +1436,9 @@ options.registry.topMenuColor = options.registry.colorpicker.extend({
             },
         });
         this.$el.toggleClass('d-none', !enabled);
+        if (!enabled) {
+            this.$el.find('button.selected').removeClass('selected');
+        }
     },
 
     //--------------------------------------------------------------------------
@@ -1453,6 +1456,16 @@ options.registry.topMenuColor = options.registry.colorpicker.extend({
         this.trigger_up('action_demand', {
             actionName: 'toggle_page_option',
             params: [{name: 'header_color', value: color}],
+        });
+    },
+    /**
+     * @override
+     */
+    _onColorResetButtonClick: function () {
+        this._super.apply(this, arguments);
+        this.trigger_up('action_demand', {
+            actionName: 'toggle_page_option',
+            params: [{name: 'header_color', value: ''}],
         });
     },
 });

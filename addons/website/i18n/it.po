@@ -5,11 +5,9 @@
 # Translators:
 # Marius Marolla <mariusmarolla@entersys.it>, 2018
 # Cesare Cugnasco <cesare.cugnasco@gmail.com>, 2018
-# Lorenzo Battistini <lb@takobi.online>, 2018
 # Manuela Feliciani <mfeliciani@alice.it>, 2018
 # Luigi Di Naro <gigidn@gmail.com>, 2018
 # Simone Bernini <simone@aperturelabs.it>, 2018
-# ginfriz <ginfriz84@hotmail.it>, 2018
 # Giacomo Grasso <giacomo.grasso.82@gmail.com>, 2018
 # SebastianoPistore <SebastianoPistore.info@protonmail.ch>, 2018
 # Francesco Garganese <francesco.garganese@aeromnia.aero>, 2018
@@ -20,7 +18,9 @@
 # Paolo Valier, 2018
 # Léonie Bouchat <lbo@odoo.com>, 2019
 # Davide Corio <enlightx@gmail.com>, 2019
-# Sergio Zanchetta <primes2h@gmail.com>, 2020
+# Lorenzo Battistini <lb@takobi.online>, 2020
+# Sergio Zanchetta <primes2h@gmail.com>, 2021
+# BigBlu <paolo.moroni@air-srl.com>, 2021
 # 
 msgid ""
 msgstr ""
@@ -28,7 +28,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-14 07:33+0000\n"
 "PO-Revision-Date: 2018-08-24 09:33+0000\n"
-"Last-Translator: Sergio Zanchetta <primes2h@gmail.com>, 2020\n"
+"Last-Translator: BigBlu <paolo.moroni@air-srl.com>, 2021\n"
 "Language-Team: Italian (https://www.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -383,7 +383,7 @@ msgid ""
 "                                            Create a Google Project and Get a Key"
 msgstr ""
 "<i class=\"fa fa-arrow-right\"/>\n"
-"                                            Crea un progetto Google e ricevi una chiave"
+"                                            Crea un progetto Google e ottieni una chiave"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
@@ -786,7 +786,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.user_navbar
 msgid "<span class=\"sr-only\">Toggle Dropdown</span>"
-msgstr "<span class=\"sr-only\">Aziona elenco a discesa</span>"
+msgstr "<span class=\"sr-only\">Commuta menù a discesa</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.user_navbar
@@ -870,7 +870,7 @@ msgid ""
 "field as True to allow users to run this action. If it is set to False the "
 "action cannot be run through the website."
 msgstr ""
-"Un'azione del server di codice può essere eseguita dal sito web con un "
+"Il codice di un'azione server può essere eseguito dal sito web con un "
 "controller. L'indirizzo è <base>/website/action/<website_path>. Imposta il "
 "valore di questo campo su Vero per consentire agli utenti di eseguire "
 "un'azione. Se questo campo è impostato su Falso, l'azione non può essere "
@@ -1329,8 +1329,8 @@ msgid ""
 "Click here to choose your main branding color.<br/>It will recompute the "
 "palette with suggested matching colors."
 msgstr ""
-"Clicca qui per scegliere il colore principale della tua immagine di "
-"marca.<br/> La tavolezza verrà rinfrescata con colori coordinati."
+"Clicca qui per scegliere il colore principale del tuo marchio.<br/> La "
+"tavolozza verrà aggiornata con i colori abbinati suggeriti."
 
 #. module: website
 #. openerp-web
@@ -1413,7 +1413,7 @@ msgstr "Configurazione"
 #. module: website
 #: model:ir.model.fields,field_description:website.field_res_config_settings__has_social_network
 msgid "Configure Social Network"
-msgstr "Configurazione dei \"social network\""
+msgstr "Configurazione social network"
 
 #. module: website
 #. openerp-web
@@ -1920,6 +1920,11 @@ msgid "Email support"
 msgstr "Assistenza tecnica via e-mail"
 
 #. module: website
+#: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
+msgid "Enable billing on your Google Project"
+msgstr "Abilita fatturazione sul progetto Google"
+
+#. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_page_ir_ui_view
 #: model_terms:website.page,arch_db:website.bs_debug_page
 msgid "Enter email"
@@ -2113,7 +2118,7 @@ msgstr "Iscrizione gratuita"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.theme_customize
 msgid "Full"
-msgstr ""
+msgstr "Intera"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_comparisons
@@ -2449,7 +2454,7 @@ msgstr "Icona"
 #. module: website
 #: model:ir.model.fields,help:website.field_website__specific_user_account
 msgid "If True, new accounts will be associated to the current website"
-msgstr "Se vero, i nuovi account verranno associati al corrente sito web"
+msgstr "Se vero, i nuovi account vengono associati al corrente sito web"
 
 #. module: website
 #: model:ir.model.fields,help:website.field_res_config_settings__social_default_image
@@ -2487,6 +2492,9 @@ msgid ""
 "* if False, the view currently does not extend its parent but can be enabled\n"
 "         "
 msgstr ""
+"Se questa è una vista ereditata,\n"
+"* se True, la vista estende sempre la vista genitore\n"
+"* se False, la vista attualmente non estende la vista genitore ma si può abilitare"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.one_page_line
@@ -2997,12 +3005,12 @@ msgstr "Trasferimento temporaneo (302)"
 #. module: website
 #: model:ir.model,name:website.model_website_multi_mixin
 msgid "Multi Website Mixin"
-msgstr "Combinazione di siti web multipli"
+msgstr "Mixin siti web multipli"
 
 #. module: website
 #: model:ir.model,name:website.model_website_published_multi_mixin
 msgid "Multi Website Published Mixin"
-msgstr "Combinazione di siti web multipli pubblicati "
+msgstr "Mixin siti web multipli pubblicati "
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
@@ -3253,6 +3261,15 @@ msgid ""
 "(<xpath/>) are applied, and the result is used as if it were this view's\n"
 "actual arch.\n"
 msgstr ""
+"Viene impiegato solo se la vista eredita da un'altra vista (inherit_id non è falso/nullo).\n"
+"\n"
+"* Se estensione (predefinito), ed è richiesta la vista, viene cercata la\n"
+"primaria più vicina (via inherit_id). Quindi vengono applicate, con il\n"
+"suo modello, tutte quelle che ereditano dalla vista stessa\n"
+"* Se primario, viene pienamente risolta la vista primaria più vicina (anche\n"
+"se usa un modello diverso), quindi vengono applicate le specifiche\n"
+"di ereditarietà della vista stessa (<xpath/>) usando il risultato come fosse\n"
+"l'attuale architettura.\n"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.show_website_info
@@ -3421,7 +3438,7 @@ msgstr "Percorso padre"
 #. module: website
 #: model:ir.model.fields,help:website.field_website__partner_id
 msgid "Partner-related data of the user"
-msgstr "Dati partner dell'utente"
+msgstr "Dati utente collegati al partner"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_page_ir_ui_view
@@ -4676,7 +4693,7 @@ msgstr "Percorso sito web"
 #. module: website
 #: model:ir.model,name:website.model_website_published_mixin
 msgid "Website Published Mixin"
-msgstr "Combinazione di siti web pubblicati"
+msgstr "Mixin siti web pubblicati"
 
 #. module: website
 #: model:ir.model,name:website.model_website_redirect
@@ -4738,14 +4755,14 @@ msgstr "Menù sito web"
 #: model:ir.model.fields,field_description:website.field_website_page__website_meta_description
 #: model:ir.model.fields,field_description:website.field_website_seo_metadata__website_meta_description
 msgid "Website meta description"
-msgstr "Descrizioni meta del sito"
+msgstr "Meta descrizione sito web"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_ir_ui_view__website_meta_keywords
 #: model:ir.model.fields,field_description:website.field_website_page__website_meta_keywords
 #: model:ir.model.fields,field_description:website.field_website_seo_metadata__website_meta_keywords
 msgid "Website meta keywords"
-msgstr "Meta parole chiave del sito"
+msgstr "Meta parole chiave sito web"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_ir_ui_view__website_meta_title
@@ -4854,7 +4871,7 @@ msgstr "Non puoi avere due utenti con lo stesso login!"
 #: code:addons/website/controllers/backend.py:47
 #, python-format
 msgid "You do not have sufficient rights to perform that action."
-msgstr "Non hai diritti sufficienti per eseguire questa azione."
+msgstr "Diritti non sufficienti per eseguire questa azione."
 
 #. module: website
 #. openerp-web
@@ -4873,6 +4890,12 @@ msgid ""
 msgstr ""
 "Questa pagina è stata nascosta dai risultati di ricerca. Non verrà "
 "indicizzata dai motori di ricerca. "
+
+#. module: website
+#: code:addons/website/models/website.py:162
+#, python-format
+msgid "You must keep at least one website."
+msgstr "Deve essere conservato almeno un sito web."
 
 #. module: website
 #. openerp-web

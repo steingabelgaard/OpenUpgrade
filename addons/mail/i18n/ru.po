@@ -3,7 +3,7 @@
 # * mail
 # 
 # Translators:
-# Владимир Куряев <istercul@gmail.com>, 2018
+# 6da4f49c4b78e697e34b24b2a66289f5, 2018
 # Sergey Vilizhanin, 2018
 # Collex100, 2018
 # Vasiliy Korobatov <korobatov@gmail.com>, 2019
@@ -13,8 +13,9 @@
 # Gennady Marchenko <gennadym@gmail.com>, 2019
 # Martin Trigaux, 2019
 # sergeiruzkiicode <sergei.ruzki@icode.by>, 2019
-# Ivan Yelizariev <yelizariev@it-projects.info>, 2020
+# Ivan Yelizariev // IEL <yelizariev@itpp.dev>, 2020
 # ILMIR <karamov@it-projects.info>, 2020
+# Сергей Шебанин <sergey@shebanin.ru>, 2021
 # 
 msgid ""
 msgstr ""
@@ -22,7 +23,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-14 07:34+0000\n"
 "PO-Revision-Date: 2018-08-24 09:20+0000\n"
-"Last-Translator: ILMIR <karamov@it-projects.info>, 2020\n"
+"Last-Translator: Сергей Шебанин <sergey@shebanin.ru>, 2021\n"
 "Language-Team: Russian (https://www.transifex.com/odoo/teams/41243/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1084,6 +1085,12 @@ msgid "Call"
 msgstr "Звонок"
 
 #. module: mail
+#: code:addons/mail/models/mail_notification.py:57
+#, python-format
+msgid "Can not update the message or recipient of a notification."
+msgstr ""
+
+#. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/js/followers.js:365
 #: code:addons/mail/static/src/xml/activity.xml:86
@@ -1826,6 +1833,13 @@ msgstr "название документа"
 
 #. module: mail
 #. openerp-web
+#: code:addons/mail/static/src/xml/thread.xml:524
+#, python-format
+msgid "Document not downloadable"
+msgstr ""
+
+#. module: mail
+#. openerp-web
 #: code:addons/mail/static/src/xml/activity.xml:101
 #, python-format
 msgid "Done"
@@ -2325,6 +2339,12 @@ msgstr "Только подписчики"
 #, python-format
 msgid "Following"
 msgstr "Подписан"
+
+#. module: mail
+#: code:addons/mail/models/mail_channel.py:778
+#, python-format
+msgid "Following invites are invalid as user groups do not match: %s"
+msgstr ""
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_activity__icon
@@ -3269,6 +3289,13 @@ msgid "Mark as done"
 msgstr "Отметить сделанным"
 
 #. module: mail
+#. openerp-web
+#: code:addons/mail/static/src/xml/thread.xml:300
+#, python-format
+msgid "Mark as todo"
+msgstr ""
+
+#. module: mail
 #: model:ir.ui.menu,name:mail.mail_blacklist_menu
 msgid "Mass Mail Blacklist"
 msgstr "Черный список массовой рассылки"
@@ -4055,6 +4082,18 @@ msgstr "1 подписчик"
 #, python-format
 msgid "Online"
 msgstr "Онлайн"
+
+#. module: mail
+#: code:addons/mail/models/mail_message.py:1052
+#, python-format
+msgid "Only administrators are allowed to export mail message"
+msgstr "Экспортировать сообщения может только администратор."
+
+#. module: mail
+#: code:addons/mail/models/mail_message.py:1043
+#, python-format
+msgid "Only administrators are allowed to use grouped read on message model"
+msgstr "Только администратор может просматривать сообщения с группировкой"
 
 #. module: mail
 #: code:addons/mail/models/mail_channel.py:436
@@ -4983,6 +5022,13 @@ msgstr "Отправить сообщение"
 
 #. module: mail
 #. openerp-web
+#: code:addons/mail/static/src/xml/discuss.xml:141
+#, python-format
+msgid "Send by mail"
+msgstr ""
+
+#. module: mail
+#. openerp-web
 #: code:addons/mail/static/src/js/discuss.js:145
 #, python-format
 msgid "Send explanation to author"
@@ -5371,6 +5417,12 @@ msgstr ""
 "Владелец записей, созданных по письмам с этим псевдонимом. Если это поле не "
 "задано, система попытается найти подходящего владельца на основе отправителя"
 " или сделает владельцем администратора."
+
+#. module: mail
+#: code:addons/mail/models/mail_channel.py:0
+#, python-format
+msgid "The partner can not join this channel"
+msgstr ""
 
 #. module: mail
 #: code:addons/mail/models/mail_activity.py:243
@@ -5819,6 +5871,29 @@ msgstr "Название поля пользователя"
 
 #. module: mail
 #. openerp-web
+#: code:addons/mail/static/src/xml/discuss.xml:157
+#: code:addons/mail/static/src/xml/discuss.xml:278
+#, python-format
+msgid "User is idle"
+msgstr "Пользователь Отошел"
+
+#. module: mail
+#. openerp-web
+#: code:addons/mail/static/src/xml/discuss.xml:158
+#, python-format
+msgid "User is offline"
+msgstr "Пользователь Не в сети"
+
+#. module: mail
+#. openerp-web
+#: code:addons/mail/static/src/xml/discuss.xml:156
+#: code:addons/mail/static/src/xml/discuss.xml:277
+#, python-format
+msgid "User is online"
+msgstr "Пользователь В сети"
+
+#. module: mail
+#. openerp-web
 #: code:addons/mail/static/src/xml/discuss.xml:62
 #: code:addons/mail/static/src/xml/thread_window.xml:11
 #, python-format
@@ -6070,6 +6145,13 @@ msgstr "Вы находитесь в канале <b># %s </b>."
 
 #. module: mail
 #. openerp-web
+#: code:addons/mail/static/src/js/attachment_box.js:132
+#, python-format
+msgid "You are not allowed to upload an attachment here."
+msgstr ""
+
+#. module: mail
+#. openerp-web
 #: code:addons/mail/static/src/js/discuss.js:338
 #, python-format
 msgid ""
@@ -6086,6 +6168,24 @@ msgid ""
 msgstr ""
 "Вы можете отметить любое сообщение «звездочкой», и оно будет отображаться в "
 "этой почтовом ящике."
+
+#. module: mail
+#: cod:addons/mail/models/mail_channel.py:0
+#, python-format
+msgid "You can not remove this partner from this channel"
+msgstr ""
+
+#. module: mail
+#: code:addons/mail/models/mail_channel.py:0
+#, python-format
+msgid "You can not write on the record of other users"
+msgstr ""
+
+#. module: mail
+#: code:addons/mail/models/mail_channel.py:0
+#, python-format
+msgid "You can not write on this field"
+msgstr ""
 
 #. module: mail
 #: code:addons/mail/models/res_users.py:87
@@ -6106,6 +6206,14 @@ msgid ""
 msgstr ""
 "Вы на можете удалить такие группы, так как группа всей компании нужна "
 "множеству модулей."
+
+#. module: mail
+#: code:addons/mail/models/mail_alias.py:89
+#, python-format
+msgid ""
+"You cannot use anything else than unaccented latin characters in the alias "
+"address."
+msgstr ""
 
 #. module: mail
 #: code:addons/mail/models/mail_channel.py:257
@@ -6132,8 +6240,8 @@ msgstr "Вы были назначены для"
 #. openerp-web
 #: code:addons/mail/static/src/js/services/mail_notification_manager.js:198
 #, python-format
-msgid "You have been invited to: "
-msgstr "Вы приглашены в:"
+msgid "You have been invited to: %s"
+msgstr "Вы были приглашены в: #%s"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_channel_notify_moderation

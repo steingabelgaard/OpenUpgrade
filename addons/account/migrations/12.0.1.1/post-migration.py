@@ -5,14 +5,6 @@ from openupgradelib import openupgrade
 from psycopg2.extensions import AsIs
 
 
-def disable_account_payment_term_comp_rule(env):
-    # This rule is disabled (active=False), because if not, when migrating
-    # we will get missing payment terms in a multi-company environment
-    # (as previously there wasn't a record rule).
-    payment_rule = env.ref('account.account_payment_term_comp_rule')
-    payment_rule.active = False
-
-
 def map_account_journal_bank_statements_source(cr):
     openupgrade.map_values(
         cr,
@@ -220,10 +212,47 @@ def set_default_taxes(env):
         })
 
 
+def populate_fiscal_years(env):
+    if openupgrade.table_exists(env.cr, 'account_fiscalyear'):
+        # An old 8.0 table is still present with fiscal years
+        # We populate the new table with the old values
+        openupgrade.logged_query(
+            env.cr, """
+            INSERT INTO account_fiscal_year (
+                id, name, company_id, date_from, date_to,
+                create_date, create_uid, write_date, write_uid
+            )
+            SELECT
+                id, name, company_id, date_start, date_stop,
+                create_date, create_uid, write_date, write_uid
+            FROM account_fiscalyear;
+            """)
+    elif openupgrade.table_exists(env.cr, 'date_range_type') and \
+            openupgrade.column_exists(env.cr, 'date_range_type', 'fiscal_year'):
+        query = """INSERT INTO account_fiscal_year (
+                name, company_id, date_from, date_to,
+                create_date, create_uid, write_date, write_uid
+            )
+            SELECT
+                dr.name, {},
+                dr.date_start, dr.date_end,
+                dr.create_date, dr.create_uid, dr.write_date, dr.write_uid
+            FROM date_range dr
+            JOIN date_range_type drt ON dr.type_id = drt.id"""
+        openupgrade.logged_query(
+            env.cr, query.format("COALESCE(dr.company_id, drt.company_id)") + """
+            WHERE drt.fiscal_year AND COALESCE(dr.company_id, drt.company_id) IS NOT NULL"""
+        )
+        openupgrade.logged_query(
+            env.cr, query.format("rc.id") + """
+            CROSS JOIN res_company rc
+            WHERE drt.fiscal_year AND COALESCE(dr.company_id, drt.company_id) IS NULL"""
+        )
+
+
 @openupgrade.migrate()
 def migrate(env, version):
     cr = env.cr
-    disable_account_payment_term_comp_rule(env)
     map_account_journal_bank_statements_source(cr)
     map_account_payment_term_line_option(cr)
     map_account_tax_type_tax_use(cr)
@@ -235,6 +264,7 @@ def migrate(env, version):
     fill_account_move_reverse_entry_id(env)
     recompute_invoice_taxes_add_analytic_tags(env)
     set_default_taxes(env)
+    populate_fiscal_years(env)
     openupgrade.load_data(
         cr, 'account', 'migrations/12.0.1.1/noupdate_changes.xml')
     openupgrade.delete_record_translations(

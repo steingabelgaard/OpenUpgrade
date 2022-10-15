@@ -80,7 +80,7 @@ class MrpUnbuild(models.Model):
     def onchange_product_id(self):
         if self.product_id:
             self.bom_id = self.env['mrp.bom']._bom_find(product=self.product_id)
-            self.product_uom_id = self.product_id.uom_id.id
+            self.product_uom_id = self.mo_id.product_id == self.product_id and self.mo_id.product_uom_id.id or self.product_id.uom_id.id
 
     @api.constrains('product_qty')
     def _check_qty(self):
@@ -135,7 +135,7 @@ class MrpUnbuild(models.Model):
         for produce_move in produce_moves:
             if produce_move.has_tracking != 'none':
                 original_move = self.mo_id.move_raw_ids.filtered(lambda move: move.product_id == produce_move.product_id)
-                needed_quantity = produce_move.product_qty
+                needed_quantity = produce_move.product_uom_qty
                 for move_lines in original_move.mapped('move_line_ids').filtered(lambda ml: ml.lot_produced_id == self.lot_id):
                     # Iterate over all move_lines until we unbuilded the correct quantity.
                     taken_quantity = min(needed_quantity, move_lines.qty_done)

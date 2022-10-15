@@ -45,6 +45,9 @@
   <record id="bq" model="res.country">
     <field eval="599" name="phone_code"/>
   </record>
+  <record id="pf" model="res.country">
+    <field name="vat_label">N° Tahiti</field>
+  </record>
   <!-- not needed (because end-migration)
   <record id="user_root" model="res.users">
     <field name="signature"><![CDATA[<span>&#45;&#45; <br/>
@@ -173,6 +176,9 @@ System</span>]]></field>
   </record>
   <record id="ARS" model="res.currency">
     <field name="position">before</field>
+  </record>
+  <record id="LSL" model="res.currency">
+    <field name="symbol">M</field>
   </record>
   <record id="hr" model="res.country">
     <field eval="'%(street)s \n%(street2)s \n%(zip)s %(city)s \n%(country_name)s'" name="address_format"/>
