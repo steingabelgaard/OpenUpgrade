@@ -46,6 +46,9 @@ renamed_modules = {
     # OCA/web
     "web_confirm_duplicate": "web_copy_confirm",
     # OCA/...
+
+    # S&G
+    'backend_theme_v13': 'backend_theme_v14',
 }
 
 # Merged modules contain a mapping from old module names to other,
