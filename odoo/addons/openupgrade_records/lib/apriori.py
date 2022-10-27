@@ -65,6 +65,8 @@ renamed_modules = {
     'partner_school': 'sg_member_school',
     # 'sg_event': 'sg_member_event',
     
+    'backend_theme_v11': 'backend_theme_v12',
+
 }
 
 merged_modules = {
