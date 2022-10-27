@@ -71,9 +71,17 @@ merged_modules = {
     # OCA/event
     'event_activity': 'event',
     'website_event_share': 'website_event',
+    # OCA/geospatial
+    'base_geolocalize_openstreetmap': 'base_geolocalize',
     # OCA/l10n-spain
     'l10n_es_account_invoice_sequence': 'l10n_es',
+    'l10n_es_aeat_mod303_extra_data': 'l10n_es_aeat_mod303',
     'l10n_es_aeat_sii': 'l10n_es_aeat_sii_oca',
+    'l10n_es_aeat_sii_extra_data': 'l10n_es_aeat_sii_oca',
+    'l10n_es_extra_data': 'l10n_es',
+    'l10n_es_ticketbai_batuz_extra_data': 'l10n_es_ticketbai_batuz',
+    'l10n_es_ticketbai_extra_data': 'l10n_es_ticketbai',
+    'l10n_es_vat_book_extra_data': 'l10n_es_vat_book',
     # OCA/manufacture
     'repair_calendar_view': 'base_repair',
     # OCA/multi-company
@@ -90,6 +98,8 @@ merged_modules = {
     'sale_order_variant_mgmt': 'sale_product_matrix',
     # OCA/purchase-reporting
     'purchase_report_extension': 'purchase',
+    # OCA/sale-workflow
+    'sale_disable_inventory_check': 'sale_stock',
     # OCA/server-backend
     'base_suspend_security': 'base',
     # OCA/social
@@ -105,8 +115,10 @@ merged_modules = {
     # OCA/web
     'web_export_view': 'web',
     'web_favicon': 'base',
+    'web_tree_resize_column': 'web',
     'web_view_searchpanel': 'web',
     'web_widget_color': 'web',
+    'web_widget_float_formula': 'web',
     'web_widget_many2many_tags_multi_selection': 'web',
     'web_widget_one2many_product_picker_sale_stock_available_info_popup': (
         'web_widget_one2many_product_picker_sale_stock'
