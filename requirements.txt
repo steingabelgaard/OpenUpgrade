@@ -51,3 +51,44 @@ future==0.16.0
 # Needed for OpenUpgrade
 odoorpc==0.6.0
 openupgradelib
+
+# Add commenly used packages for our repos here:
+git+https://github.com/OCA/openupgradelib.git@master
+unicodecsv
+raven
+sentry_sdk
+unidecode
+prometheus_client
+unidecode
+raven
+xlsxwriter
+paramiko
+PyPDF2
+invoice2data
+simplejson
+checksumdir
+#oauth_provider
+oauthlib
+# auth_totp
+pyotp
+# auth_signup_verify_email
+email_validator
+# auth_u2f
+python-u2flib-server
+# password_security
+zxcvbn
+# auth_saml
+lasso
+# server-tools
+openpyxl
+xlrd
+xlwt
+# web_widget_bokeh_chart
+bokeh==1.1.0
+# web_widget_plotly_chart
+plotly==4.1.0
+# web_widget_mpld3_chart
+matplotlib>=2.0.0
+mpld3==0.3
+freezegun
+pdftotext
