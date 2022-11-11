@@ -90,5 +90,5 @@ plotly==4.1.0
 # web_widget_mpld3_chart
 matplotlib>=2.0.0
 mpld3==0.3
-freezegun
+freezegun==0.3.14
 pdftotext
