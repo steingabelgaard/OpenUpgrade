@@ -92,3 +92,5 @@ matplotlib>=2.0.0
 mpld3==0.3
 freezegun==0.3.14
 pdftotext
+#account_bank_statement_import_csv
+chardet==4.0.0
