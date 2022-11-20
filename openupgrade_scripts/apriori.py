@@ -37,6 +37,13 @@ renamed_modules = {
     "edi_backend_partner": "edi_backend_partner_oca",
     "edi_exchange_template": "edi_exchange_template_oca",
     "edi_storage": "edi_storage_oca",
+    "edi_voxel": "edi_voxel_oca",
+    "edi_voxel_account_invoice": "edi_voxel_account_invoice_oca",
+    "edi_voxel_sale_order_import": "edi_voxel_sale_order_import_oca",
+    "edi_voxel_sale_secondary_unit": "edi_voxel_sale_secondary_unit_oca",
+    "edi_voxel_secondary_unit": "edi_voxel_secondary_unit_oca",
+    "edi_voxel_stock_picking": "edi_voxel_stock_picking_oca",
+    "edi_voxel_stock_picking_secondary_unit": "edi_voxel_stock_picking_secondary_unit_oca",  # noqa: B950
     "edi_webservice": "edi_webservice_oca",
     "edi_xml": "edi_xml_oca",
     # OCA/l10n-spain
@@ -93,8 +100,6 @@ merged_modules = {
     "sale_order_price_recalculation": "sale",
     # OCA/stock-logistics-warehouse
     "stock_inventory_include_exhausted": "stock",
-    # OCA/survey
-    "survey_description": "survey",
     # OCA/web
     "web_editor_background_color": "web_editor",
     # OCA/website
