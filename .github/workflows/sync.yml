@@ -19,7 +19,7 @@ env:
   # Optional toggle to spawn time logs (keeps action active) 
   SPAWN_LOGS: "false" # "true" or "false"
 
-# This runs every day on 1801 UTC
+# This runs every saturday on 0101 UTC
 on:
   schedule:
     - cron: '01 1 * * 6'
