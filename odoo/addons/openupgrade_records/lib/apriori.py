@@ -63,6 +63,7 @@ renamed_modules = {
     # 'partner_member_number': 'sg_member_organization',
     'partner_ckr': 'sg_member_ckr',
     'partner_school': 'sg_member_school',
+    'partner_crim_record': 'sg_member_crim_record',
     # 'sg_event': 'sg_member_event',
     
     'backend_theme_v11': 'backend_theme_v12',
