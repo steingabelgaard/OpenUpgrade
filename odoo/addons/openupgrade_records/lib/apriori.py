@@ -68,7 +68,7 @@ renamed_modules = {
     
     'backend_theme_v11': 'backend_theme_v12',
 
-    'google_tag_manager': 'website_google_tag_manager',
+    # 'google_tag_manager': 'website_google_tag_manager',
 
 }
 
