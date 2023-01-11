@@ -64,6 +64,7 @@ renamed_modules = {
     'partner_ckr': 'sg_member_ckr',
     'partner_school': 'sg_member_school',
     'partner_crim_record': 'sg_member_crim_record',
+    'partner_checkbox': 'sg_member_checkbox',
     # 'sg_event': 'sg_member_event',
     
     'backend_theme_v11': 'backend_theme_v12',
