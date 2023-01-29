@@ -20,4 +20,4 @@ def migrate(env, version):
         env.cr,
         "ALTER TABLE hr_expense_sheet ADD COLUMN IF NOT EXISTS payment_state varchar",
     )
-    openupgrade.load_data(env.with_context(default_can_be_expensed=True).cr, "hr_expense", "15.0.2.0/hr_expense_product.xml")
+    openupgrade.load_data(env.cr, "hr_expense", "15.0.2.0/hr_expense_product.xml")
