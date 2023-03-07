@@ -41,6 +41,9 @@ def migrate(env, version):
             ("calendar.recurrence", "calendar_recurrence", "we", "wed"),
         ],
     )
+    openupgrade.delete_sql_constraint_safely(
+        env, "calendar", "calendar_recurrence", "month_day"
+    )
     # change the value of 'weekday' in the calendar_recurrence table
     openupgrade.logged_query(
         env.cr,
@@ -55,7 +58,4 @@ def migrate(env, version):
                            WHEN weekday = 'WE' THEN 'WED'
                            END
         WHERE weekday IN ('FR', 'MO', 'SA', 'SU', 'TH', 'TU', 'WE')""",
-    )
-    openupgrade.delete_sql_constraint_safely(
-        env, "calendar", "calendar_recurrence", "month_day"
     )
