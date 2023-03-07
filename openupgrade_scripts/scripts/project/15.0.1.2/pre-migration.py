@@ -6,6 +6,10 @@ _column_renames = {
     ],
 }
 
+_field_spec = [
+    ("project.milestone", "project_milestone", "target_date", "deadline"),
+]
+
 
 def fill_project_project_allow_task_dependencies(env):
     openupgrade.add_fields(
@@ -58,6 +62,13 @@ def adapt_project_task_dependency(env):
     openupgrade.rename_columns(
         env.cr, {"task_dependencies_rel": [("dependency_task_id", "depends_on_id")]}
     )
+
+
+def adapt_project_milestone(env):
+    # check if project_milestone was installed
+    if not openupgrade.table_exists(env.cr, "project_milestone"):
+        return
+    openupgrade.rename_fields(env, _field_spec, False)
 
 
 @openupgrade.migrate()

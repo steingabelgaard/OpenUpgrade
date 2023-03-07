@@ -13,6 +13,7 @@ renamed_modules = {
     # OCA/e-commerce
     "website_sale_attribute_filter_order": "website_sale_product_attribute_filter_order",
     # OCA/project
+    "project_milestone": "project_task_milestone",
     "project_stage_state": "project_task_stage_state",
     # OCA/stock-logistics-worehouse
     "stock_inventory_cost_info": "stock_quant_cost_info",
