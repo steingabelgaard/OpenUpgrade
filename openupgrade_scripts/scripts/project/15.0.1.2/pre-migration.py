@@ -77,3 +77,4 @@ def migrate(env, version):
     adapt_project_task_dependency(env)
     fill_project_project_allow_task_dependencies(env)
     fill_project_project_last_update_status(env)
+    adapt_project_milestone(env)
