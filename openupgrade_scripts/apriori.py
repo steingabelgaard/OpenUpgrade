@@ -62,6 +62,8 @@ merged_modules = {
     "web_decimal_numpad_dot": "web",
     # OCA/website
     "website_snippet_timeline": "website",
+    # S&G
+    "portal_project_issue": "portal_project",
 }
 
 # only used here for upgrade_analysis
