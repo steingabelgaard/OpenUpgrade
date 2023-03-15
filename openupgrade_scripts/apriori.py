@@ -18,6 +18,8 @@ renamed_modules = {
     # OCA/stock-logistics-worehouse
     "stock_inventory_cost_info": "stock_quant_cost_info",
     # OCA/...
+    # S&G
+    "mail_subject": "mail_notification_custom_subject",
 }
 
 # Merged modules contain a mapping from old module names to other,
