@@ -20,6 +20,7 @@ renamed_modules = {
     # OCA/...
     # S&G
     "mail_subject": "mail_notification_custom_subject",
+    "backend_theme_v14": "hue_backend_theme",
     # Google Maps OCA -> Brain-tec
     "base_google_map": "web_google_maps",
     "contacts_maps": "web_view_google_map",
