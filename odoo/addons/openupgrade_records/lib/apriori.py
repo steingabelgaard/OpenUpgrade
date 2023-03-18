@@ -31,6 +31,8 @@ renamed_modules = {
     # OCA/stock-logistics-warehouse
     'stock_putaway_product_form': 'stock_putaway_product_template',
 
+    # OCA/WEB
+    "web_copy_confirm": "web_confirm_duplicate",
     # S&G
     'backend_theme_v12': 'backend_theme_v13',
 }
