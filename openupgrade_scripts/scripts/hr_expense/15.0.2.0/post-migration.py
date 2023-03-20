@@ -14,7 +14,9 @@ def _fill_payment_state(env):
     # v14 these ones were not computed being of type `entry`, which changes now
     # on v15 if the method `_payment_state_matters` returns True, which is the
     # case for the expense moves
+    _create_hooks(env)
     env["hr.expense.sheet"].search([]).account_move_id._compute_amount()
+    _delete_hooks(env)
     # Now perform the SQL to transfer the payment_state
     openupgrade.logged_query(
         env.cr,
@@ -25,6 +27,46 @@ def _fill_payment_state(env):
         WHERE am.id = hes.account_move_id
         """,
     )
+
+
+def _create_hooks(env):
+    """Avoid errors due to locked dates, overriding involved methods."""
+
+    def _check_fiscalyear_lock_date(self):
+        return True
+
+    def _check_tax_lock_date(self):
+        return True
+
+    def _check_reconciliation(self):
+        return True
+
+    # create hooks
+    _check_fiscalyear_lock_date._original_method = type(
+        env["account.move"]
+    )._check_fiscalyear_lock_date
+    type(env["account.move"])._check_fiscalyear_lock_date = _check_fiscalyear_lock_date
+    _check_tax_lock_date._original_method = type(
+        env["account.move.line"]
+    )._check_tax_lock_date
+    type(env["account.move.line"])._check_tax_lock_date = _check_tax_lock_date
+    _check_reconciliation._original_method = type(
+        env["account.move.line"]
+    )._check_reconciliation
+    type(env["account.move.line"])._check_reconciliation = _check_reconciliation
+
+
+def _delete_hooks(env):
+    """Restore the locking dates original methods."""
+    type(env["account.move"])._check_fiscalyear_lock_date = type(
+        env["account.move"]
+    )._check_fiscalyear_lock_date._original_method
+    type(env["account.move.line"])._check_tax_lock_date = type(
+        env["account.move.line"]
+    )._check_tax_lock_date._original_method
+    type(env["account.move.line"])._check_reconciliation = type(
+        env["account.move.line"]
+    )._check_reconciliation._original_method
 
 
 @openupgrade.migrate()
