@@ -7,6 +7,7 @@ renamed_modules = {
     # odoo
     "crm_iap_lead": "crm_iap_mine",
     "crm_iap_lead_enrich": "crm_iap_enrich",
+    "crm_iap_lead_website": "website_crm_iap_reveal",
     "mail_client_extension": "mail_plugin",
     "payment_ingenico": "payment_ogone",
     "website_mail_channel": "website_mail_group",
@@ -15,6 +16,8 @@ renamed_modules = {
     # OCA/project
     "project_milestone": "project_task_milestone",
     "project_stage_state": "project_task_stage_state",
+    # OCA/sale-promotion
+    "sale_coupon_mass_mailing": "coupon_mass_mailing",
     # OCA/stock-logistics-worehouse
     "stock_inventory_cost_info": "stock_quant_cost_info",
     # OCA/...
@@ -42,17 +45,34 @@ merged_modules = {
     "website_event_track_exhibitor": "website_event_exhibitor",
     "website_form": "website",
     "website_sale_management": "website_sale",
+    # odoo/design-themes
+    "website_animate": "website",
     # odoo/enterprise
     "stock_barcode_mobile": "stock_barcode",
     # OCA/account-financial-tools
     "stock_account_prepare_anglo_saxon_out_lines_hook": "stock_account",
+    # OCA/e-commerce
+    "website_sale_product_attribute_filter_visibility": "website_sale",
     "account_menu": "account_usability",
+    # OCA/account-invoicing
+    "purchase_invoicing_no_zero_line": "purchase",
+    # OCA/account-invoicing
+    "purchase_batch_invoicing": "purchase",
+    # OCA/e-commerce
+    "website_sale_cart_no_redirect": "website_sale",
     # OCA/hr
     "hr_recruitment_notification": "hr_recruitment",
+    # OCA/e-commerce
+    "website_sale_attribute_filter_price": "website_sale",
+    "website_sale_stock_available_display": "website_sale_stock",
     # OCA/hr-attendance
     "hr_attendance_user_list": "hr_attendance",
     # OCA/product-attribute
     "stock_account_product_cost_security": "product_cost_security",
+    # OCA/stock-logistics-reporting
+    "stock_inventory_valuation_pivot": "stock_account",
+    # OCA/stock-logistics-warehouse
+    "stock_orderpoint_manual_procurement": "stock",
     # OCA/stock-logistics-workflow
     "stock_deferred_assign": "stock",
     "stock_move_assign_picking_hook": "stock",
