@@ -48,6 +48,8 @@ renamed_modules = {
     "edi_voxel_stock_picking_secondary_unit": "edi_voxel_stock_picking_secondary_unit_oca",  # noqa: B950
     "edi_webservice": "edi_webservice_oca",
     "edi_xml": "edi_xml_oca",
+    # OCA/hr-holidays
+    "hr_leave_hour": "hr_leave_custom_hour_interval",
     # OCA/l10n-spain
     "l10n_es_account_bank_statement_import_n43": "l10n_es_account_statement_import_n43",
     # OCA/server-tools
@@ -78,7 +80,6 @@ merged_modules = {
     "pos_cash_rounding": "point_of_sale",
     "pos_kitchen_printer": "pos_restaurant",
     "pos_reprint": "point_of_sale",
-    "theme_default": "website",
     "website_theme_install": "website",
     # odoo/design-themes
     "theme_graphene_blog": "theme_graphene",
@@ -88,11 +89,15 @@ merged_modules = {
     "hs_code_link": "product_harmonized_system_delivery",
     # OCA/event
     "website_event_questions_free_text": "website_event_questions",
+    # OCA/e-commerce
+    "website_snippet_carousel_product": "website_sale",
     # OCA/margin-analysis
     "sale_order_margin_percent": "sale_margin",
     # OCA/partner-contact
     "base_vat_sanitized": "base_vat",
     "partner_bank_active": "base",
+    # OCA/pos
+    "pos_ticket_logo": "point_of_sale",
     # OCA/project
     "project_description": "project",
     "project_stage_closed": "project",
@@ -102,6 +107,7 @@ merged_modules = {
     "report_qweb_pdf_fixed_column": "web",
     # OCA/sale-workflow
     "sale_order_price_recalculation": "sale",
+    "sale_order_pricelist_tracking": "sale",
     # OCA/stock-logistics-warehouse
     "stock_inventory_include_exhausted": "stock",
     # OCA/web
