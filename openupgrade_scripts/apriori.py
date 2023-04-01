@@ -42,6 +42,7 @@ merged_modules = {
     "payment_fix_register_token": "payment",
     "procurement_jit": "sale_stock",
     "sale_timesheet_edit": "sale_timesheet",
+    "sale_timesheet_purchase": "sale_timesheet",
     "website_event_track_exhibitor": "website_event_exhibitor",
     "website_form": "website",
     "website_sale_management": "website_sale",
@@ -72,6 +73,7 @@ merged_modules = {
     # OCA/stock-logistics-reporting
     "stock_inventory_valuation_pivot": "stock_account",
     # OCA/stock-logistics-warehouse
+    "stock_inventory_exclude_sublocation": "stock",
     "stock_orderpoint_manual_procurement": "stock",
     # OCA/stock-logistics-workflow
     "stock_deferred_assign": "stock",
