@@ -27,7 +27,7 @@ def migrate(env, version):
         """,
     )
     openupgrade.convert_field_to_html(
-        env.cr, "calendar_event", "description", "description"
+        env.cr, "calendar_event", "description", "description", verbose=False
     )
     openupgrade.rename_fields(
         env,
