@@ -14,7 +14,7 @@ def migrate(env, version):
                 "event.track",
                 "event_track",
                 "char",
-                "False",
+                False,
                 "website_event_track",
             ),
             (
@@ -22,7 +22,7 @@ def migrate(env, version):
                 "event.track",
                 "event_track",
                 "char",
-                "False",
+                False,
                 "website_event_track",
             ),
         ],
