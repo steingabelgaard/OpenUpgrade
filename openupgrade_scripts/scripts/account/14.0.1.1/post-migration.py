@@ -477,7 +477,7 @@ def fill_account_journal_payment_credit_debit_account_id(env):
     journals = (
         env["account.journal"]
         .with_context(active_test=False)
-        .search([("type", "in", ("bank", "cash"))])
+        .search([("type", "in", ("bank", "cash"))], limit=1)
     )
     current_assets_type = env.ref("account.data_account_type_current_assets")
     for journal in journals:
