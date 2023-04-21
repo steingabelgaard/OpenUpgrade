@@ -477,36 +477,36 @@ def fill_account_journal_payment_credit_debit_account_id(env):
     journals = (
         env["account.journal"]
         .with_context(active_test=False)
-        .search([("type", "in", ("bank", "cash"))], limit=1)
+        .search([("type", "in", ("bank", "cash"))])
     )
+    first = True
     current_assets_type = env.ref("account.data_account_type_current_assets")
     for journal in journals:
-        random_account = env["account.account"].search(
-            [("company_id", "=", journal.company_id.id)], limit=1
-        )
-        digits = len(random_account.code) if random_account else 6
-        if journal.type == "bank":
-            liquidity_account_prefix = journal.company_id.bank_account_code_prefix or ""
-        else:
-            liquidity_account_prefix = (
-                journal.company_id.cash_account_code_prefix
-                or journal.company_id.bank_account_code_prefix
-                or ""
+        if first:
+            random_account = env["account.account"].search(
+                [("company_id", "=", journal.company_id.id)], limit=1
             )
-        journal.payment_debit_account_id = env["account.account"].create(
-            {
-                "name": _("Outstanding Receipts"),
-                "code": env["account.account"]._search_new_account_code(
-                    journal.company_id, digits, liquidity_account_prefix
-                ),
-                "reconcile": True,
-                "user_type_id": current_assets_type.id,
-                "company_id": journal.company_id.id,
-            }
-        )
-        journal.payment_credit_account_id = (
-            env["account.account"]
-            .create(
+            digits = len(random_account.code) if random_account else 6
+            if journal.type == "bank":
+                liquidity_account_prefix = journal.company_id.bank_account_code_prefix or ""
+            else:
+                liquidity_account_prefix = (
+                    journal.company_id.cash_account_code_prefix
+                    or journal.company_id.bank_account_code_prefix
+                    or ""
+                )
+            payment_debit_account_id = env["account.account"].create(
+                {
+                    "name": _("Outstanding Receipts"),
+                    "code": env["account.account"]._search_new_account_code(
+                        journal.company_id, digits, liquidity_account_prefix
+                    ),
+                    "reconcile": True,
+                    "user_type_id": current_assets_type.id,
+                    "company_id": journal.company_id.id,
+                }
+            )
+            payment_credit_account_id = env["account.account"].create(
                 {
                     "name": _("Outstanding Payments"),
                     "code": env["account.account"]._search_new_account_code(
@@ -517,8 +517,9 @@ def fill_account_journal_payment_credit_debit_account_id(env):
                     "company_id": journal.company_id.id,
                 }
             )
-            .id
-        )
+            first = False
+        journal.payment_debit_account_id = payment_debit_account_id
+        journal.payment_credit_account_id = payment_credit_account_id
 
 
 def create_new_counterpart_account_payment_transfer(env):
