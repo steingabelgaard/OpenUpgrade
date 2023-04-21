@@ -477,11 +477,14 @@ def fill_account_journal_payment_credit_debit_account_id(env):
     journals = (
         env["account.journal"]
         .with_context(active_test=False)
-        .search([("type", "in", ("bank", "cash"))])
+        .search([("type", "in", ("bank", "cash"))], order="company_id")
     )
     first = True
+    company_id = False
     current_assets_type = env.ref("account.data_account_type_current_assets")
     for journal in journals:
+        if company_id != journal.company_id.id:
+            first = True
         if first:
             random_account = env["account.account"].search(
                 [("company_id", "=", journal.company_id.id)], limit=1
@@ -518,6 +521,7 @@ def fill_account_journal_payment_credit_debit_account_id(env):
                 }
             )
             first = False
+            company_id = journal.company_id.id
         journal.payment_debit_account_id = payment_debit_account_id
         journal.payment_credit_account_id = payment_credit_account_id
 
