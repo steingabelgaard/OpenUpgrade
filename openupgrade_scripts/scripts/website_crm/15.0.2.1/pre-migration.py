@@ -6,7 +6,7 @@ def deprecate_website_crm_privacy_policy(env):
     module_website_crm_privacy_policy = env["ir.module.module"].search(
         [("name", "=", "website_crm_privacy_policy")]
     )
-    if module_website_crm_privacy_policy.state == "installed":
+    if module_website_crm_privacy_policy.state in ("installed", "to upgrade"):
         module_website_form_require_legal = env["ir.module.module"].search(
             [("name", "=", "website_form_require_legal")]
         )
@@ -41,12 +41,13 @@ def deprecate_website_crm_privacy_policy(env):
         for view in views:
             arch_tree = etree.fromstring(view.arch)
             div_checkbox = arch_tree.xpath("//input[@id='privacy_policy']/../../..")
-            if len(div_checkbox):
+            if div_checkbox:
                 div_checkbox[0].getparent().remove(div_checkbox[0])
             div_button_send = arch_tree.xpath(
                 "//a[hasclass('o_website_form_send')]/../.."
-            )[0]
-            div_button_send.addprevious(new_checkbox_form)
+            )
+            if div_button_send:
+                div_button_send[0].addprevious(new_checkbox_form)
             view.write({"arch": etree.tostring(arch_tree, encoding="unicode")})
 
 
