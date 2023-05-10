@@ -19,7 +19,9 @@ renamed_modules = {
     "project_milestone": "project_task_milestone",
     "project_stage_state": "project_task_stage_state",
     # OCA/sale-promotion
+    "sale_coupon_chatter": "coupon_chatter",
     "sale_coupon_mass_mailing": "coupon_mass_mailing",
+    "sale_coupon_portal": "coupon_portal",
     # OCA/stock-logistics-worehouse
     "stock_inventory_cost_info": "stock_quant_cost_info",
     # OCA/...
