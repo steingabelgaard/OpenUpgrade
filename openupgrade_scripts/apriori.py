@@ -20,8 +20,10 @@ renamed_modules = {
     "project_stage_state": "project_task_stage_state",
     # OCA/sale-promotion
     "sale_coupon_chatter": "coupon_chatter",
+    "sale_coupon_commercial_partner_applicability": "coupon_commercial_partner_applicability",
     "sale_coupon_mass_mailing": "coupon_mass_mailing",
     "sale_coupon_portal": "coupon_portal",
+    "sale_coupon_portal_commercial_partner_applicability": "coupon_portal_commercial_partner_applicability",  # noqa: B950
     # OCA/stock-logistics-worehouse
     "stock_inventory_cost_info": "stock_quant_cost_info",
     # OCA/...
@@ -93,6 +95,7 @@ merged_modules = {
     # OCA/web
     "web_decimal_numpad_dot": "web",
     # OCA/website
+    "website_google_analytics_4": "website",
     "website_snippet_timeline": "website",
     # S&G
     "portal_project_issue": "portal_project",
