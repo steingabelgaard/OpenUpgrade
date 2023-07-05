@@ -1,5 +1,8 @@
 from openupgradelib import openupgrade
 
+import logging
+_logger = logging.getLogger(__name__)
+
 
 def _fill_payment_state(env):
     openupgrade.logged_query(
@@ -21,7 +24,8 @@ def _fill_payment_state(env):
     ].__class__._check_fiscalyear_lock_date
     env["account.move.line"].__class__._check_reconciliation = lambda self: None
     env["account.move"].__class__._check_fiscalyear_lock_date = lambda self: None
-    for chunk in openupgrade.chunked(env["hr.expense.sheet"].search([('account_move_id', '!=', False)])):
+    for chunk in openupgrade.chunked(env["hr.expense.sheet"].search([('account_move_id', '!=', False)]), single=False):
+        _logger.info('Expense sheet payment state - chunk')
         chunk.account_move_id._compute_amount()
     env["account.move.line"].__class__._check_reconciliation = _check_reconciliation
     env[
