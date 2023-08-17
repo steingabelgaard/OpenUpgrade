@@ -185,20 +185,22 @@ def _migrate_html_attributes(string):
     """
     parser = etree.HTMLParser()
     root = etree.fromstring(string, parser)
-    for element in root.iter():
-        new_attrs = {}
-        for attr_name, attr_value in element.attrib.items():
-            new_attr_value = _migrate_placeholder_char(attr_value)
-            if new_attr_value != attr_value:
-                new_attrs[f"t-attf-{attr_name}"] = new_attr_value
-            else:
-                new_attrs[attr_name] = attr_value
-        for attr in list(element.attrib.keys()):
-            del element.attrib[attr]
-        for attr_name, attr_value in new_attrs.items():
-            element.set(attr_name, attr_value)
-    return etree.tostring(root, pretty_print=True, encoding="unicode")
-
+    if root:
+        for element in root.iter():
+            new_attrs = {}
+            for attr_name, attr_value in element.attrib.items():
+                new_attr_value = _migrate_placeholder_char(attr_value)
+                if new_attr_value != attr_value:
+                    new_attrs[f"t-attf-{attr_name}"] = new_attr_value
+                else:
+                    new_attrs[attr_name] = attr_value
+            for attr in list(element.attrib.keys()):
+                del element.attrib[attr]
+            for attr_name, attr_value in new_attrs.items():
+                element.set(attr_name, attr_value)
+        return etree.tostring(root, pretty_print=True, encoding="unicode")
+    else:
+        return string  # Unchanged in case of errors
 
 def mako_html_to_qweb(string):
     """Exlusive for the body content"""
