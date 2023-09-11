@@ -99,9 +99,28 @@ def convert_payment_acquirer_provider(env):
         WHERE {openupgrade.get_legacy_name('provider')} = 'manual'""",
     )
 
+def fill_payment_transaction_last_state_change(env):
+    openupgrade.add_fields(env, [(
+        "last_state_change",                      # Field name
+        "payment.transaction",  # Model name
+        "payment_transaction",  # Table name
+        "date",                          # Odoo Field type (in lower case)
+        False,                              # [Optional] SQL type (if custom fields)
+        "payment",                          # Module name
+        False,                              # [Optional] Default value
+    )])
+    openupgrade.logged_query(
+        env.cr,
+        """
+        UPDATE payment_transaction
+        SET last_state_change = write_date
+        WHERE last_state_change IS NULL""",
+    )
+
 
 @openupgrade.migrate()
 def migrate(env, version):
+    fill_payment_transaction_last_state_change(env)
     openupgrade.copy_columns(env.cr, _copied_columns)
     openupgrade.rename_fields(env, _renamed_fields)
     openupgrade.rename_xmlids(env.cr, _renamed_xmlids)

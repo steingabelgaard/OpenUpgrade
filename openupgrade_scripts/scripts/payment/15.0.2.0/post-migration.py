@@ -20,17 +20,6 @@ def fill_payment_transaction_tokenize(env):
         WHERE type = 'form_save'""",
     )
 
-
-def fill_payment_transaction_last_state_change(env):
-    openupgrade.logged_query(
-        env.cr,
-        """
-        UPDATE payment_transaction
-        SET last_state_change = write_date
-        WHERE last_state_change IS NULL""",
-    )
-
-
 def fill_payment_transaction_partner_state_id(env):
     openupgrade.logged_query(
         env.cr,
@@ -67,7 +56,6 @@ def migrate(env, version):
     fill_payment_adquirer_allow_tokenization(env)
     fill_payment_transaction_tokenize(env)
     fill_payment_transaction_partner_state_id(env)
-    fill_payment_transaction_last_state_change(env)
     create_account_payment_method_line(env)
     openupgrade.load_data(env.cr, "payment", "15.0.2.0/noupdate_changes.xml")
     openupgrade.delete_record_translations(
