@@ -26,7 +26,8 @@ def _fill_payment_state(env):
     env["account.move"].__class__._check_fiscalyear_lock_date = lambda self: None
     for chunk in openupgrade.chunked(env["hr.expense.sheet"].search([('account_move_id', '!=', False)]), single=False):
         _logger.info('Expense sheet payment state - chunk')
-        chunk.account_move_id._compute_amount()
+        # chunk.account_move_id._compute_amount()
+        chunk.account_move_id._compute_payment_state()
     env["account.move.line"].__class__._check_reconciliation = _check_reconciliation
     env[
         "account.move"
