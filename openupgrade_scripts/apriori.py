@@ -8,7 +8,6 @@ renamed_modules = {
     "coupon": "loyalty",
     "payment_test": "payment_demo",
     "payment_transfer": "payment_custom",
-    "pos_coupon": "pos_loyalty",
     "sale_coupon": "sale_loyalty",
     "sale_coupon_delivery": "sale_loyalty_delivery",
     "website_sale_coupon": "website_sale_loyalty",
@@ -17,10 +16,33 @@ renamed_modules = {
     "helpdesk_sale_coupon": "helpdesk_sale_loyalty",
     "sale_coupon_taxcloud": "sale_loyalty_taxcloud",
     "sale_coupon_taxcloud_delivery": "sale_loyalty_taxcloud_delivery",
+    # OCA/bank-statement-import
+    "account_statement_import": "account_statement_import_file",
+    "account_statement_import_txt_xlsx": "account_statement_import_sheet_file",
+    # OCA/crm
+    "crm_project": "crm_lead_to_task",
     # OCA/knowledge
     "knowledge": "document_knowledge",
+    # OCA/pos
+    "pos_journal_image": "pos_payment_method_image",
+    # OCA/sale-promotion
+    "coupon_incompatibility": "loyalty_incompatibility",
+    "coupon_limit": "loyalty_limit",
+    "coupon_mass_mailing": "loyalty_mass_mailing",
+    "coupon_multi_gift": "loyalty_multi_gift",
+    "coupon_criteria_multi_product": "loyalty_criteria_multi_product",
+    "sale_coupon_criteria_multi_product": "sale_loyalty_criteria_multi_product",
+    "sale_coupon_incompatibility": "sale_loyalty_incompatibility",
+    "sale_coupon_limit": "sale_loyalty_limit",
+    "sale_coupon_multi_gift": "sale_loyalty_multi_gift",
+    "sale_coupon_order_line_link": "sale_loyalty_order_line_link",
+    "sale_coupon_order_suggestion": "sale_loyalty_order_suggestion",
+    "sale_coupon_partner": "sale_loyalty_partner",
+    "website_sale_coupon_page": "website_sale_loyalty_page",
     # OCA/server-ux
     "mass_editing": "server_action_mass_edit",
+    # OCA/l10n-italy
+    "l10n_it_ricevute_bancarie": "l10n_it_riba",
     # OCA/...
 }
 
@@ -40,6 +62,10 @@ merged_modules = {
     "l10n_be_edi": "account_edi_ubl_cii",
     "l10n_nl_edi": "account_edi_ubl_cii",
     "l10n_no_edi": "account_edi_ubl_cii",
+    "note_pad": "note",
+    "pad": "web_editor",
+    "pad_project": "project",
+    "pos_coupon": "pos_loyalty",
     "pos_gift_card": "pos_loyalty",
     "sale_gift_card": "sale_loyalty",
     "sale_project_account": "sale_project",
@@ -47,7 +73,31 @@ merged_modules = {
     "website_sale_gift_card": "website_sale_loyalty",
     # OCA/account-financial-tools
     "account_balance_line": "account",
-    # OCA/...
+    "account_move_force_removal": "account",
+    # OCA/account-invoicing
+    "account_invoice_search_by_reference": "account",
+    # OCA/account-invoice-reporting
+    "account_invoice_report_due_list": "account",
+    # OCA/e-commerce
+    "website_sale_require_login": "website_sale",
+    # OCA/pos
+    "pos_order_line_no_unlink": "point_of_sale",
+    "pos_product_sort": "point_of_sale",
+    # OCA/purchase-workflow
+    "product_form_purchase_link": "purchase",
+    # OCA/sale-promotion
+    "coupon_commercial_partner_applicability": "loyalty_partner_applicability",
+    "sale_coupon_selection_wizard": "sale_loyalty_order_suggestion",
+    # OCA/sale-workflow
+    "sale_product_set_layout": "sale_product_set",
+    # OCA/social
+    "mail_preview_audio": "mail",
+    "mail_preview_base": "mail",
+    # OCA/stock-logistics-workflow
+    "stock_picking_backorder_strategy": "stock",
+    # OCA/web
+    "web_drop_target": "web",
+    "web_ir_actions_act_view_reload": "web",
 }
 
 # only used here for upgrade_analysis
