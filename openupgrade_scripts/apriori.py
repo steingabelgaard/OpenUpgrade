@@ -16,6 +16,8 @@ renamed_modules = {
     "helpdesk_sale_coupon": "helpdesk_sale_loyalty",
     "sale_coupon_taxcloud": "sale_loyalty_taxcloud",
     "sale_coupon_taxcloud_delivery": "sale_loyalty_taxcloud_delivery",
+    # OCA/account-reconcile
+    "account_reconciliation_widget": "account_reconcile_oca",
     # OCA/bank-statement-import
     "account_statement_import": "account_statement_import_file",
     "account_statement_import_txt_xlsx": "account_statement_import_sheet_file",
@@ -24,7 +26,6 @@ renamed_modules = {
     # OCA/knowledge
     "knowledge": "document_knowledge",
     # OCA/pos
-    "pos_journal_image": "pos_payment_method_image",
     # OCA/sale-promotion
     "coupon_incompatibility": "loyalty_incompatibility",
     "coupon_limit": "loyalty_limit",
@@ -39,6 +40,7 @@ renamed_modules = {
     "sale_coupon_order_suggestion": "sale_loyalty_order_suggestion",
     "sale_coupon_partner": "sale_loyalty_partner",
     "website_sale_coupon_page": "website_sale_loyalty_page",
+    "website_sale_coupon_selection_wizard": "website_sale_loyalty_suggestion_wizard",
     # OCA/server-ux
     "mass_editing": "server_action_mass_edit",
     # OCA/l10n-italy
