@@ -80,6 +80,13 @@ def finish_migration_to_mail_group(env):
     )
 
 
+def _migrate_filters(string):
+    # Fix "xxx | join('yyy')" -> "'yyy'.join(xxx)"
+    string = re.sub(r'([^|]+) *\| *join\(([^)]+)\)', '\\2.join(\\1)', string)
+    # Remove unhandled filters like "|safe"
+    return re.sub(r'\|\s*[a-z]+', '', string)
+
+
 def _migrate_placeholder_char(string):
     """
     Replace dynamic placeholders in char/text fields:
@@ -87,10 +94,8 @@ def _migrate_placeholder_char(string):
     """
     if not string:
         return string
-    string = re.sub(r"\s?\|\s?safe\s?", "", string)
     pattern = r"\$\{([^}]*)\}"
-    repl = r"{{\1}}"
-    return re.sub(pattern, repl, string)
+    return re.sub(pattern, lambda r: '{{%s}}' % _migrate_filters(r.group(1)), string)
 
 
 def repl_placeholder(match):
