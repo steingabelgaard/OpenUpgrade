@@ -101,6 +101,7 @@ def _migrate_placeholder_char(string):
 def repl_placeholder(match):
     """Aux. method. We declare it globally so we don't have scope issues from shell"""
     (expression,) = match.groups()
+    expression = _migrate_filters(expression)
     expression = html.escape(expression)
     return f'<t t-out="{expression}"></t>'
 
