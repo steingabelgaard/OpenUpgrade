@@ -741,4 +741,4 @@ def migrate(env, version):
     openupgrade.logged_query(
         env.cr, "DROP VIEW IF EXISTS account_invoice_report CASCADE"
     )
-    move_account_group_to_base_cmp(env)
+    # move_account_group_to_base_cmp(env)
