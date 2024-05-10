@@ -696,6 +696,16 @@ def fill_partial_reconcile_currency(env):
         """,
     )
 
+def move_account_group_to_base_cmp(env):
+    openupgrade.logged_query(
+            env.cr,
+            "ALTER TABLE account_group ADD COLUMN company_id integer",
+        )
+    openupgrade.logged_query(
+            env.cr,
+            "update account_group SET company_id = 1",
+        )
+    
 
 @openupgrade.migrate()
 def migrate(env, version):
@@ -731,3 +741,4 @@ def migrate(env, version):
     openupgrade.logged_query(
         env.cr, "DROP VIEW IF EXISTS account_invoice_report CASCADE"
     )
+    move_account_group_to_base_cmp(env)
