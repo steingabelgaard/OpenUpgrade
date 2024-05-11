@@ -107,6 +107,7 @@ def harmonize_groups(env):
 
 @openupgrade.migrate()
 def migrate(env, version):
-    harmonize_groups(env)
+    # harmonize_groups(env)
     # Launch a recomputation of the account groups after previous changes
-    env["account.account"].search([])._compute_account_group()
+    # env["account.account"].search([])._compute_account_group()
+    pass
