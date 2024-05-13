@@ -82,7 +82,7 @@ def finish_migration_to_mail_group(env):
 
 def _migrate_filters(string):
     # Fix "xxx | join('yyy')" -> "'yyy'.join(xxx)"
-    string = re.sub(r'([^|]+) *\| *join\(([^)]+)\)', '\\2.join(\\1)', string)
+    string = re.sub(r'([^|]+) *\| *join\(([^)]+)\)', '\\2.join([str(x) for x in \\1 if x])', string)
     # Remove unhandled filters like "|safe"
     return re.sub(r'\|\s*[a-z]+', '', string)
 
