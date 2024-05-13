@@ -110,4 +110,57 @@ def migrate(env, version):
     # harmonize_groups(env)
     # Launch a recomputation of the account groups after previous changes
     # env["account.account"].search([])._compute_account_group()
-    pass
+    
+    # Restore account group on accounts
+    openupgrade.logged_query(
+        env.cr,
+        """
+        UPDATE account_account SET group_id = openupgrade_legacy_14_0_group_id WHERE company_id=1
+        """,
+    )
+
+    openupgrade.logged_query(
+        env.cr,
+        """
+        UPDATE account_group SET parent_id = openupgrade_legacy_14_0_parent_id WHERE company_id=1 and openupgrade_legacy_14_0_parent_id is not null
+        """,
+    )
+    # Delete our std. account groups from Main org
+    openupgrade.logged_query(
+        env.cr,
+        """
+        DELETE FROM account_group WHERE company_id = 1 AND code_prefix_start IN ('1', '3', '10', '20', '30', '40')
+        """,
+    )
+    # Fill code_prefix_start from accounts
+    openupgrade.logged_query(
+        env.cr,
+        """
+        UPDATE account_group ag
+        SET min_account_code = tmp.min_code
+        FROM (SELECT MIN(code) as min_code, openupgrade_legacy_14_0_group_id FROM account_account GROUP BY openupgrade_legacy_14_0_group_id) AS tmp
+        WHERE tmp.openupgrade_legacy_14_0_group_id = ag.id and tmp.min_code < ag.code_prefix_start
+        """,
+    )
+    # Higly KFUM/K specific
+    x = range(8, 0, -1)
+    for n in x:
+        openupgrade.logged_query(
+            env.cr,
+            """
+            UPDATE account_group ag
+            SET code_prefix_start = tmp.min_code
+            FROM (SELECT MIN(code_prefix_start) as min_code, openupgrade_legacy_14_0_parent_id FROM account_group GROUP BY openupgrade_legacy_14_0_parent_id) AS tmp
+            WHERE tmp.openupgrade_legacy_14_0_parent_id = ag.id and ag.level = %d and tmp.min_code < ag.code_prefix_start
+            """ % (n),
+        )
+
+
+    openupgrade.logged_query(
+        env.cr,
+        """
+        UPDATE account_group ag
+        SET code_prefix_start = min(min_account_code, min_group_code)
+        WHERE company_id = 1;
+        """
+    )

@@ -124,7 +124,10 @@ def convert_fields(env):
             ],
             "account_account": [
                 ('group_id', None, None)
-            ]
+            ],
+            "account_group": [
+                ('parent_id', None, None)
+            ],
         },
     )
 

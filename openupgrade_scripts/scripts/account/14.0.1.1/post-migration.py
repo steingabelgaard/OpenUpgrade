@@ -846,7 +846,7 @@ def update_payment_state_partial(env):
 @openupgrade.migrate()
 def migrate(env, version):
     fill_account_journal_posted_before(env)
-    # fill_code_prefix_end_field(env)
+    fill_code_prefix_end_field(env)
     fill_default_account_id_field(env)
     fill_payment_id_and_statement_line_id_fields(env)
     fill_partial_reconcile_debit_and_credit_amounts(env)
