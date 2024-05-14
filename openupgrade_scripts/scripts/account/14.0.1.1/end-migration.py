@@ -154,13 +154,3 @@ def migrate(env, version):
             WHERE tmp.openupgrade_legacy_14_0_parent_id = ag.id and ag.level = %d and tmp.min_code < ag.code_prefix_start
             """ % (n),
         )
-
-
-    openupgrade.logged_query(
-        env.cr,
-        """
-        UPDATE account_group ag
-        SET code_prefix_start = min(min_account_code, min_group_code)
-        WHERE company_id = 1;
-        """
-    )
