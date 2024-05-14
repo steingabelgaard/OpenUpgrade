@@ -137,9 +137,9 @@ def migrate(env, version):
         env.cr,
         """
         UPDATE account_group ag
-        SET min_account_code = tmp.min_code
+        SET code_prefix_start = tmp.min_code
         FROM (SELECT MIN(code) as min_code, openupgrade_legacy_14_0_group_id FROM account_account GROUP BY openupgrade_legacy_14_0_group_id) AS tmp
-        WHERE tmp.openupgrade_legacy_14_0_group_id = ag.id and tmp.min_code < ag.code_prefix_start
+        WHERE tmp.openupgrade_legacy_14_0_group_id = ag.id
         """,
     )
     # Higly KFUM/K specific
