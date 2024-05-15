@@ -125,13 +125,6 @@ def migrate(env, version):
         UPDATE account_group SET parent_id = openupgrade_legacy_14_0_parent_id WHERE company_id=1 and openupgrade_legacy_14_0_parent_id is not null
         """,
     )
-    # Delete our std. account groups from Main org
-    openupgrade.logged_query(
-        env.cr,
-        """
-        DELETE FROM account_group WHERE company_id = 1 AND code_prefix_start IN ('1', '3', '10', '20', '30', '40')
-        """,
-    )
     # Fill code_prefix_start from accounts
     openupgrade.logged_query(
         env.cr,
