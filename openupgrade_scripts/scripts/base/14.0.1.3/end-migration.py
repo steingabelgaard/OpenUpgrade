@@ -20,7 +20,7 @@ def uninstall_conflicting_it_edi(cr):
 @openupgrade.migrate()
 def migrate(env, version):
     """Call disable_invalid_filters in every edition of openupgrade"""
-    openupgrade.disable_invalid_filters(env)
+    # openupgrade.disable_invalid_filters(env)
     # web_diagram has been remove in V14
     # we merge into web, if no diagram are present, to avoid to
     # have to uninstall the module manually
