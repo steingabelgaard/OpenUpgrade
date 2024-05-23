@@ -1,5 +1,6 @@
 import re
 
+from markupsafe import Markup
 from openupgradelib import openupgrade
 
 
@@ -8,34 +9,39 @@ def extract_footer_copyright_company_name(env):
     content from previous versions if it has been customised, or directly put
     the company name if not customized (which is the previous value).
     """
-    main_copyright_view = env.ref("website.footer_copyright_company_name")
-    if not main_copyright_view:
-        return
-    main_copyright_arch = main_copyright_view.arch_db
-    main_copyright_pattern = r'<span class="o_footer_copyright_name mr-2">(.*?)<\/span>'
-    main_copyright_matches = re.findall(
-        main_copyright_pattern,
-        main_copyright_arch,
-        re.DOTALL,
-    )
     for website in env["website"].search([]):
-        view = env["ir.ui.view"].search(
-            [("key", "=", "website.layout"), ("website_id", "=", website.id)]
+        main_copyright_view = website.with_context(website_id=website.id).viewref(
+            "website.footer_copyright_company_name"
         )
-        website_layout_arch = view.arch_db or ""
-        website_layout_pattern = (
+        main_copyright_arch = main_copyright_view.arch_db
+        main_copyright_pattern = (
             r'<span class="o_footer_copyright_name mr-2">(.*?)<\/span>'
         )
-        website_layout_matches = re.findall(
-            website_layout_pattern, website_layout_arch, re.DOTALL
+        main_copyright_matches = re.findall(
+            main_copyright_pattern,
+            main_copyright_arch,
+            re.DOTALL,
         )
-        new_arch = main_copyright_arch.replace(
-            main_copyright_matches[0],
-            website_layout_matches
-            and website_layout_matches[0]
-            or f"Copyright © {website.company_id.name}",
-        )
-        main_copyright_view.with_context(website_id=website.id).arch_db = new_arch
+        if main_copyright_matches:
+            website_layout_view = website.with_context(website_id=website.id).viewref(
+                "website.layout"
+            )
+            website_layout_arch = website_layout_view.arch_db or ""
+            website_layout_pattern = (
+                r'<span class="o_footer_copyright_name mr-2">(.*?)<\/span>'
+            )
+            website_layout_matches = re.findall(
+                website_layout_pattern, website_layout_arch, re.DOTALL
+            )
+            new_arch = re.sub(
+                main_copyright_pattern,
+                website_layout_matches[0]
+                if website_layout_matches
+                else f'<span class="o_footer_copyright_name mr-2">'
+                f"Copyright © {website.company_id.name}</span>",
+                main_copyright_arch,
+            )
+            main_copyright_view.with_context(website_id=website.id).arch = new_arch
 
 
 def update_website_form_call(env):
@@ -48,6 +54,62 @@ def update_website_form_call(env):
         view.write({"arch_db": new_arch_db})
 
 
+def update_contact_form_company_description(env):
+    """This script updates the Contact Us form on the website with information from the
+    company model. It retrieves the necessary data such as company name, address, phone,
+    email, and Google Maps link. It then updates the HTML structure of the Contact Us
+    form to display this information."""
+    common_html_block = """
+            <ul class="list-unstyled mb-0 pl-2">
+                <li>%s</li>
+                <li>
+                    <i class="fa fa-map-marker fa-fw mr-2"/>
+                    <span class="o_force_ltr">%s<br/>
+                    &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; %s %s<br/>
+                    &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; %s</span>
+                </li>
+                <li>
+                    <i class="fa fa-phone fa-fw mr-2"/><span class="o_force_ltr">%s </span>
+                </li>
+                <li><i class="fa fa-1x fa-fw fa-envelope mr-2"/><span>%s</span></li>
+                %s
+            </ul>
+        """
+    for website in env["website"].search([]):
+        website_contactus_view = website.with_context(website_id=website.id).viewref(
+            "website.contactus"
+        )
+        company = website.company_id
+        google_maps_link = (
+            (
+                f'<li><i class="fa fa-1x fa-fw fa-map-marker mr-2"/>'
+                f'<a href="{Markup.escape(company.google_map_link())}" target="_BLANK">'
+                f" Google Maps</a></li>"
+            )
+            if company.google_map_link()
+            else ""
+        )
+        company_info_html = common_html_block % (
+            company.name,
+            company.street,
+            company.city,
+            company.zip,
+            company.country_id.name,
+            company.phone,
+            company.email,
+            google_maps_link,
+        )
+        company_description_pattern = r'<div class="col-lg-4 mt-4 mt-lg-0">(.*?)<\/div>'
+        website_contactus_arch = website_contactus_view.arch_db
+        new_arch = re.sub(
+            company_description_pattern,
+            lambda match: company_info_html,
+            website_contactus_arch,
+            flags=re.DOTALL,
+        )
+        website_contactus_view.with_context(website_id=website.id).arch = new_arch
+
+
 @openupgrade.migrate()
 def migrate(env, version):
     openupgrade.logged_query(env.cr, "UPDATE website SET configurator_done = True")
@@ -55,3 +117,4 @@ def migrate(env, version):
     openupgrade.delete_records_safely_by_xml_id(env, ["website.action_website_edit"])
     update_website_form_call(env)
     extract_footer_copyright_company_name(env)
+    update_contact_form_company_description(env)

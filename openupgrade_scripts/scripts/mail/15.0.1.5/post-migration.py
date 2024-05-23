@@ -80,6 +80,13 @@ def finish_migration_to_mail_group(env):
     )
 
 
+def _migrate_filters(string):
+    # Fix "xxx | join('yyy')" -> "'yyy'.join(xxx)"
+    string = re.sub(r'([^|]+) *\| *join\(([^)]+)\)', '\\2.join([str(x) for x in \\1 if x])', string)
+    # Remove unhandled filters like "|safe"
+    return re.sub(r'\|\s*[a-z]+', '', string)
+
+
 def _migrate_placeholder_char(string):
     """
     Replace dynamic placeholders in char/text fields:
@@ -87,15 +94,14 @@ def _migrate_placeholder_char(string):
     """
     if not string:
         return string
-    string = re.sub(r"\s?\|\s?safe\s?", "", string)
     pattern = r"\$\{([^}]*)\}"
-    repl = r"{{\1}}"
-    return re.sub(pattern, repl, string)
+    return re.sub(pattern, lambda r: '{{%s}}' % _migrate_filters(r.group(1)), string)
 
 
 def repl_placeholder(match):
     """Aux. method. We declare it globally so we don't have scope issues from shell"""
     (expression,) = match.groups()
+    expression = _migrate_filters(expression)
     expression = html.escape(expression)
     return f'<t t-out="{expression}"></t>'
 
@@ -230,6 +236,16 @@ def _migrate_mail_templates(env):
             tmpl_lang.body_html = mako_html_to_qweb(tmpl_lang.body_html)
 
 
+def _pin_mail_channel_partners(env):
+    """Since this version, a check is performed on JS side on discuss initialization
+    for unsubscribing from channels that are not pinned, so we should fill the DB, which
+    by default put a NULL value on that field, with a True value.
+    """
+    openupgrade.logged_query(
+        env.cr, "UPDATE mail_channel_partner SET is_pinned=True WHERE is_pinned IS NULL"
+    )
+
+
 @openupgrade.migrate()
 def migrate(env, version):
     openupgrade.load_data(env.cr, "mail", "15.0.1.5/noupdate_changes.xml")
@@ -245,3 +261,4 @@ def migrate(env, version):
     )
     finish_migration_to_mail_group(env)
     _migrate_mail_templates(env)
+    _pin_mail_channel_partners(env)
