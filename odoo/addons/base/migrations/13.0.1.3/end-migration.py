@@ -42,6 +42,6 @@ def fix_translation_terms(env):
 @openupgrade.migrate()
 def migrate(env, version):
     """ Call disable_invalid_filters in every edition of openupgrade """
-    openupgrade.disable_invalid_filters(env)
+    # openupgrade.disable_invalid_filters(env)
     delete_obsolete_model_relations(env)
     fix_translation_terms(env)
