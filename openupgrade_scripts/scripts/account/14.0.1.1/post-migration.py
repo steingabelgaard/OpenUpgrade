@@ -424,6 +424,7 @@ def fill_statement_lines_with_no_move(env):
         else:
             stl_dates_by_company[stl_company] = stl_date
     st_lines = env["account.bank.statement.line"].browse(list(stl_dates.keys()))
+    _logger.info("Lines to add move: %s", st_lines)
     for st_line in st_lines.with_context(
         check_move_validity=False, tracking_disable=True
     ):
@@ -853,8 +854,7 @@ def migrate(env, version):
     create_account_reconcile_model_lines(env)
     create_account_reconcile_model_template_lines(env)
     create_account_tax_report_lines(env)
-    pass_bank_statement_line_note_to_journal_entry_narration(env)
-    pass_payment_to_journal_entry_narration(env)
+    
     fill_company_account_cash_basis_base_account_id(env)
     fill_account_move_line_amounts(env)
     fill_account_move_line_date(env)
@@ -869,6 +869,8 @@ def migrate(env, version):
     fill_account_payment_reconciliation(env)
     fill_account_payment_with_no_move(env)
     fill_account_bank_statement_line_reconciliation(env)
+    pass_bank_statement_line_note_to_journal_entry_narration(env)
+    pass_payment_to_journal_entry_narration(env)
     post_statements(env)
     _delete_hooks(env)
     update_payment_state_partial(env)
