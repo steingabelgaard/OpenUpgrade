@@ -123,10 +123,10 @@ def convert_fields(env):
                 ("currency_id", None, None),
             ],
             "account_account": [
-                ('group_id', None, None)
+                ('group_id', 'v12_group_id', None)
             ],
             "account_group": [
-                ('parent_id', None, None)
+                ('parent_id', 'v12_parent_id', None)
             ],
         },
     )

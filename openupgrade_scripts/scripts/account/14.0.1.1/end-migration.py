@@ -115,14 +115,14 @@ def migrate(env, version):
     openupgrade.logged_query(
         env.cr,
         """
-        UPDATE account_account SET group_id = openupgrade_legacy_14_0_group_id WHERE company_id=1
+        UPDATE account_account SET group_id = v12_group_id WHERE company_id=1
         """,
     )
 
     openupgrade.logged_query(
         env.cr,
         """
-        UPDATE account_group SET parent_id = openupgrade_legacy_14_0_parent_id WHERE company_id=1 and openupgrade_legacy_14_0_parent_id is not null
+        UPDATE account_group SET parent_id = v12_parent_id WHERE company_id=1 and v12_parent_id is not null
         """,
     )
     # Fill code_prefix_start from accounts
@@ -131,8 +131,8 @@ def migrate(env, version):
         """
         UPDATE account_group ag
         SET code_prefix_start = tmp.min_code
-        FROM (SELECT MIN(code) as min_code, openupgrade_legacy_14_0_group_id FROM account_account GROUP BY openupgrade_legacy_14_0_group_id) AS tmp
-        WHERE tmp.openupgrade_legacy_14_0_group_id = ag.id
+        FROM (SELECT MIN(code) as min_code, v12_group_id FROM account_account GROUP BY v12_group_id) AS tmp
+        WHERE tmp.v12_group_id = ag.id
         """,
     )
     # Higly KFUM/K specific
@@ -143,7 +143,7 @@ def migrate(env, version):
             """
             UPDATE account_group ag
             SET code_prefix_start = tmp.min_code
-            FROM (SELECT MIN(code_prefix_start) as min_code, openupgrade_legacy_14_0_parent_id FROM account_group GROUP BY openupgrade_legacy_14_0_parent_id) AS tmp
-            WHERE tmp.openupgrade_legacy_14_0_parent_id = ag.id and ag.level = %d and tmp.min_code < ag.code_prefix_start
+            FROM (SELECT MIN(code_prefix_start) as min_code, v12_parent_id FROM account_group GROUP BY v12_parent_id) AS tmp
+            WHERE tmp.v12_parent_id = ag.id and ag.level = %d and tmp.min_code < ag.code_prefix_start
             """ % (n),
         )
