@@ -115,7 +115,7 @@ def migrate(env, version):
     openupgrade.logged_query(
         env.cr,
         """
-        UPDATE account_account SET group_id = v12_group_id WHERE company_id=1
+        UPDATE account_account SET group_id = openupgrade_legacy_14_0_group_id WHERE company_id=1
         """,
     )
 
@@ -131,8 +131,8 @@ def migrate(env, version):
         """
         UPDATE account_group ag
         SET code_prefix_start = tmp.min_code
-        FROM (SELECT MIN(code) as min_code, v12_group_id FROM account_account GROUP BY v12_group_id) AS tmp
-        WHERE tmp.v12_group_id = ag.id
+        FROM (SELECT MIN(code) as min_code, openupgrade_legacy_14_0_group_id FROM account_account GROUP BY openupgrade_legacy_14_0_group_id) AS tmp
+        WHERE tmp.openupgrade_legacy_14_0_group_id = ag.id
         """,
     )
     # Higly KFUM/K specific
