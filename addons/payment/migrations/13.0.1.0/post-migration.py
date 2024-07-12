@@ -27,4 +27,5 @@ def update_account_invoice_transaction_rel_table(cr):
 def migrate(env, version):
     update_account_invoice_transaction_rel_table(env.cr)
     openupgrade.delete_records_safely_by_xml_id(env, unlink_by_xmlid)
-    openupgrade.load_data(env.cr, 'payment', 'migrations/13.0.1.0/noupdate_changes.xml')
+    # Skip loading af acquirer we have deleted
+    # openupgrade.load_data(env.cr, 'payment', 'migrations/13.0.1.0/noupdate_changes.xml')
