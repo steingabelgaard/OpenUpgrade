@@ -74,6 +74,7 @@ merged_modules = {
     "pad_project": "project",
     "pos_coupon": "pos_loyalty",
     "pos_gift_card": "pos_loyalty",
+    "project_account": "project",
     "sale_gift_card": "sale_loyalty",
     "sale_project_account": "sale_project",
     "website_sale_delivery_giftcard": "website_sale_loyalty_delivery",
@@ -87,6 +88,8 @@ merged_modules = {
     "account_invoice_report_due_list": "account",
     # OCA/e-commerce
     "website_sale_require_login": "website_sale",
+    # OCA/partner-contact
+    "partner_company_group": "base_partner_company_group",
     # OCA/pos
     "pos_margin_account_invoice_margin": "point_of_sale",
     "pos_order_line_no_unlink": "point_of_sale",
