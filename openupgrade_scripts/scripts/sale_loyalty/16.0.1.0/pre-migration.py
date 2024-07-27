@@ -138,13 +138,6 @@ def update_sale_order_line_data(env):
     )
 
 
-def delete_sql_constraints(env):
-    # Delete constraints to recreate it
-    openupgrade.delete_sql_constraint_safely(
-        env, "sale_loyalty", "sale_order_coupon_points", "order_coupon_unique"
-    )
-
-
 def update_template_keys(env):
     """Update template keys of the merged sale_gift_card module in loyalty_sale"""
     openupgrade.logged_query(
@@ -167,8 +160,8 @@ def update_template_keys(env):
         env.cr,
         """
         UPDATE ir_ui_view
-        SET key = 'sale_loyalty.sale_orde_portal_content_inherit'
-        WHERE key = 'sale_gift_card.sale_orde_portal_content_inherit'
+        SET key = 'sale_loyalty.sale_order_portal_content_inherit'
+        WHERE key = 'sale_gift_card.sale_order_portal_content_inherit'
         """,
     )
 
@@ -178,5 +171,4 @@ def migrate(env, version):
     openupgrade.rename_xmlids(env.cr, _xmlids_renames)
     update_loyalty_program_data(env)
     update_sale_order_line_data(env)
-    delete_sql_constraints(env)
     update_template_keys(env)
