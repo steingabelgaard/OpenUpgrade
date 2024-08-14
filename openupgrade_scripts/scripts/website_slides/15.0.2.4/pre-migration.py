@@ -12,3 +12,4 @@ def migrate(env, version):
     openupgrade.convert_field_to_html(
         env.cr, "slide_slide", "description", "description"
     )
+    env.ref('website_slides.res_partner_view_form').groups_id = False
