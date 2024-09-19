@@ -35,6 +35,7 @@ renamed_modules = {
     # Google Maps OCA -> Brain-tec
     # "base_google_map": "web_google_maps",
     # "contacts_maps": "web_view_google_map",
+    'payment_mobilepay': 'payment_vipps_mobilepay',
 }
 
 # Merged modules contain a mapping from old module names to other,
