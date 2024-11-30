@@ -1,8 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
+  <!--
   <record id="product_uom_day" model="uom.uom">
     <field name="uom_type">reference</field>
   </record>
+  -->
   <record id="product_uom_floz" model="uom.uom">
     <field name="name">fl oz (US)</field>
   </record>
