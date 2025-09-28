@@ -2,7 +2,6 @@
 [![Build Status](https://github.com/OCA/OpenUpgrade/actions/workflows/test.yml/badge.svg?branch=16.0)](https://github.com/OCA/OpenUpgrade/actions/workflows/test.yml?query=branch%3A16.0)
 [![codecov](https://codecov.io/gh/OCA/OpenUpgrade/branch/16.0/graph/badge.svg)](https://codecov.io/gh/OCA/openupgrade)
 
-
 <!-- /!\ do not modify above this line -->
 
 ![OpenUpgrade logo](https://oca.github.io/OpenUpgrade/_images/OpenUpgrade.png)
@@ -27,8 +26,8 @@ Available addons
 ----------------
 addon | version | maintainers | summary
 --- | --- | --- | ---
-[openupgrade_framework](openupgrade_framework/) | 16.0.1.0.0 | [![legalsylvain](https://github.com/legalsylvain.png?size=30px)](https://github.com/legalsylvain) [![StefanRijnhart](https://github.com/StefanRijnhart.png?size=30px)](https://github.com/StefanRijnhart) [![hbrunn](https://github.com/hbrunn.png?size=30px)](https://github.com/hbrunn) | Module to integrate in the server_wide_modules option to make upgrades between two major revisions.
-[openupgrade_scripts](openupgrade_scripts/) | 16.0.1.0.4 |  | Module that contains all the migrations analysis and scripts for migrating Odoo SA modules.
+[openupgrade_framework](openupgrade_framework/) | 16.0.1.0.1 | <a href='https://github.com/legalsylvain'><img src='https://github.com/legalsylvain.png' width='32' height='32' style='border-radius:50%;' alt='legalsylvain'/></a> <a href='https://github.com/StefanRijnhart'><img src='https://github.com/StefanRijnhart.png' width='32' height='32' style='border-radius:50%;' alt='StefanRijnhart'/></a> <a href='https://github.com/hbrunn'><img src='https://github.com/hbrunn.png' width='32' height='32' style='border-radius:50%;' alt='hbrunn'/></a> | Module to integrate in the server_wide_modules option to make upgrades between two major revisions.
+[openupgrade_scripts](openupgrade_scripts/) | 16.0.1.0.5 |  | Module that contains all the migrations analysis and scripts for migrating Odoo SA modules.
 
 [//]: # (end addons)
 

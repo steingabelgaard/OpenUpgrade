@@ -53,6 +53,34 @@ def login_or_registration_required_at_checkout(cr):
 
 
 def update_translatable_fields(cr):
+    # Edgy case for DBs with long history as well, where we could have a situation where:
+    # - The source term is a languange different from 'en_US'
+    # - That language term is blank
+    # The result is that the resultant json won't take the term for that language and
+    # it will appear with the value given to 'en_US' (as it's the default one)
+    openupgrade.logged_query(
+        cr,
+        """
+            UPDATE ir_translation
+            SET state = 'translated', value = src
+            WHERE type = 'model'
+                AND src != ''
+                AND value = ''
+                AND value IS DISTINCT FROM src
+        """,
+    )
+    # Fix terms with wrong to_translate state. DBs with long version history could have
+    # terms that didn't have the right state and those would be ignored
+    openupgrade.logged_query(
+        cr,
+        """
+            UPDATE ir_translation set state = 'translated'
+            WHERE type = 'model'
+                AND state = 'to_translate'
+                AND value is NOT NULL
+                AND value IS DISTINCT FROM src
+        """,
+    )
     # exclude fields from translation update
     exclusions = {
         # ir.actions.* inherits the name and help columns from ir.actions.actions
@@ -85,7 +113,7 @@ def update_translatable_fields(cr):
             )
             continue
         # borrowed from odoo/tools/translate.py#_get_translation_upgrade_queries
-        translation_name = "%s,%s" % (model, field)
+        translation_name = f"{model},{field}"
         emtpy_src = """'{"en_US": ""}'::jsonb"""
         openupgrade.logged_query(
             cr,
@@ -140,5 +168,7 @@ def migrate(cr, version):
         "USING ir_ui_view v "
         "WHERE r.view_id=v.id AND v.inherit_id IS NOT NULL AND v.mode != 'primary'"
     )
+    # pre-create res.partner~company_registry
+    openupgrade.logged_query(cr, "ALTER TABLE res_partner ADD company_registry VARCHAR")
     # update all translatable fields
     update_translatable_fields(cr)

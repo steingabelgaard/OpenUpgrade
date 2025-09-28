@@ -8,6 +8,7 @@ renamed_modules = {
     "coupon": "loyalty",
     "payment_test": "payment_demo",
     "payment_transfer": "payment_custom",
+    "pos_sale_gift_card": "pos_sale_loyalty",
     "sale_coupon": "sale_loyalty",
     "sale_coupon_delivery": "sale_loyalty_delivery",
     "website_sale_coupon": "website_sale_loyalty",
@@ -27,8 +28,14 @@ renamed_modules = {
     "account_statement_import_txt_xlsx": "account_statement_import_sheet_file",
     # OCA/crm
     "crm_project": "crm_lead_to_task",
+    # OCA/commission
+    "sale_commission_delegated_partner": "commission_delegated_partner",
     # OCA/knowledge
     "knowledge": "document_knowledge",
+    # OCA/multi-company
+    "res_partner_category_multi_company": "partner_category_multi_company",
+    # OCA/product-attribute
+    "product_packaging_type": "product_packaging_level",
     # OCA/project
     "project_stage_mgmt": "project_task_stage_mgmt",
     # OCA/sale-promotion
@@ -46,9 +53,13 @@ renamed_modules = {
     "sale_coupon_partner": "sale_loyalty_partner",
     "website_sale_coupon_page": "website_sale_loyalty_page",
     "website_sale_coupon_selection_wizard": "website_sale_loyalty_suggestion_wizard",
+    # OCA/sale-workflow
+    "sale_by_packaging": "sell_only_by_packaging",
     # OCA/server-ux
     "mass_editing": "server_action_mass_edit",
     # OCA/l10n-italy
+    "assets_management": "l10n_it_asset_management",
+    "l10n_it_account_balance_eu": "l10n_it_financial_statement_eu",
     "l10n_it_ricevute_bancarie": "l10n_it_riba",
     # OCA/...
 }
@@ -75,6 +86,7 @@ merged_modules = {
     "pos_coupon": "pos_loyalty",
     "pos_gift_card": "pos_loyalty",
     "project_account": "project",
+    "purchase_requisition_stock_dropshipping": "purchase_requisition_stock",
     "sale_gift_card": "sale_loyalty",
     "sale_project_account": "sale_project",
     "website_sale_delivery_giftcard": "website_sale_loyalty_delivery",
@@ -115,6 +127,8 @@ merged_modules = {
     "mail_preview_base": "mail",
     # OCA/stock-logistics-workflow
     "stock_picking_backorder_strategy": "stock",
+    # OCA/survey
+    "survey_placeholder": "survey",
     # OCA/web
     "web_drop_target": "web",
     "web_ir_actions_act_view_reload": "web",
@@ -134,7 +148,7 @@ renamed_models = {
     "coupon.rule": "loyalty.rule",
     "mail.channel.partner": "mail.channel.member",
     "payment.acquirer": "payment.provider",
-    "payment.acquirer.onboarding.wizard ": "payment.provider.onboarding.wizard",
+    "payment.acquirer.onboarding.wizard": "payment.provider.onboarding.wizard",
     "sale.coupon.apply.code": "sale.loyalty.coupon.wizard",
     "sale.payment.acquirer.onboarding.wizard": "sale.payment.provider.onboarding.wizard",
     "stock.location.route": "stock.route",
