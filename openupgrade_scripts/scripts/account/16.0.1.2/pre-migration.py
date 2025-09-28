@@ -60,6 +60,7 @@ def _fill_account_account_type(env, table):
         ADD COLUMN IF NOT EXISTS account_type VARCHAR
         """,
     )
+    # S&G: Added v8 data_account_type_asset and data_account_type_asset
     openupgrade.logged_query(
         env.cr,
         f"""
@@ -86,6 +87,8 @@ def _fill_account_account_type(env, table):
                     WHEN name = 'data_account_type_expenses' THEN 'expense'
                     WHEN name = 'data_account_type_depreciation' THEN 'expense_depreciation'
                     WHEN name = 'data_account_type_direct_costs' THEN 'expense_direct_cost'
+                    WHEN name = 'data_account_type_liability' THEN 'liability_current'
+                    WHEN name = 'data_account_type_asset' THEN 'asset_current'
                     ELSE 'off_balance'
                 END AS account_type
             FROM ir_model_data
