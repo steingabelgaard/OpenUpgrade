@@ -85,6 +85,17 @@ def _mail_template_convert_report_template_m2o_to_m2m(env):
         "report_template_ids",
         "report_template",
     )
+    if openupgrade.table_exists(env.cr, "mail_template_report_line"):
+        # Migrate the old mail_template_multi_report
+        openupgrade.logged_query(
+            env.cr,
+            """
+            INSERT INTO mail_template_ir_actions_report_rel
+                (mail_template_id, ir_actions_report_id)
+            SELECT template_id, report_template_id
+            FROM mail_template_report_line;
+            """
+        )
 
 
 def _fill_mail_message_outgoing(env):
