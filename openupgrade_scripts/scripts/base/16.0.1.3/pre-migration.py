@@ -169,6 +169,8 @@ def migrate(cr, version):
         "WHERE r.view_id=v.id AND v.inherit_id IS NOT NULL AND v.mode != 'primary'"
     )
     # pre-create res.partner~company_registry
-    openupgrade.logged_query(cr, "ALTER TABLE res_partner ADD company_registry VARCHAR")
+    openupgrade.logged_query(
+        cr, "ALTER TABLE res_partner ADD IF NOT EXISTS company_registry VARCHAR"
+    )
     # update all translatable fields
     update_translatable_fields(cr)
