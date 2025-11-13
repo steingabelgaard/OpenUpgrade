@@ -89,6 +89,7 @@ def _fill_account_account_type(env, table):
                     WHEN name = 'data_account_type_direct_costs' THEN 'expense_direct_cost'
                     WHEN name = 'data_account_type_liability' THEN 'liability_current'
                     WHEN name = 'data_account_type_asset' THEN 'asset_current'
+                    WHEN name = 'conf_account_type_tax' THEN 'liability_current'
                     ELSE 'off_balance'
                 END AS account_type
             FROM ir_model_data
