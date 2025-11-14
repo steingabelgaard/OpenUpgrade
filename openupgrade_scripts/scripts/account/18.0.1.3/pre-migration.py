@@ -198,6 +198,20 @@ def fill_statement_line_fields(env):
     )
 
 
+def fill_missing_sequence_mixin_fields(env):
+    openupgrade.logged_query(
+        env.cr,
+        """
+        UPDATE account_move
+        SET sequence_prefix = substring(
+                name, '^(.*?)(?:\\d{0,9})(?:\\D*?)$'),
+            sequence_number = CAST(COALESCE(NULLIF(substring(
+                name, '^(?:.*?)(\\d{0,9})(?:\\D*?)$'),''), '0') as int)
+        WHERE name IS NOT NULL and name <> '/'
+    """,
+    )
+
+
 def fill_account_move_made_sequence_gap(env):
     openupgrade.logged_query(
         env.cr,
@@ -265,4 +279,5 @@ def migrate(env, version):
             "account.action_account_unreconcile",
         ],
     )
+    fill_missing_sequence_mixin_fields(env)
     fill_account_move_made_sequence_gap(env)
