@@ -64,6 +64,8 @@ merged_modules = {
     # OCA/product-attribute
     "product_catalog": "product",
     "product_catalog_sale": "sale",
+    # OCA/project
+    "project_list": "project",
     # OCA/purchase-workflow
     "purchase_discount": "purchase",
     # OCA/sale-promotion
@@ -74,6 +76,7 @@ merged_modules = {
     # OCA/social
     "mail_activity_plan": "mail",
     "mass_mailing_custom_unsubscribe_event": "mass_mailing",
+    "mail_template_multi_report": "mail",
     # OCA/stock-logistics-warehouse
     "stock_lot_filter_available": "stock",
     # OCA/web
@@ -81,6 +84,9 @@ merged_modules = {
     "web_listview_range_select": "web",
     "web_pwa_oca": "web",
     # OCA/...
+
+    # S&G
+    "mail_alias_maildomain": "mail",
 }
 
 # only used here for upgrade_analysis
