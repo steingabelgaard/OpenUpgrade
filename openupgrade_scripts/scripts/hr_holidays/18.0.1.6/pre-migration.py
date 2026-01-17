@@ -154,7 +154,7 @@ def split_employee_leaves(env):
         leave_employees.extend(env.cr.fetchall())
         for table_id, holiday_type, employee_ids in leave_employees:
             employees = env["hr.employee"].browse(employee_ids).filtered("active")
-            if employee_ids:
+            if employees:
                 openupgrade.logged_query(
                     env.cr,
                     f"""
@@ -194,7 +194,7 @@ def split_employee_leaves(env):
 @openupgrade.migrate()
 def migrate(env, version):
     if openupgrade.column_exists(env.cr, "hr_leave_allocation", "name"):  # from 13.0
-        openupgrade.rename_columns(env.cr, {"hr_leave_allocation": [("name", False)]})
+        openupgrade.rename_columns(env.cr, {"hr_leave_allocation": [("name", None)]})
     openupgrade.rename_columns(env.cr, _column_renames)
     openupgrade.add_columns(env, _column_adds)
     refill_hr_leave_request_hours(env)
