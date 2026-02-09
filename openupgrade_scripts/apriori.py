@@ -137,6 +137,9 @@ merged_modules = {
     "web_drop_target": "web",
     "web_ir_actions_act_view_reload": "web",
     "web_tree_image_tooltip": "web",
+
+    # S&G
+    "queue_job_context": "queue_job",
 }
 
 # only used here for upgrade_analysis
