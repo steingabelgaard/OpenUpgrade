@@ -100,6 +100,8 @@ merged_modules = {
     "account_invoice_search_by_reference": "account",
     # OCA/account-invoice-reporting
     "account_invoice_report_due_list": "account",
+    # OCA/account-reconcile
+    "account_bank_statement_reopen_skip_undo_reconciliation": "account_statement_base",
     # OCA/e-commerce
     "website_sale_require_login": "website_sale",
     # OCA/l10n-spain
