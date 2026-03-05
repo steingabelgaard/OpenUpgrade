@@ -15,6 +15,7 @@ renamed_modules = {
     # OCA/commission
     "account_commission": "account_commission_oca",
     "commission": "commission_oca",
+    "commission_formula": "commission_formula_oca",
     "hr_commission": "hr_commission_oca",
     "sale_commission": "sale_commission_oca",
     # OCA/edi
@@ -89,6 +90,8 @@ merged_modules = {
     "sale_order_qty_change_no_recompute": "sale",
     # OCA/server-brand
     "hr_expense_remove_mobile_link": "hr_expense",
+    # OCA/stock-logistics-workflow
+    "stock_move_line_auto_fill": "stock",
     # OCA/...
 }
 
