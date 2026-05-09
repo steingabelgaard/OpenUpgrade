@@ -36,6 +36,7 @@ renamed_modules = {
     "res_partner_category_multi_company": "partner_category_multi_company",
     # OCA/pos
     "pos_cashback_warning": "pos_cashback",
+    "pos_sale_order_load": "pos_picking_load",
     # OCA/product-attribute
     "product_packaging_type": "product_packaging_level",
     # OCA/project
@@ -62,7 +63,7 @@ renamed_modules = {
     # OCA/l10n-italy
     "assets_management": "l10n_it_asset_management",
     "l10n_it_account_balance_eu": "l10n_it_financial_statement_eu",
-    "l10n_it_ricevute_bancarie": "l10n_it_riba",
+    "l10n_it_ricevute_bancarie": "l10n_it_riba_oca",
     # OCA/...
 }
 
