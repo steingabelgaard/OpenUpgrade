@@ -78,6 +78,9 @@ renamed_models = {
     "web_editor.converter.test": "html_editor.converter.test",
     "web_editor.converter.test.sub": "html_editor.converter.test.sub",
     # OCA/...
+
+    # SG
+    "account_bank_statement_import_csv": "sg_account_bank_statement_import_csv",
 }
 
 # only used here for upgrade_analysis
