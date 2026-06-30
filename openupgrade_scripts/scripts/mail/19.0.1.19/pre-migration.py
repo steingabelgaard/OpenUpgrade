@@ -1,6 +1,7 @@
 
 from openupgradelib import openupgrade
 
+@openupgrade.migrate()
 def migrate(env, version):
     """ Remove activity calendar view from mail_activity_board to avoid
         duplication error """
