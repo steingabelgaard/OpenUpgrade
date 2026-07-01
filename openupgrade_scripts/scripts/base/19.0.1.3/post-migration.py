@@ -110,7 +110,7 @@ def migrate(env, version):
         ["base.ir_filters_delete_own_rule", "base.default_user"],
     )
     _ir_actions_act_window_target(env)
-    _ir_actions_server_child_ids(env)
+    # _ir_actions_server_child_ids(env) moved to end-migration
     _ir_actions_server_html_value(env)
     _ir_filters_user_ids(env)
     _res_lang(env)
