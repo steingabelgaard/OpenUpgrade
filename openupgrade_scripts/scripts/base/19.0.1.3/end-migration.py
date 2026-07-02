@@ -26,4 +26,4 @@ def _ir_actions_server_child_ids(env):
 @openupgrade.migrate()
 def migrate(env, version):
     openupgrade.disable_invalid_filters(env)
-    _ir_actions_server_child_ids(env)
+    # _ir_actions_server_child_ids(env)  TODO Enable when our own addons is ready. Fails for now on unknown fields
