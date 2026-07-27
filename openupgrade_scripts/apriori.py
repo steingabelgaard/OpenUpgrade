@@ -12,17 +12,21 @@ renamed_modules = {
     "website_sale_picking": "website_sale_collect",
     "website_form_project": "website_project",
     # odoo/enterprise
+    # OCA/account-reconcile
+    "account_reconciliation_widget_due_date": "account_reconcile_due_date",
     # OCA/commission
     "account_commission": "account_commission_oca",
     "commission": "commission_oca",
     "commission_formula": "commission_formula_oca",
     "hr_commission": "hr_commission_oca",
+    "sale_commission_margin": "sale_commission_margin_oca",
     "sale_commission": "sale_commission_oca",
+    "sale_commission_product_criteria": "sale_commission_oca_product_criteria",
+    "sale_commission_product_criteria_semaphore": "sale_commission_oca_product_criteria_semaphore",  # noqa: E501
     # OCA/edi
     "pdf_helper": "pdf_xml_attachment",
     # OCA/l10n-italy
     "account_vat_period_end_statement": "l10n_it_account_vat_period_end_settlement",
-    "l10n_it_riba": "l10n_it_riba_oca",
     "l10n_it_vat_statement_communication": "l10n_it_vat_settlement_communication",
     # OCA/product-attribute
     "product_packaging_type_vendor": "product_packaging_level_vendor",
@@ -42,6 +46,8 @@ renamed_modules = {
     "sale_product_set_sale_by_packaging": "product_set_sell_only_by_packaging",
     # OCA/stock-logistics-workflow
     "stock_picking_type_shipping_policy": "stock_picking_type_force_move_type",
+    "stock_picking_batch_extended_account": "stock_picking_batch_account",
+    "stock_picking_batch_extended_account_sale_type": "stock_picking_batch_account_sale_type",  # noqa: E501
     # OCA/web
     "web_widget_product_label_section_and_note": "web_widget_product_label_section_and_note_name_visibility",  # noqa: E501
     # OCA/...
@@ -82,12 +88,15 @@ merged_modules = {
     "website_sale_filter_product_brand": "website_sale_product_brand",
     # OCA/hr-attendance
     "hr_attendance_autoclose": "hr_attendance",
+    # OCA/hr-expense
+    "hr_expense_employee_analytic_default": "hr_expense",
     # OCA/knowledge
     "document_page_group": "document_page_access_group",
     # OCA/l10n-france
     "l10n_fr_pos_cert_update_draft_order_line": "l10n_fr_pos_cert",
     # OCA/sale-workflow
     "sale_order_qty_change_no_recompute": "sale",
+    "sale_partner_shipping_invoice_domain": "sale_commercial_partner",
     # OCA/server-brand
     "hr_expense_remove_mobile_link": "hr_expense",
     # OCA/stock-logistics-workflow
