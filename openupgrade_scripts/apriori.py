@@ -85,6 +85,7 @@ renamed_models = {
 
     # SG
     "account_bank_statement_import_csv": "sg_account_bank_statement_import_csv",
+    "base_search_mail_content": "mail_message_search",  # Let's see if this works better
 }
 
 # only used here for upgrade_analysis
