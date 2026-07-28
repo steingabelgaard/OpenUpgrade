@@ -11,7 +11,12 @@ renamed_modules = {
     # odoo/enterprise
     # OCA/timesheet
     "project_timesheet_time_control": "hr_timesheet_time_control",
-    # OCA/...
+    # OCA/server-brand
+    "mail_debrand": mail_debranding",
+
+    # SG
+    "account_bank_statement_import_csv": "sg_account_bank_statement_import_csv",
+    "base_search_mail_content": "mail_message_search",  # Let's see if this works better
 }
 
 # Merged modules contain a mapping from old module names to other,
@@ -83,9 +88,6 @@ renamed_models = {
     "web_editor.converter.test.sub": "html_editor.converter.test.sub",
     # OCA/...
 
-    # SG
-    "account_bank_statement_import_csv": "sg_account_bank_statement_import_csv",
-    "base_search_mail_content": "mail_message_search",  # Let's see if this works better
 }
 
 # only used here for upgrade_analysis
