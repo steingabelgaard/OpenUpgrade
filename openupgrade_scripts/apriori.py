@@ -16,7 +16,6 @@ renamed_modules = {
 
     # SG
     "account_bank_statement_import_csv": "sg_account_bank_statement_import_csv",
-    "base_search_mail_content": "mail_message_search",  # Let's see if this works better
 }
 
 # Merged modules contain a mapping from old module names to other,
