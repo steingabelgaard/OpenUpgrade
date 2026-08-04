@@ -131,4 +131,4 @@ def migrate(env, version):
     _ir_actions_server_html_value(env)
     _ir_filters_user_ids(env)
     _res_lang(env)
-    _migrate_partner_mobile(env)
+    # _migrate_partner_mobile(env)  We use OCA partner_mobile
