@@ -155,6 +155,16 @@ def _hr_expense_sheet_journal(env):
         """,
     )
 
+def _hr_expense_fold_ref_into_name(env):
+    openupgrade.logged_query(
+        env.cr,
+        """
+        UPDATE hr_expense
+        SET name = CONCAT(name, '\n', reference)
+        WHERE reference IS NOT NULL
+        """,
+    )
+
 
 @openupgrade.migrate()
 def migrate(env, version):
@@ -163,3 +173,4 @@ def migrate(env, version):
     _hr_expense_update_state(env)
     _hr_expense_sheet_fill_approval_state(env)
     _hr_expense_sheet_journal(env)
+    _hr_expense_fold_ref_into_name(env)

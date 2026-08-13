@@ -30,6 +30,7 @@ hr_expense   / hr.expense               / price_unit (float)            : NEW re
 hr_expense   / hr.expense               / reference (char)              : DEL
 hr_expense   / hr.expense               / sample (boolean)              : DEL
 # NOTHING TO DO: deprecated field https://github.com/odoo/odoo/pull/130244/commits/266b482264576903cf736ffe2bddfc71f7a7a4ec
+# HHG: reference folde into name field
 
 hr_expense   / hr.expense               / state (selection)             : selection_keys is now '['approved', 'done', 'draft', 'refused', 'reported', 'submitted']' ('['approved', 'done', 'draft', 'refused', 'reported']')
 # DONE pre-migration: if any expense has expense sheet and the sheet doesn't have account move and the expense is on reported or done state, then update state of expense to 'submitted' https://github.com/odoo/odoo/commit/8f9ca3e29e21596cd317d976edaf454cd0f33bf1
