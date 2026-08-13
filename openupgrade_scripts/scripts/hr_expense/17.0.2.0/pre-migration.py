@@ -160,7 +160,7 @@ def _hr_expense_fold_ref_into_name(env):
         env.cr,
         """
         UPDATE hr_expense
-        SET name = CONCAT(name, '\n', reference)
+        SET name = CONCAT(name, ' - ', reference)
         WHERE reference IS NOT NULL
         """,
     )
