@@ -43,7 +43,7 @@ renamed_modules = {
     # OCA/sale-workflow
     "product_supplierinfo_for_customer_sale": "product_customerinfo_sale",
     "product_supplierinfo_for_customer_elaboration": "product_customerinfo_elaboration",
-    "sale_product_configurator_widget_product_label": "sale",
+    
     "sale_product_set_sale_by_packaging": "product_set_sell_only_by_packaging",
     # OCA/stock-logistics-workflow
     "stock_picking_type_shipping_policy": "stock_picking_type_force_move_type",
@@ -97,6 +97,7 @@ merged_modules = {
     "l10n_fr_pos_cert_update_draft_order_line": "l10n_fr_pos_cert",
     # OCA/sale-workflow
     "sale_order_qty_change_no_recompute": "sale",
+    "sale_product_configurator_widget_product_label": "sale",
     "sale_partner_shipping_invoice_domain": "sale_commercial_partner",
     # OCA/server-brand
     "hr_expense_remove_mobile_link": "hr_expense",
