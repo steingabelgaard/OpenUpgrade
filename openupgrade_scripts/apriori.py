@@ -66,6 +66,8 @@ merged_modules = {
     "stock_picking_show_return": "stock",
     # OCA/vertical-association
     "membership_extension": "membership",
+    # SG / sg_accounting
+    "account_move_update_analytic_multi": "account_move_update_analytic",
 }
 
 # only used here for upgrade_analysis
