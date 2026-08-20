@@ -12,10 +12,14 @@ renamed_modules = {
     # OCA/timesheet
     "project_timesheet_time_control": "hr_timesheet_time_control",
     # OCA/server-brand
-    "mail_debrand": "mail_debranding",
+        "mail_debrand": "mail_debranding",
+    # OCA/website
+    "website_odoo_debranding": "website_debranding",
+
 
     # SG
     "account_bank_statement_import_csv": "sg_account_bank_statement_import_csv",
+    "monitoring": "sg_monitoring",
 }
 
 # Merged modules contain a mapping from old module names to other,
