@@ -20,6 +20,7 @@ renamed_modules = {
     # SG
     "account_bank_statement_import_csv": "sg_account_bank_statement_import_csv",
     "monitoring": "sg_monitoring",
+    "hue_backend_theme": "web_left_sidebar",
 }
 
 # Merged modules contain a mapping from old module names to other,
