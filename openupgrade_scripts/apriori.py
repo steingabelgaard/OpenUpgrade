@@ -21,6 +21,11 @@ renamed_modules = {
     "account_bank_statement_import_csv": "sg_account_bank_statement_import_csv",
     "monitoring": "sg_monitoring",
     "hue_backend_theme": "web_left_sidebar",
+
+    # Google maps
+    'contacts_maps': 'contacts_google_map',
+    'web_google_maps': 'web_view_google_map',
+    'google_marker_icon_picker': 'base_google_map',
 }
 
 # Merged modules contain a mapping from old module names to other,
