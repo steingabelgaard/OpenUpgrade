@@ -93,7 +93,7 @@ def _mail_template_convert_report_template_m2o_to_m2m(env):
             INSERT INTO mail_template_ir_actions_report_rel
                 (mail_template_id, ir_actions_report_id)
             SELECT template_id, report_template_id
-            FROM mail_template_report_line;
+            FROM mail_template_report_line WHERE template_id IS NOT NULL AND report_template_id IS NOT NULL;
             """
         )
 
